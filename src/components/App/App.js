@@ -1,8 +1,10 @@
+import Navbar from "../Navbar/Navbar";
 import CampaignView from "../CampaignView/CampaignView";
 
 const App = () => {
   return (
-    <div className="App">
+    <div>
+      <Navbar />
       <CampaignView />
     </div>
   );

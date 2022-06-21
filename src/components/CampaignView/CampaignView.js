@@ -7,6 +7,8 @@ import { testCampaign } from "../../utils/testCampaign";
 const CampaignContainer = styled.section`
     max-width: 1000px;
     margin: 0 auto;
+    margin-bottom: 80px;
+    padding: 0.5rem;
 `;
 
 const SectionName = styled.h2`
