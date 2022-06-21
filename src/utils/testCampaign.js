@@ -9,8 +9,9 @@ export const testCampaign = {
     posts: [""],
     comments: [],
     goal: {
+        name: 'Add perfect fruit trees',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         currentFunding: 25000,
-        goalFunding: 100000
+        targetFunding: 100000
     }
 }

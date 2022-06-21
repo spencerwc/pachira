@@ -1,30 +1,29 @@
 import styled from "styled-components";
 
 const Info = styled.section`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 0.5rem;
+    margin: 0.5rem 0;
+
+    @media(min-width: 768px) {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
 `;
 
 const Detail = styled.div`
-    width: 100%;
     height: 100px;
     background-color: rgba(0, 0, 0, 0.05);
-    margin: 0.5rem 0;
     padding: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     border-radius: 1rem;
-
-    @media(min-width: 768px) {
-        width: 20%;
-        margin: 0.5rem;
-    }
 `;
 
-const Value = styled.h2`
+const Value = styled.h3`
     font-size: 1.5rem;
+    margin: 0;
 `;
 
 const CampaignInfo = ({supporters, followers, posts}) => {

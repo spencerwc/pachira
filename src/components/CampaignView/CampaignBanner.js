@@ -9,7 +9,7 @@ const Banner = styled.section`
     flex-direction: column;
     justify-content: center;
     padding: 1rem;
-    margin-bottom: 0.5rem;
+    border-radius: 1rem;
 
     @media(min-width: 768px) {
         text-align: left;
@@ -17,17 +17,15 @@ const Banner = styled.section`
 `;
 
 const Title = styled.h1`
-    font-size: 1.5rem;
-`;
-
-const Summary = styled.p`
+    font-size: 1.7rem;
+    margin: 0;
 `;
 
 const CampaignBanner = ({title, summary, image}) => {
     return (
         <Banner image={image}>
             <Title>{title}</Title>
-            <Summary>{summary}</Summary>
+            <p>{summary}</p>
         </Banner>
     );
 }
