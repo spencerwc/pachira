@@ -16,6 +16,10 @@ const GoalName = styled.h3`
 
 const GoalFunding = styled.p`
     margin: 1rem 0;
+
+    @media(min-width: 768px) {
+        margin: 1rem 0 0 0;
+    }
 `;
 
 const DonateButton = styled.button`

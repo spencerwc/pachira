@@ -5,7 +5,7 @@ import { testCampaign } from "../../../utils/testCampaign";
 import CampaignInfo from "../CampaignInfo";
 
 
-describe('campaign banner', () => {
+describe('campaign details', () => {
     it('renders the campaign supporter, follower, and post count', () => {
         render(
             <CampaignInfo 
