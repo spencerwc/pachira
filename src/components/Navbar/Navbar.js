@@ -1,3 +1,5 @@
+import { Link, NavLink } from "react-router-dom";
+import  { MdHome, MdSearch, MdSettings } from 'react-icons/md';
 import styled from "styled-components";
 import sprout from './sprout.png';
 
@@ -23,8 +25,12 @@ const NavLogo = styled.div`
 
     @media(min-width: 768px) {
         display: flex;
-        padding: 0.5rem;
-        padding-left: 2rem;
+        margin-left: 2rem;
+
+        > a {
+            display: flex;
+            padding: 0.7rem;
+        }
     }
 `;
 
@@ -34,13 +40,34 @@ const NavLinks = styled.ul`
     display: flex;
     flex-grow: 1;
     justify-content: space-around;
-`;
+    align-items: center;
 
-const NavLink = styled.li`
-    display: block;
-    background-color: #fff;
-    border-radius: 100%;
-    padding: 1rem;
+    > li > a {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+
+        :visited {
+            color: inherit;
+        }
+        
+        > svg {
+            font-size: 1.6rem;
+            
+            @media(min-width: 768px) {
+                display: none;
+            }
+        }
+
+        > span {
+            display: none;
+
+            @media(min-width: 768px) {
+                display: inline-block;
+                font-size: 1.1rem;
+            }
+        }
+    }
 `;
 
 const NavUser = styled.div`
@@ -56,21 +83,19 @@ const NavUser = styled.div`
    }
 `;
 
-const tempLinks = ["Home", "Explore", "About"];
-
 const Navbar = () => {
     return (
         <Nav>
             <NavLogo>
-                <img src={sprout} alt="" />
+                <Link to="/"><img src={sprout} alt="" /></Link>
             </NavLogo>
             <NavLinks>
-                {tempLinks.map(link => <NavLink key={link}></NavLink>)}
+                <li><NavLink to="/"><MdHome /><span>Home</span></NavLink></li>
+                <li><NavLink to="explore"><MdSearch /><span>Explore</span></NavLink></li>
+                <li><NavLink to="settings"><MdSettings /><span>Settings</span></NavLink></li>
             </NavLinks>
             <NavUser>
-                <div>
-
-                </div>
+                <div></div>
             </NavUser>
         </Nav>
     );

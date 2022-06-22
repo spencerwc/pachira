@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const TopSupport = styled.section`
@@ -47,6 +48,7 @@ const ViewAllButton = styled.button`
 
 const CampaignTopSupport = ({supporters}) => {
     const topSupporters = supporters.sort((a, b) => b.donationTotal - a.donationTotal).slice(0, 3);
+    let navigate = useNavigate();
 
     return (
         <TopSupport>
@@ -59,7 +61,7 @@ const CampaignTopSupport = ({supporters}) => {
                     </SupporterDetails>
                 </Supporter>
             )}
-            <ViewAllButton>View all supporters</ViewAllButton>
+            <ViewAllButton onClick={() => navigate('./supporters')}>View all supporters</ViewAllButton>
         </TopSupport>
     );
 }
