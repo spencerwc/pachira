@@ -1,38 +1,18 @@
 import { useState } from "react";
 import styled from "styled-components";
-import CampaignGoal from './CampaignGoal';
-
-const Support = styled.section`
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 0.5rem;
-
-    @media(min-width: 768px) {
-        grid-template-columns: 1fr 1fr;
-    }
-`;
 
 const Donate = styled.section`
-    display: none;
-
-    @media(min-width: 768px) {
-        background-color: rgba(0, 0, 0, 0.05);
-        padding: 1rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        border-radius: 1rem;
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 1rem;
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
     }
-`;
-
-const DonateHeading = styled.h3`
-    margin: 0;
-    margin-bottom: 0.5rem;
 `;
 
 const DonateAmount = styled.input`
@@ -88,25 +68,21 @@ const CampaignSupport = ({goal}) => {
     }
 
     return (
-        <Support>
-            <CampaignGoal goal={goal} />
-            <Donate>
-                <DonateHeading>Make a donation</DonateHeading>
-                <DonateAmount 
-                    type="number" 
-                    min="1" 
-                    placeholder="5" 
-                    value={donateAmount} 
-                    onChange={handleAmountChange} 
-                />
-                <DonateMessage 
-                    placeholder="Your message" 
-                    value={donateMessage}
-                    onChange={handleMessageChange}
-                />
-                <DonateButton onClick={handleDonateSubmit}>Donate</DonateButton>
-            </Donate>
-        </Support>
+        <Donate>
+            <DonateAmount 
+                type="number" 
+                min="1" 
+                placeholder="5" 
+                value={donateAmount} 
+                onChange={handleAmountChange} 
+            />
+            <DonateMessage 
+                placeholder="Your message" 
+                value={donateMessage}
+                onChange={handleMessageChange}
+            />
+            <DonateButton onClick={handleDonateSubmit}>Donate</DonateButton>
+        </Donate>
     );
 }
 

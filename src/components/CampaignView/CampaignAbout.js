@@ -5,23 +5,19 @@ const About = styled.section`
     padding: 1rem;
     border-radius: 1rem;
 
-    @media(min-width: 768px) {
-        margin-right: 0.5rem;
-    }
-
     > p {
         margin: 0 auto;
     }
 `;
 
 const CampaignAbout = ({about}) => {
-    return (
-        <About>
-            <p>
+    if (about) {
+        return (
+            <About>
                 {about}
-            </p>
-        </About>
-    );
+            </About>
+        );
+    }
 }
 
 export default CampaignAbout;

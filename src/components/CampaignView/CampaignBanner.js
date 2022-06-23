@@ -16,15 +16,15 @@ const Banner = styled.section`
     }
 `;
 
-const Title = styled.h1`
+const Name = styled.h1`
     font-size: 1.7rem;
     margin: 0;
 `;
 
-const CampaignBanner = ({title, summary, image}) => {
+const CampaignBanner = ({name, summary, image}) => {
     return (
         <Banner image={image}>
-            <Title>{title}</Title>
+            <Name>{name}</Name>
             <p>{summary}</p>
         </Banner>
     );

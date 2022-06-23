@@ -47,23 +47,26 @@ const ViewAllButton = styled.button`
 `;
 
 const CampaignTopSupport = ({supporters}) => {
-    const topSupporters = supporters.sort((a, b) => b.donationTotal - a.donationTotal).slice(0, 3);
     let navigate = useNavigate();
 
-    return (
-        <TopSupport>
-            {topSupporters.map(supporter => 
-                <Supporter key={supporter.id}>
-                    <Avatar src={supporter.avatar} alt="" />
-                    <SupporterDetails>
-                        <strong>{supporter.username}</strong>
-                        <strong>${supporter.donationTotal}</strong>
-                    </SupporterDetails>
-                </Supporter>
-            )}
-            <ViewAllButton onClick={() => navigate('./supporters')}>View all supporters</ViewAllButton>
-        </TopSupport>
-    );
+    if (supporters.length > 0) {
+        const topSupporters = supporters.sort((a, b) => b.donationTotal - a.donationTotal).slice(0, 3);
+        
+        return (
+            <TopSupport>
+                {topSupporters.map(supporter => 
+                    <Supporter key={supporter.id}>
+                        <Avatar src={supporter.avatar} alt="" />
+                        <SupporterDetails>
+                            <strong>{supporter.username}</strong>
+                            <strong>${supporter.donationTotal}</strong>
+                        </SupporterDetails>
+                    </Supporter>
+                )}
+                <ViewAllButton onClick={() => navigate('./supporters')}>View all supporters</ViewAllButton>
+            </TopSupport>
+        );
+    }
 }
 
 export default CampaignTopSupport;

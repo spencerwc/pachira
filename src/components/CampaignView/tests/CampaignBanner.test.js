@@ -8,12 +8,12 @@ describe('campaign banner', () => {
     it('renders the campaign title and summary based on props', () => {
         render(
             <CampaignBanner 
-                title={testCampaign.title} 
+                name={testCampaign.name} 
                 summary={testCampaign.summary} 
             />
         );
         
-        expect(screen.queryByRole('heading').textContent).toBe(testCampaign.title);
+        expect(screen.queryByRole('heading').textContent).toBe(testCampaign.name);
         expect(screen.getByText(testCampaign.summary)).toBeInTheDocument();
     });
 })

@@ -35,15 +35,15 @@ const ViewPage = styled.div`
     margin-top: 2rem;
 `;
 
-const CampaignCard = ({title, summary}) => {
+const CampaignCard = ({id, name, summary}) => {
     const MAX_SUMMARY_LENGTH = 80;
 
     return (
         <Card>
-            <Link to={`../${title}`}>
+            <Link to={`../${id}`}>
                 <CardBanner />
                 <CardDetails>
-                    <strong>{title}</strong>
+                    <strong>{name}</strong>
                     {/* TODO: Revisit this */}
 
                     {summary.length > MAX_SUMMARY_LENGTH ? 

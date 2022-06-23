@@ -12,13 +12,13 @@ describe('campaign preview card', () => {
         render(
             <BrowserRouter>
                 <CampaignCard 
-                    title={testCampaign.title}
+                    name={testCampaign.name}
                     summary={testCampaign.summary}
                 />
             </BrowserRouter>
         );
         
-        expect(screen.getByText(testCampaign.title)).toBeInTheDocument();
+        expect(screen.getByText(testCampaign.name)).toBeInTheDocument();
     });
 
     it('renders the campaign summary', () => {
@@ -49,7 +49,7 @@ describe('campaign preview card', () => {
         render(
             <BrowserRouter>
                 <CampaignCard 
-                    title={testCampaign.title}
+                    name={testCampaign.name}
                     summary={testCampaign.summary}
                 />
             </BrowserRouter>

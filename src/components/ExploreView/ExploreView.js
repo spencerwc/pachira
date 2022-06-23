@@ -1,5 +1,7 @@
+import { useEffect, useState} from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from '../../index';
 import styled from "styled-components";
-import { testCampaign } from "../../utils/testCampaign";
 import CampaignCard from "./CampaignCard";
 
 const ExploreContainer = styled.section`
@@ -29,20 +31,42 @@ const Search = styled.input`
     margin-bottom: 1rem;
 `;
 
-
 const ExploreView = () => {
-    return (
-        <ExploreContainer>
-            <Heading>Explore</Heading>
-            {/* TODO: Make this functional */}
-            <Search type="text" placeholder="Search for a campaign..."></Search>
-            <Container>
-                <CampaignCard title={testCampaign.title} summary={testCampaign.summary} />
-                <CampaignCard title={testCampaign.title} summary={testCampaign.summary} />
-                <CampaignCard title={testCampaign.title} summary={testCampaign.summary} />
-            </Container>
-        </ExploreContainer>
-    );
+    const [isLoading, setIsLoading] = useState(false);
+    const [campaignsList, setCampaignsList] = useState([]);
+
+    const getCampaigns = async () => {
+        const campaignsList = [];
+        const querySnapshot = await getDocs(collection(db, "campaigns"));
+        
+        querySnapshot.forEach((doc) => {
+            campaignsList.push({id: doc.id, ...doc.data()});
+        });
+
+        setCampaignsList(campaignsList);
+        setIsLoading(false);
+    }
+
+    useEffect(() => {
+        setIsLoading(true);
+        getCampaigns();
+    }, []);
+
+    if (!isLoading && campaignsList) {
+        return (
+            <ExploreContainer>
+                <Heading>Explore</Heading>
+                {/* TODO: Make this functional */}
+                <Search type="text" placeholder="Search for a campaign..."></Search>
+                <Container>
+                    {campaignsList.length && campaignsList.map(campaign => <CampaignCard key={campaign.id} id={campaign.id} name={campaign.name} summary={campaign.summary} />)}
+                </Container>
+            </ExploreContainer>
+        );
+    }
+    else {
+        return <div>Loading</div>
+    }
 }
 
 export default ExploreView;

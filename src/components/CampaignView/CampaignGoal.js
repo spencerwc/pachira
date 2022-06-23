@@ -39,16 +39,18 @@ const DonateButton = styled.button`
 `;
 
 const CampaignGoal = ({goal}) => {
-    return (
-        <Goal>
-            <GoalName>
-                {goal.name}
-            </GoalName>
-            <p style={{flexGrow: 1}}>{goal.description}</p>
-            <GoalFunding>{goal.currentFunding / goal.targetFunding * 100}% of ${goal.targetFunding.toLocaleString()}</GoalFunding>
-            <DonateButton>Donate</DonateButton>
-        </Goal>
-    );
+    if (goal) {
+        return (
+            <Goal>
+                <GoalName>
+                    {goal.name}
+                </GoalName>
+                <p style={{flexGrow: 1}}>{goal.description}</p>
+                <GoalFunding>{goal.currentFunding / goal.targetFunding * 100}% of ${goal.targetFunding.toLocaleString()}</GoalFunding>
+                <DonateButton>Donate</DonateButton>
+            </Goal>
+        );
+    }
 }
 
 export default CampaignGoal;
