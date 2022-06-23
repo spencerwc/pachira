@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import CampaignView from "../CampaignView/CampaignView";
+import ExploreView from "../ExploreView/ExploreView";
 
 
 const App = () => {
@@ -13,7 +14,7 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<div>Home Route</div>} />
-        <Route path="explore" element={<div>Explore Route</div>} />
+        <Route path="explore" element={<ExploreView />} />
         <Route path="settings" element={<div>Settings Route</div>} />
         <Route path=":campaignName" element={<CampaignView />} />
         <Route path=":campaignName/supporters" element={<div>Supporter Route</div>} />
