@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-const Card = styled.div`
+const Card = styled.li`
     background-color: rgba(0, 0, 0, 0.05);
     border-radius: 1rem;
     

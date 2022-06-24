@@ -8,6 +8,7 @@ import CampaignGoal from './CampaignGoal';
 import CampaignSupport from "./CampaignSupport";
 import CampaignAbout from "./CampaignAbout";
 import CampaignTopSupport from "./CampaignTopSupport";
+import CampaignDonations from './CampaignDonations';
 import { db } from '../../index';
 
 const CampaignContainer = styled.section`
@@ -85,6 +86,13 @@ const CampaignView = () => {
                         <SectionName>Top Supporters</SectionName> 
                         <CampaignTopSupport supporters={campaign.supporters} />
                     </div>
+
+                    {campaign.donations && (
+                        <div>
+                            <SectionName>Recent Donations</SectionName>
+                            <CampaignDonations donations={campaign.donations} />
+                        </div>
+                    )}
                 </CampaignSections>
             </CampaignContainer>
         );

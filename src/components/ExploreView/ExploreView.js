@@ -11,10 +11,13 @@ const ExploreContainer = styled.section`
     padding: 0.5rem;
 `;
 
-const Container = styled.div`
+const Container = styled.ul`
     display: grid;
     grid-template-columns: repeat( auto-fit, minmax(200px, 1fr) );
     grid-gap: 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 `;
 
 const Heading = styled.h1`

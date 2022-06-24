@@ -12,10 +12,13 @@ const SupportersContainer = styled.section`
     padding: 0.5rem;
 `;
 
-const Container = styled.div`
+const Supporters = styled.ul`
     display: grid;
     grid-template-columns: repeat( auto-fit, minmax(200px, 1fr) );
     grid-gap: 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 `;
 
 const Heading = styled.h1`
@@ -47,15 +50,16 @@ const SupportersView = () => {
                 <Heading>
                     {campaign.name}'s Supporters
                 </Heading>
-                <Container>
+                <Supporters>
                     {supporters.map(supporter => 
                         <SupporterCard 
+                            key={supporter.id}
                             id={supporter.id} 
                             name={supporter.name} 
                             donationTotal={supporter.donationTotal} 
                         />
                     )}
-                </Container>
+                </Supporters>
             </SupportersContainer>
         );
     }
