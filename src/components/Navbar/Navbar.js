@@ -1,5 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
-import  { MdHome, MdSearch, MdSettings } from 'react-icons/md';
+import { MdHome, MdSearch, MdSettings } from 'react-icons/md';
+import { getAuth, signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import sprout from './sprout.png';
 
@@ -70,20 +72,25 @@ const NavLinks = styled.ul`
     }
 `;
 
-const NavUser = styled.div`
-    display: flex;
-    align-items: center;
-    margin: 0 2rem;
-    
-   > div {
-        display: block;
-        background-color: #fff;
-        border-radius: 100%;
-        padding: 1.5rem;
-   }
+const NavUser = styled.img`
+    border-radius: 100%;
+    padding: 0.5rem;
+    margin-right: 2rem;
 `;
 
-const Navbar = () => {
+const Navbar = ({ user, logOut }) => {
+    const navigate = useNavigate();
+
+    const signOutUser = () => {
+        const auth = getAuth();
+        signOut(auth).then(() => {
+            logOut();
+            navigate('login');
+          }).catch((error) => {
+            console.error(error);
+          });
+    }
+
     return (
         <Nav>
             <NavLogo>
@@ -92,11 +99,22 @@ const Navbar = () => {
             <NavLinks>
                 <li><NavLink to="/"><MdHome /><span>Home</span></NavLink></li>
                 <li><NavLink to="explore"><MdSearch /><span>Explore</span></NavLink></li>
-                <li><NavLink to="settings"><MdSettings /><span>Settings</span></NavLink></li>
+                { user ? 
+                    <li><NavLink to="settings"><MdSettings /><span>Settings</span></NavLink></li> :
+                    <li><NavLink to="register">Sign Up</NavLink></li>
+                }
+                { !user && 
+                    <li><NavLink to="login">Log in</NavLink></li>
+                }
             </NavLinks>
-            <NavUser>
-                <div></div>
-            </NavUser>
+            { user && 
+                <NavUser 
+                    src={user.photoURL} 
+                    referrerPolicy="no-referrer" 
+                    alt={user.displayName}
+                    onClick={signOutUser}
+                /> 
+            }
         </Nav>
     );
 }
