@@ -1,22 +1,43 @@
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { getDoc } from "firebase/firestore";
 import styled from "styled-components";
 
 const TopSupport = styled.section`
     background-color: rgba(0, 0, 0, 0.05);
-    padding: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     border-radius: 1rem;
+    padding: 1rem;
 `;
 
-const Supporter = styled.div`
-    display: flex;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid;
+const Supporters = styled.ul`
+    list-style: none;
+    margin: 0;
+    padding: 0;
+`;
 
-    :nth-child(3) {
+const Supporter = styled.li`
+    border-bottom: 1px solid;
+    padding: 0.5rem 0;
+    
+    :first-of-type {
+        padding-top: 0;
+    }
+
+    :last-of-type {
         border-bottom: 0px;
+    }
+
+    > a {
+        display: flex;
+        text-decoration: none;
+        color: inherit;
+
+        :visited {
+            color: inherit;
+        }
     }
 `;
 
@@ -44,26 +65,51 @@ const ViewAllButton = styled.button`
     :hover {
         background-color: rgba(0, 0, 0, 0.1);
     }
+    margin-top: 0.5rem;
+`;
+
+const DonateButton = styled.button`
+    border: none;
+    border-radius: 0.7rem;
+    padding: 0.5rem;
+    background-color: #fff;
+    cursor: pointer;
+    :hover {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
 `;
 
 const CampaignTopSupport = ({supporters}) => {
     let navigate = useNavigate();
+    const supporterValues = Object.values(supporters);
 
-    if (supporters.length > 0) {
-        const topSupporters = supporters.sort((a, b) => b.donationTotal - a.donationTotal).slice(0, 3);
+    if (supporterValues.length > 0) {
+        const topSupporters = supporterValues.sort((a, b) => b.donationTotal - a.donationTotal).slice(0, 3);
         
         return (
             <TopSupport>
-                {topSupporters.map(supporter => 
-                    <Supporter key={supporter.id}>
-                        <Avatar src={supporter.avatar} alt="" />
-                        <SupporterDetails>
-                            <strong>{supporter.username}</strong>
-                            <strong>${supporter.donationTotal}</strong>
-                        </SupporterDetails>
-                    </Supporter>
-                )}
+                <Supporters>
+                    {topSupporters.map(supporter => 
+                        <Supporter key={supporter.id}>
+                            <Link to={`../${supporter.id}`}>
+                                <Avatar src={supporter.avatar} alt="" />
+                                <SupporterDetails>
+                                    <strong>{supporter.name}</strong>
+                                    <strong>${supporter.donationTotal.toLocaleString()}</strong>
+                                </SupporterDetails>
+                            </Link>
+                        </Supporter>
+                    )}
+                </Supporters>
                 <ViewAllButton onClick={() => navigate('./supporters')}>View all supporters</ViewAllButton>
+            </TopSupport>
+        );
+    }
+    else {
+        return (
+            <TopSupport>
+                <p style={{marginTop: 0}}>You could be the first!</p>
+                <DonateButton>Donate</DonateButton>
             </TopSupport>
         );
     }

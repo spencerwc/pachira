@@ -4,6 +4,7 @@ import '@testing-library/jest-dom';
 import { testCampaign } from "../../../utils/testCampaign";
 import CampaignInfo from "../CampaignInfo";
 
+const supportersLength = Object.keys(testCampaign.supporters).length.toLocaleString();
 
 describe('campaign details', () => {
     it('renders the campaign supporter, follower, and post count', () => {
@@ -15,7 +16,7 @@ describe('campaign details', () => {
             />
         );
         
-        expect(screen.getByText(`${testCampaign.supporters.length.toLocaleString()}`)).toBeInTheDocument();
+        expect(screen.getByText(`${supportersLength}`)).toBeInTheDocument();
         expect(screen.getByText(`${testCampaign.followers.length.toLocaleString()}`)).toBeInTheDocument();
         expect(screen.getByText(`${testCampaign.posts.length.toLocaleString()}`)).toBeInTheDocument();
     });

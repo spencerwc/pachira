@@ -27,10 +27,11 @@ const Value = styled.h3`
 `;
 
 const CampaignInfo = ({supporters, followers, posts}) => {
+    const supportersLength = Object.keys(supporters).length;
     return (
         <Info>
             <Detail>
-                <Value>{supporters.length}</Value> supporter{supporters.length !== 1 && 's'}
+                <Value>{supportersLength}</Value> supporter{supportersLength !== 1 && 's'}
             </Detail>
             <Detail>
                 <Value>{followers.length}</Value> follower{followers.length !== 1 && 's'}

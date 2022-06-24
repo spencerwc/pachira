@@ -81,12 +81,10 @@ const CampaignView = () => {
                             <CampaignGoal goal={campaign.goal} />
                         </div>
                     )}
-                    {campaign.supporters.length > 0 && (
-                        <div>
-                            <SectionName>Top Supporters</SectionName> 
-                            <CampaignTopSupport supporters={campaign.supporters} />
-                        </div>
-                    )}
+                    <div>
+                        <SectionName>Top Supporters</SectionName> 
+                        <CampaignTopSupport supporters={campaign.supporters} />
+                    </div>
                 </CampaignSections>
             </CampaignContainer>
         );
