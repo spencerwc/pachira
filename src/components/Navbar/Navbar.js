@@ -1,5 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
-import { MdHome, MdSearch, MdSettings } from 'react-icons/md';
+import { MdHome, MdSearch, MdSettings, MdLogin } from 'react-icons/md';
+import { FaUserCircle } from 'react-icons/fa';
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -28,6 +29,7 @@ const NavLogo = styled.div`
     @media(min-width: 768px) {
         display: flex;
         margin-left: 2rem;
+        flex-grow: 1;
 
         > a {
             display: flex;
@@ -44,10 +46,17 @@ const NavLinks = styled.ul`
     justify-content: space-around;
     align-items: center;
 
+    @media (min-width: 768px) {
+        margin-right: 2rem;
+        justify-content: space-between;
+        flex-grow: 0.5;
+    }
+
     > li > a {
         display: flex;
         align-items: center;
         text-decoration: none;
+        color: inherit;
 
         :visited {
             color: inherit;
@@ -56,7 +65,7 @@ const NavLinks = styled.ul`
         > svg {
             font-size: 1.6rem;
             
-            @media(min-width: 768px) {
+            @media (min-width: 768px) {
                 display: none;
             }
         }
@@ -70,12 +79,19 @@ const NavLinks = styled.ul`
             }
         }
     }
+
+    > #register {
+        display: none;
+
+        @media(min-width: 768px) {
+            display: block;
+        }
+    }
 `;
 
 const NavUser = styled.img`
     border-radius: 100%;
-    padding: 0.5rem;
-    margin-right: 2rem;
+    max-width: 40px;
 `;
 
 const Navbar = ({ user, logOut }) => {
@@ -99,22 +115,31 @@ const Navbar = ({ user, logOut }) => {
             <NavLinks>
                 <li><NavLink to="/"><MdHome /><span>Home</span></NavLink></li>
                 <li><NavLink to="explore"><MdSearch /><span>Explore</span></NavLink></li>
-                { user ? 
-                    <li><NavLink to="settings"><MdSettings /><span>Settings</span></NavLink></li> :
-                    <li><NavLink to="register">Sign Up</NavLink></li>
+                { !user ?
+                    <li><NavLink to="login"><MdLogin /><span>Log in</span></NavLink></li> :
+                    <li><NavLink to="settings"><MdSettings /><span>Settings</span></NavLink></li>
                 }
                 { !user && 
-                    <li><NavLink to="login">Log in</NavLink></li>
+                    <li id="register"><NavLink to="register"><span>Sign up</span></NavLink></li>
                 }
-            </NavLinks>
-            { user && 
-                <NavUser 
-                    src={user.photoURL} 
-                    referrerPolicy="no-referrer" 
-                    alt={user.displayName}
-                    onClick={signOutUser}
-                /> 
+                { user && 
+                <li>
+                    { user.photoURL ? 
+                        <NavUser 
+                            src={user.photoURL} 
+                            referrerPolicy="no-referrer" 
+                            alt={user.displayName}
+                            onClick={signOutUser}
+                        /> :
+                        <FaUserCircle 
+                            style={{fontSize: '1.6rem'}}
+                            onClick={signOutUser}
+                        />
+                    }
+                </li>
             }
+            </NavLinks>
+            
         </Nav>
     );
 }

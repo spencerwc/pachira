@@ -4,6 +4,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
+import WithHeader from '../Layouts/WithHeader';
 import Navbar from "../Navbar/Navbar";
 import SignUpView from '../SignUpView/SignUpView';
 import LoginView from '../LoginView/LoginView';
@@ -26,15 +27,17 @@ const App = () => {
     <BrowserRouter>
       <Navbar user={user} logIn={logIn} logOut={logOut} />
       <Routes>
-        <Route path="/" element={<div>Home Route</div>} />
+        <Route element={<WithHeader user={user} />}>
+          <Route path="/" element={<div>Home Route</div>} />
+          <Route path="explore" element={<ExploreView />} />
+          <Route path="settings" element={<div>Settings Route</div>} />
+          <Route path=":campaignName" element={<CampaignView />} />
+          <Route path=":campaignName/supporters" element={<SupportersView />} />
+          <Route path=":campaignName/followers" element={<div>Follower Route</div>} />
+          <Route path=":campaignName/posts" element={<div>Posts Route</div>} />
+        </Route>
         <Route path="login" element={<LoginView logIn={logIn} />} />
         <Route path="register" element={<SignUpView logIn={logIn} />} />
-        <Route path="explore" element={<ExploreView />} />
-        <Route path="settings" element={<div>Settings Route</div>} />
-        <Route path=":campaignName" element={<CampaignView />} />
-        <Route path=":campaignName/supporters" element={<SupportersView />} />
-        <Route path=":campaignName/followers" element={<div>Follower Route</div>} />
-        <Route path=":campaignName/posts" element={<div>Posts Route</div>} />
       </Routes>
     </BrowserRouter>
   );

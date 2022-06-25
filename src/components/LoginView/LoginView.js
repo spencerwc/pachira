@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { getAuth, signInWithPopup, signInWithEmailAndPassword, GoogleAuthProvider } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { MdErrorOutline } from 'react-icons/md';
+import { FcGoogle } from 'react-icons/fc';
 import styled from "styled-components";
 import sprout from './sprout.png';
 
@@ -8,6 +10,7 @@ const LoginContainer = styled.section`
     margin: 0 auto;
     padding: 1rem;
     text-align: center;
+    padding-top: 2rem;
 
     @media (min-width: 768px) {
         max-width: 400px;
@@ -56,6 +59,24 @@ const LoginButton = styled.button`
     }
 `;
 
+const ErrorMessage = styled.p`
+    color: red;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 1s;
+
+    > svg {
+        margin-right: 0.3rem;
+    }
+
+    @keyframes fadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+`;
+
 const OAuthLogin = styled.section`
     display: flex;
     flex-direction: column;
@@ -74,9 +95,21 @@ const OAuthLoginButton = styled.button`
     }
 `;
 
+const SignUp = styled.p`
+    > a {
+        color: inherit;
+        text-decoration: none;
+
+        :visited {
+            color: inherit;
+        }
+    }
+`;
+
 const LoginView = ({ logIn }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     const signInUser = () => {
@@ -85,9 +118,10 @@ const LoginView = ({ logIn }) => {
           .then((userCredential) => {
             const user = userCredential.user;
             logIn(user);
+            navigate('../settings');
           })
           .catch((error) => {
-            console.error(error.message);
+            setError(error);
           });
     }
 
@@ -99,14 +133,13 @@ const LoginView = ({ logIn }) => {
                 logIn(result.user);
                 navigate('../settings');
             }).catch((error) => {
-                console.error(error.message);
+                setError(error);
             });
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
         signInUser();
-        navigate('../settings');
     }
 
     return (
@@ -118,21 +151,29 @@ const LoginView = ({ logIn }) => {
                     type="email" 
                     placeholder="Email Address" 
                     value={email} 
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => {
+                        setEmail(e.target.value);
+                        setError(null);
+                    }}
                 />
                 <input 
                     type="password" 
                     placeholder="Choose a Password" 
                     value={password} 
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) =>{
+                        setPassword(e.target.value);
+                        setError(null);
+                    }}
                 />
+                {error && <ErrorMessage><MdErrorOutline />{error.code}</ErrorMessage>}
                 <p style={{fontSize: '0.8rem'}}>Pachira is a demo application and is only intended to showcase example features. This is not an actual service.</p>
                 <LoginButton type="submit">Log In</LoginButton>
             </LoginForm>
             <OAuthLogin>
                 <p>Or log in with</p>
-                <OAuthLoginButton onClick={signInGoogleUser}>Google</OAuthLoginButton>                
+                <OAuthLoginButton onClick={signInGoogleUser}><FcGoogle/> Google</OAuthLoginButton>                
             </OAuthLogin>
+            <SignUp><Link to="../register">New to Pachira?  Sign up.</Link></SignUp>
         </LoginContainer>
     );
 }
