@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { getDoc } from "firebase/firestore";
 import styled from "styled-components";
 
 const TopSupport = styled.section`
@@ -94,7 +93,7 @@ const CampaignTopSupport = ({supporters}) => {
                             <Link to={`../${supporter.id}`}>
                                 <Avatar src={supporter.avatar} alt="" />
                                 <SupporterDetails>
-                                    <strong>{supporter.name}</strong>
+                                    <strong>{supporter.id}</strong>
                                     <strong>${supporter.donationTotal.toLocaleString()}</strong>
                                 </SupporterDetails>
                             </Link>

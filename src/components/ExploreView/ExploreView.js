@@ -46,7 +46,10 @@ const ExploreView = () => {
             campaignsList.push({id: doc.id, ...doc.data()});
         });
 
-        setCampaignsList(campaignsList);
+        // Only show campaigns that have been set up by the user
+        const activeCampaigns = campaignsList.filter(campaign => campaign.name);
+        
+        setCampaignsList(activeCampaigns);
         setIsLoading(false);
     }
 

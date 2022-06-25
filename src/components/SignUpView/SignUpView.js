@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore"; 
 import { useNavigate, Link } from "react-router-dom";
 import { MdErrorOutline } from 'react-icons/md';
 import { FcGoogle } from 'react-icons/fc';
 import styled from "styled-components";
 import sprout from './sprout.png';
+import { db } from '../../index';
 
 const SignUpContainer = styled.section`
     margin: 0 auto;
@@ -107,32 +109,74 @@ const Login = styled.p`
 `;
 
 const SignUpView = ({ logIn }) => {
+    const [displayName, setDisplayName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
-    const signInUser = () => {
+    const checkForExistingCampaign = async (userDisplayName) => {
+        const docRef = doc(db, 'campaigns', userDisplayName);
+        const docSnap = await getDoc(docRef);
+        return docSnap.exists();
+    }
+
+    const addUserToCampaignCollection = async (user, userDisplayName) => {
+        const campaignExists = await checkForExistingCampaign(userDisplayName);
+
+        if (!campaignExists) {
+            setDoc(doc(db, 'campaigns', userDisplayName), {
+                about: "",
+                avatar: user.photoURL,
+                bannerImage: "",
+                created: new Date(),
+                currentGoal: null,
+                donations: [],
+                email: user.email,
+                followers: [],
+                name: "",
+                posts: [],
+                summary: "",
+                supporters: []
+            });
+        }
+    }
+    
+    const createUser = async (email, password) => {
+        const campaignExists = await checkForExistingCampaign(displayName);
+
+        if (!campaignExists) {
+            const auth = getAuth();
+
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    addUserToCampaignCollection(user, displayName);
+                    logIn(user);
+                    navigate("../settings");
+                })
+                .catch((error) => {
+                    setError(error);
+                });
+        }
+        else {
+            setError({code: 'That username already exists'})
+        }
+    }
+    
+    const signInGoogleUser = async () => {
         const auth = getAuth();
         const provider = new GoogleAuthProvider();
+        
         signInWithPopup(auth, provider)
             .then((result) => {
+                // Add new campaign if it doesnt exist already
+                addUserToCampaignCollection(result.user, result.user.uid);
+                
+                // Log in and redirect
                 logIn(result.user);
                 navigate("../settings");
             }).catch((error) => {
-                setError(error);
-            });
-    }
-
-    const createUser = (email, password) => {
-        const auth = getAuth();
-        createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                logIn(user);
-                navigate("../settings");
-            })
-            .catch((error) => {
                 setError(error);
             });
     }
@@ -147,6 +191,15 @@ const SignUpView = ({ logIn }) => {
             <Logo src={sprout} alt="pachira" />
             <SignUpForm onSubmit={handleSubmit}>
                 <SignUpHeading>Sign up. It's free!</SignUpHeading>
+                <input 
+                    type="text" 
+                    placeholder="Display Name" 
+                    value={displayName} 
+                    onChange={(e) => {
+                        setDisplayName(e.target.value);
+                        setError(null);
+                    }}
+                />
                 <input 
                     type="email" 
                     placeholder="Email Address" 
@@ -171,7 +224,7 @@ const SignUpView = ({ logIn }) => {
             </SignUpForm>
             <OAuthSignUp>
                 <p>Or sign up with</p>
-                <OAuthSignUpButton onClick={signInUser}><FcGoogle/> Google</OAuthSignUpButton>                
+                <OAuthSignUpButton onClick={signInGoogleUser}><FcGoogle/> Google</OAuthSignUpButton>                
             </OAuthSignUp>
             <Login><Link to="../login">Already have an account?  Log in.</Link></Login>
         </SignUpContainer>

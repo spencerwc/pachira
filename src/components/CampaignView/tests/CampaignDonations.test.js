@@ -10,7 +10,7 @@ describe('campaign recent donations', () => {
             <CampaignDonations donations={testCampaign.donations} />
         );
         
-        expect(screen.getByText(testCampaign.donations[0].name)).toBeInTheDocument();
+        expect(screen.getByText(testCampaign.donations[0].id)).toBeInTheDocument();
         expect(screen.getByText(`$${testCampaign.donations[1].donationAmount.toLocaleString()}`)).toBeInTheDocument();
     });
 

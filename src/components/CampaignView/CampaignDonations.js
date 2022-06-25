@@ -66,7 +66,7 @@ const CampaignDonations = ({donations}) => {
                         <Avatar src={donation.avatar} alt="" />
                         <DonationDetails>
                             <DonationHeader>
-                                <strong>{donation.name}</strong>
+                                <strong>{donation.id}</strong>
                                 <strong style={{textAlign: 'right'}}>${donation.donationAmount.toLocaleString()}</strong>
                                 <span style={{textAlign: 'right'}}>{new Date(donation.date.seconds * 1000).toLocaleDateString()}</span>
                             </DonationHeader>

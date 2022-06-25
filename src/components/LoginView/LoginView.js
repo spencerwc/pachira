@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { getAuth, signInWithPopup, signInWithEmailAndPassword, GoogleAuthProvider } from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore"; 
 import { useNavigate, Link } from "react-router-dom";
 import { MdErrorOutline } from 'react-icons/md';
 import { FcGoogle } from 'react-icons/fc';
 import styled from "styled-components";
 import sprout from './sprout.png';
+import { db } from '../../index';
 
 const LoginContainer = styled.section`
     margin: 0 auto;
@@ -112,6 +114,33 @@ const LoginView = ({ logIn }) => {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
+    const checkForExistingCampaign = async (userDisplayName) => {
+        const docRef = doc(db, 'campaigns', userDisplayName);
+        const docSnap = await getDoc(docRef);
+        return docSnap.exists();
+    }
+
+    const addUserToCampaignCollection = async (user, userDisplayName) => {
+        const campaignExists = await checkForExistingCampaign(userDisplayName);
+
+        if (!campaignExists) {
+            setDoc(doc(db, 'campaigns', userDisplayName), {
+                about: "",
+                avatar: user.photoURL,
+                bannerImage: "",
+                created: new Date(),
+                currentGoal: null,
+                donations: [],
+                email: user.email,
+                followers: [],
+                name: "",
+                posts: [],
+                summary: "",
+                supporters: []
+            });
+        }
+    }
+
     const signInUser = () => {
         const auth = getAuth();
         signInWithEmailAndPassword(auth, email, password)
@@ -125,13 +154,18 @@ const LoginView = ({ logIn }) => {
           });
     }
 
-    const signInGoogleUser = () => {
+    const signInGoogleUser = async () => {
         const auth = getAuth();
         const provider = new GoogleAuthProvider();
+        
         signInWithPopup(auth, provider)
             .then((result) => {
+                // Add new campaign if it doesnt exist already
+                addUserToCampaignCollection(result.user, result.user.uid);
+                
+                // Log in and redirect
                 logIn(result.user);
-                navigate('../settings');
+                navigate("../settings");
             }).catch((error) => {
                 setError(error);
             });
