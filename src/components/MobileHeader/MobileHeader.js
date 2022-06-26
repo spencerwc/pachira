@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { getAuth } from "firebase/auth";
 import styled from "styled-components";
 import sprout from './sprout.png';
 
@@ -36,7 +37,10 @@ const SignUp = styled.div`
 `;
 
 
-const MobileHeader = ({ user }) => {
+const MobileHeader = () => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+
     return (
         <Header>
             <img src={sprout} alt="Pachira" />

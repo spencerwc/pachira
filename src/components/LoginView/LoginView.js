@@ -108,7 +108,7 @@ const SignUp = styled.p`
     }
 `;
 
-const LoginView = ({ logIn }) => {
+const LoginView = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
@@ -145,9 +145,9 @@ const LoginView = ({ logIn }) => {
         const auth = getAuth();
         signInWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
-            const user = userCredential.user;
-            logIn(user);
-            navigate('../settings');
+            // TODO: Revisit
+            // const user = userCredential.user;
+            navigate('../dashboard');
           })
           .catch((error) => {
             setError(error);
@@ -164,8 +164,7 @@ const LoginView = ({ logIn }) => {
                 addUserToCampaignCollection(result.user, result.user.uid);
                 
                 // Log in and redirect
-                logIn(result.user);
-                navigate("../settings");
+                navigate("../dashboard");
             }).catch((error) => {
                 setError(error);
             });

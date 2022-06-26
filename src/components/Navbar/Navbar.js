@@ -94,13 +94,13 @@ const NavUser = styled.img`
     max-width: 40px;
 `;
 
-const Navbar = ({ user, logOut }) => {
+const Navbar = () => {
     const navigate = useNavigate();
+    const auth = getAuth();
+    const user = auth.currentUser;
 
     const signOutUser = () => {
-        const auth = getAuth();
         signOut(auth).then(() => {
-            logOut();
             navigate('login');
           }).catch((error) => {
             console.error(error);
@@ -117,7 +117,7 @@ const Navbar = ({ user, logOut }) => {
                 <li><NavLink to="explore"><MdSearch /><span>Explore</span></NavLink></li>
                 { !user ?
                     <li><NavLink to="login"><MdLogin /><span>Log in</span></NavLink></li> :
-                    <li><NavLink to="settings"><MdSettings /><span>Settings</span></NavLink></li>
+                    <li><NavLink to="dashboard"><MdSettings /><span>Dashboard</span></NavLink></li>
                 }
                 { !user && 
                     <li id="register"><NavLink to="register"><span>Sign up</span></NavLink></li>

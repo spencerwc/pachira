@@ -2,10 +2,12 @@ import React from 'react';
 import { Outlet } from 'react-router';
 import MobileHeader from '../MobileHeader/MobileHeader';
 
-const WithHeader = ({ user }) => {
+const WithHeader = () => {
+
+
   return (
     <>
-      <MobileHeader user={user} />
+      <MobileHeader />
       <Outlet />
     </>
   );

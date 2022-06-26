@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   BrowserRouter,
   Routes,
@@ -11,33 +10,24 @@ import LoginView from '../LoginView/LoginView';
 import CampaignView from "../CampaignView/CampaignView";
 import ExploreView from "../ExploreView/ExploreView";
 import SupportersView from "../SupportersView/SupportersView";
+import DashboardView from '../DashboardView/DashboardView';
 
 const App = () => {
-  const [user, setUser] = useState(null);
-  
-  const logIn = (user) => {
-    setUser(user);
-  }
-
-  const logOut = (user) => {
-    setUser(null);
-  }
-  
   return (
     <BrowserRouter>
-      <Navbar user={user} logIn={logIn} logOut={logOut} />
+      <Navbar />
       <Routes>
-        <Route element={<WithHeader user={user} />}>
+        <Route element={<WithHeader />}>
           <Route path="/" element={<div>Home Route</div>} />
           <Route path="explore" element={<ExploreView />} />
-          <Route path="settings" element={<div>Settings Route</div>} />
+          <Route path="dashboard" element={<DashboardView />} />
           <Route path=":campaignName" element={<CampaignView />} />
           <Route path=":campaignName/supporters" element={<SupportersView />} />
           <Route path=":campaignName/followers" element={<div>Follower Route</div>} />
           <Route path=":campaignName/posts" element={<div>Posts Route</div>} />
         </Route>
-        <Route path="login" element={<LoginView logIn={logIn} />} />
-        <Route path="register" element={<SignUpView logIn={logIn} />} />
+        <Route path="login" element={<LoginView />} />
+        <Route path="register" element={<SignUpView />} />
       </Routes>
     </BrowserRouter>
   );

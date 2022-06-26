@@ -108,7 +108,7 @@ const Login = styled.p`
     }
 `;
 
-const SignUpView = ({ logIn }) => {
+const SignUpView = () => {
     const [displayName, setDisplayName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -152,8 +152,7 @@ const SignUpView = ({ logIn }) => {
                 .then((userCredential) => {
                     const user = userCredential.user;
                     addUserToCampaignCollection(user, displayName);
-                    logIn(user);
-                    navigate("../settings");
+                    navigate("../dashboard");
                 })
                 .catch((error) => {
                     setError(error);
@@ -174,8 +173,7 @@ const SignUpView = ({ logIn }) => {
                 addUserToCampaignCollection(result.user, result.user.uid);
                 
                 // Log in and redirect
-                logIn(result.user);
-                navigate("../settings");
+                navigate("../dashboard");
             }).catch((error) => {
                 setError(error);
             });
