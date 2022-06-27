@@ -113,53 +113,68 @@ const SignUpView = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
-    const checkForExistingCampaign = async (userDisplayName) => {
-        const docRef = doc(db, 'campaigns', userDisplayName);
+    const checkForExistingDoc = async (collection, identifier) => {
+        const docRef = doc(db, collection, identifier);
         const docSnap = await getDoc(docRef);
         return docSnap.exists();
     }
 
-    const addUserToCampaignCollection = async (user, userDisplayName) => {
-        const campaignExists = await checkForExistingCampaign(userDisplayName);
-
-        if (!campaignExists) {
-            setDoc(doc(db, 'campaigns', userDisplayName), {
-                about: "",
+    const addToUserCollection = async (user) => {
+        const userExists = await checkForExistingDoc('users', user.uid);
+        
+        if (!userExists) {
+            setDoc(doc(db, 'users', user.uid), {
                 avatar: user.photoURL,
-                bannerImage: "",
-                created: new Date(),
-                currentGoal: null,
-                donations: [],
-                email: user.email,
-                followers: [],
-                name: "",
-                posts: [],
-                summary: "",
-                supporters: []
+                displayName: displayName.length ? displayName.toLocaleLowerCase() : user.uid,
+                email: user.email
             });
         }
     }
+
+    const addToCampaignCollection = async () => {
+        setDoc(doc(db, 'campaigns', displayName.toLowerCase()), {
+            about: null,
+            bannerImage: null,
+            created: new Date(),
+            currentGoal: null,
+            donations: [],
+            followers: [],
+            name: null,
+            posts: [],
+            summary: null,
+            supporters: []
+        });
+    }
     
     const createUser = async (email, password) => {
-        const campaignExists = await checkForExistingCampaign(displayName);
+        const campaignExists = await checkForExistingDoc('campaigns', displayName);        
 
         if (!campaignExists) {
+            setIsLoading(true);
             const auth = getAuth();
 
             createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
+                .then(async (userCredential) => {
                     const user = userCredential.user;
-                    addUserToCampaignCollection(user, displayName);
-                    navigate("../dashboard");
+
+                    // Add to user collection
+                    await addToUserCollection(user);
+
+                    // Create a new campaign using the user display name
+                    await addToCampaignCollection();
+
+                    navigate('../dashboard');
                 })
                 .catch((error) => {
-                    setError(error);
+                    setError({code: error});
+                    setIsLoading(false);
                 });
         }
         else {
-            setError({code: 'That username already exists'})
+            setError({code: 'That username already exists'});
         }
     }
     
@@ -168,11 +183,13 @@ const SignUpView = () => {
         const provider = new GoogleAuthProvider();
         
         signInWithPopup(auth, provider)
-            .then((result) => {
-                // Add new campaign if it doesnt exist already
-                addUserToCampaignCollection(result.user, result.user.uid);
+            .then(async (result) => {
+                setIsLoading(true);
                 
-                // Log in and redirect
+                // Clear display name for any leftover input
+                setDisplayName(''); 
+
+                await addToUserCollection(result.user);
                 navigate("../dashboard");
             }).catch((error) => {
                 setError(error);
@@ -181,52 +198,67 @@ const SignUpView = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        createUser(email, password);
+            
+        if (!displayName.match(/^[a-z\d]+$/i)) {
+            setError({code: 'Display name only allows A-Z, a-z, 0-9 and _.'});
+        }
+        else {
+            createUser(email, password);
+        }
     }
 
-    return (
-        <SignUpContainer>
-            <Logo src={sprout} alt="pachira" />
-            <SignUpForm onSubmit={handleSubmit}>
-                <SignUpHeading>Sign up. It's free!</SignUpHeading>
-                <input 
-                    type="text" 
-                    placeholder="Display Name" 
-                    value={displayName} 
-                    onChange={(e) => {
-                        setDisplayName(e.target.value);
-                        setError(null);
-                    }}
-                />
-                <input 
-                    type="email" 
-                    placeholder="Email Address" 
-                    value={email} 
-                    onChange={(e) => {
-                        setEmail(e.target.value);
-                        setError(null);
-                    }}
-                />
-                <input 
-                    type="password" 
-                    placeholder="Choose a Password" 
-                    value={password} 
-                    onChange={(e) => {
-                        setPassword(e.target.value);
-                        setError(null);
-                    }}
-                />
-                {error && <ErrorMessage><MdErrorOutline />Error: {error.code}</ErrorMessage>}
-                <p style={{fontSize: '0.8rem'}}>Pachira is a demo application and is only intended to showcase example features. This is not an actual service.</p>
-                <SignUpButton type="submit">Create Account</SignUpButton>
-            </SignUpForm>
-            <OAuthSignUp>
-                <p>Or sign up with</p>
-                <OAuthSignUpButton onClick={signInGoogleUser}><FcGoogle/> Google</OAuthSignUpButton>                
-            </OAuthSignUp>
-            <Login><Link to="../login">Already have an account?  Log in.</Link></Login>
-        </SignUpContainer>
-    );
+    if (!isLoading) {
+        return (
+            <SignUpContainer>
+                <Logo src={sprout} alt="pachira" />
+                <SignUpForm onSubmit={handleSubmit}>
+                    <SignUpHeading>Sign up. It's free!</SignUpHeading>
+                    <input 
+                        type="text" 
+                        placeholder="Display Name"
+                        minLength={3}
+                        maxLength={15}
+                        value={displayName} 
+                        onChange={(e) => {
+                            setDisplayName(e.target.value);
+                            setError(null);
+                        }}
+                    />
+                    <input 
+                        type="email" 
+                        placeholder="Email Address" 
+                        value={email} 
+                        onChange={(e) => {
+                            setEmail(e.target.value);
+                            setError(null);
+                        }}
+                    />
+                    <input 
+                        type="password" 
+                        placeholder="Choose a Password" 
+                        value={password} 
+                        onChange={(e) => {
+                            setPassword(e.target.value);
+                            setError(null);
+                        }}
+                    />
+                    {error && <ErrorMessage><MdErrorOutline />Error: {error.code}</ErrorMessage>}
+                    <p style={{fontSize: '0.8rem'}}>Pachira is a demo application and is only intended to showcase example features. This is not an actual service.</p>
+                    <SignUpButton type="submit">Create Account</SignUpButton>
+                </SignUpForm>
+                <OAuthSignUp>
+                    <p>Or sign up with</p>
+                    <OAuthSignUpButton onClick={signInGoogleUser}><FcGoogle/> Google</OAuthSignUpButton>                
+                </OAuthSignUp>
+                <Login><Link to="../login">Already have an account?  Log in.</Link></Login>
+            </SignUpContainer>
+        );
+    }
+    else {
+        return (
+            <div>Loading</div>
+        );
+    }
 }
 
 export default SignUpView;

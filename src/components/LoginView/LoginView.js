@@ -112,61 +112,56 @@ const LoginView = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
-    const checkForExistingCampaign = async (userDisplayName) => {
-        const docRef = doc(db, 'campaigns', userDisplayName);
+    const checkForExistingDoc = async (collection, identifier) => {
+        const docRef = doc(db, collection, identifier);
         const docSnap = await getDoc(docRef);
         return docSnap.exists();
     }
 
-    const addUserToCampaignCollection = async (user, userDisplayName) => {
-        const campaignExists = await checkForExistingCampaign(userDisplayName);
-
-        if (!campaignExists) {
-            setDoc(doc(db, 'campaigns', userDisplayName), {
-                about: "",
+    const addToUserCollection = async (user) => {
+        const userExists = await checkForExistingDoc('users', user.uid);
+        
+        if (!userExists) {
+            setDoc(doc(db, 'users', user.uid), {
                 avatar: user.photoURL,
-                bannerImage: "",
-                created: new Date(),
-                currentGoal: null,
-                donations: [],
-                email: user.email,
-                followers: [],
-                name: "",
-                posts: [],
-                summary: "",
-                supporters: []
+                displayName: user.uid,
+                email: user.email
             });
         }
     }
 
     const signInUser = () => {
         const auth = getAuth();
+        setIsLoading(true);
+        
         signInWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
+
             // TODO: Revisit
             // const user = userCredential.user;
             navigate('../dashboard');
           })
           .catch((error) => {
-            setError(error);
+            setError({code: error});
+            setIsLoading(false);
           });
     }
 
     const signInGoogleUser = async () => {
+        setIsLoading(true);
         const auth = getAuth();
         const provider = new GoogleAuthProvider();
         
         signInWithPopup(auth, provider)
-            .then((result) => {
-                // Add new campaign if it doesnt exist already
-                addUserToCampaignCollection(result.user, result.user.uid);
-                
-                // Log in and redirect
+            .then(async (result) => {
+                await addToUserCollection(result.user);
                 navigate("../dashboard");
             }).catch((error) => {
-                setError(error);
+                setError({code: error});
+                setIsLoading(false);
             });
     }
 
@@ -175,40 +170,49 @@ const LoginView = () => {
         signInUser();
     }
 
-    return (
-        <LoginContainer>
-            <Logo src={sprout} alt="pachira" />
-            <LoginForm onSubmit={handleSubmit}>
-                <LoginHeading>Log In</LoginHeading>
-                <input 
-                    type="email" 
-                    placeholder="Email Address" 
-                    value={email} 
-                    onChange={(e) => {
-                        setEmail(e.target.value);
-                        setError(null);
-                    }}
-                />
-                <input 
-                    type="password" 
-                    placeholder="Choose a Password" 
-                    value={password} 
-                    onChange={(e) =>{
-                        setPassword(e.target.value);
-                        setError(null);
-                    }}
-                />
-                {error && <ErrorMessage><MdErrorOutline />{error.code}</ErrorMessage>}
-                <p style={{fontSize: '0.8rem'}}>Pachira is a demo application and is only intended to showcase example features. This is not an actual service.</p>
-                <LoginButton type="submit">Log In</LoginButton>
-            </LoginForm>
-            <OAuthLogin>
-                <p>Or log in with</p>
-                <OAuthLoginButton onClick={signInGoogleUser}><FcGoogle/> Google</OAuthLoginButton>                
-            </OAuthLogin>
-            <SignUp><Link to="../register">New to Pachira?  Sign up.</Link></SignUp>
-        </LoginContainer>
-    );
+    if (!isLoading) {
+        return (
+            <LoginContainer>
+                <Logo src={sprout} alt="pachira" />
+                <LoginForm onSubmit={handleSubmit}>
+                    <LoginHeading>Log In</LoginHeading>
+                    <input 
+                        type="email" 
+                        placeholder="Email Address" 
+                        value={email} 
+                        onChange={(e) => {
+                            setEmail(e.target.value);
+                            setError(null);
+                        }}
+                    />
+                    <input 
+                        type="password" 
+                        placeholder="Password" 
+                        value={password} 
+                        onChange={(e) =>{
+                            setPassword(e.target.value);
+                            setError(null);
+                        }}
+                    />
+                    {error && <ErrorMessage><MdErrorOutline />{error.code}</ErrorMessage>}
+                    <p style={{fontSize: '0.8rem'}}>
+                        Pachira is a demo application and is only intended to showcase example features. This is not an actual service.
+                    </p>
+                    <LoginButton type="submit">Log In</LoginButton>
+                </LoginForm>
+                <OAuthLogin>
+                    <p>Or log in with</p>
+                    <OAuthLoginButton onClick={signInGoogleUser}><FcGoogle/> Google</OAuthLoginButton>                
+                </OAuthLogin>
+                <SignUp><Link to="../register">New to Pachira?  Sign up.</Link></SignUp>
+            </LoginContainer>
+        );
+    }
+    else {
+        return (
+            <div>Loading</div>
+        );
+    }
 }
 
 export default LoginView;
