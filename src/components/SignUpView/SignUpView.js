@@ -5,18 +5,14 @@ import { useNavigate, Link } from "react-router-dom";
 import { MdErrorOutline } from 'react-icons/md';
 import { FcGoogle } from 'react-icons/fc';
 import styled from "styled-components";
-import sprout from './sprout.png';
+import logo from '../../images/logo.png';
 import { db } from '../../index';
 
 const SignUpContainer = styled.section`
     margin: 0 auto;
     padding: 1rem;
     text-align: center;
-    padding-top: 2rem;
-
-    @media (min-width: 768px) {
-        max-width: 400px;
-    }
+    max-width: 400px;
 `;
 
 const Logo = styled.img`
@@ -26,71 +22,76 @@ const Logo = styled.img`
 const SignUpForm = styled.form`
     display: flex;
     flex-direction: column;
-    background-color: rgba(0, 0, 0, 0.05);
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
     justify-content: space-between;
-    border-radius: 1rem;
+
     > input {
         margin: 0.5rem 0;
         border-radius: 0.5rem;
         padding: 0.5rem;
-        border: none;
-    
+        border: 2px solid var(--border-color);
         :focus {
             outline: none;
+            border-color: var(--border-hover);
         }
     }
 `;
 
 const SignUpHeading = styled.h1`
-    margin: 0 auto;
-    margin-bottom: 0.5rem;
+    margin: 2rem auto;
 `;
 
 const SignUpButton = styled.button`
     margin-top: 0.5rem;
     border: none;
-    border-radius: 0.7rem;
+    border-radius: 2rem;
     padding: 0.5rem;
-    background-color: #fff;
+    background-color: var(--secondary-color);
+    color: #fff;
+    font-weight: bold;
+    letter-spacing: 0.05rem;
     cursor: pointer;
+    min-height: 45px;
     :hover {
-        background-color: rgba(0, 0, 0, 0.1);
+        background-color: var(--secondary-hover);
     }
 `;
 
 const OAuthSignUp = styled.section`
     display: flex;
     flex-direction: column;
-    padding: 1rem;
 `;
 
 const OAuthSignUpButton = styled.button`
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-top: 0.5rem;
-    border: 2px solid rgba(0, 0, 0, 0.1);
-    border-radius: 0.7rem;
+    border: 2px solid var(--border-color);
+    border-radius: 2rem;
     padding: 0.5rem;
-    background-color: #fff;
+    background-color: transparent;
+    font-weight: bold;
+    min-height: 45px;
     cursor: pointer;
     :hover {
-        border-color: rgba(0, 0, 0, 0.3);
+        border-color: var(--border-hover);
+    }
+    > svg {
+        font-size: 1.1rem;
+        margin-right: 0.3rem;
     }
 `;
 
 const ErrorMessage = styled.p`
-    color: red;
+    color: var(--secondary-color);
     margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     animation: fadeIn 1s;
-
     > svg {
         margin-right: 0.3rem;
     }
-
     @keyframes fadeIn {
         0% { opacity: 0; }
         100% { opacity: 1; }
@@ -98,12 +99,16 @@ const ErrorMessage = styled.p`
 `;
 
 const Login = styled.p`
+    margin-top: 4rem;
     > a {
-        color: inherit;
+        color: var(--font-color);
         text-decoration: none;
 
         :visited {
-            color: inherit;
+            color: var(--font-color);
+        }
+        :hover {
+            color: var(--secondary-hover);
         }
     }
 `;
@@ -212,7 +217,7 @@ const SignUpView = () => {
     if (!isLoading) {
         return (
             <SignUpContainer>
-                <Logo src={sprout} alt="pachira" />
+                <Logo src={logo} alt="pachira" />
                 <SignUpForm onSubmit={handleSubmit}>
                     <SignUpHeading>Sign up. It's free!</SignUpHeading>
                     <input 

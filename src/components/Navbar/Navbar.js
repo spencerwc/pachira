@@ -1,25 +1,26 @@
 import { Link, NavLink } from "react-router-dom";
 import { MdHome, MdSearch, MdSettings, MdLogin } from 'react-icons/md';
-import { FaUserCircle } from 'react-icons/fa';
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import sprout from './sprout.png';
+import logo from '../../images/logo.png';
 
 const Nav = styled.nav`
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: #fff;
     position: fixed; 
     bottom: 0;
-    height: 60px;
+    height: 50px;
     padding: 0.5rem;
-    width: 100vw;
+    width: calc(100vw - 1rem);
     display: flex;
+    box-shadow: 0 -3px 10px rgba(0,0,0,0.05), 0 -3px 10px rgba(0,0,0,0.05);
 
     @media(min-width: 768px) {
         position: relative;
         margin-bottom: 1rem;
         width: auto;
-        border-radius: 0 0 3rem 3rem;
+        font-weight: bold;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.05), 0 3px 10px rgba(0,0,0,0.05);
     }
 `;
 
@@ -28,12 +29,10 @@ const NavLogo = styled.div`
 
     @media(min-width: 768px) {
         display: flex;
-        margin-left: 2rem;
         flex-grow: 1;
 
         > a {
             display: flex;
-            padding: 0.7rem;
         }
     }
 `;
@@ -41,25 +40,34 @@ const NavLogo = styled.div`
 const NavLinks = styled.ul`
     list-style: none;
     padding: 0;
+    margin: 0;
     display: flex;
     flex-grow: 1;
     justify-content: space-around;
     align-items: center;
 
     @media (min-width: 768px) {
-        margin-right: 2rem;
         justify-content: space-between;
         flex-grow: 0.5;
     }
+`;
 
-    > li > a {
+const NavItem = styled.li`
+    > a {
         display: flex;
         align-items: center;
+        justify-content: center;
         text-decoration: none;
-        color: inherit;
+        color: var(--font-color);
+        width: 60px;
+        height: 60px;
 
         :visited {
-            color: inherit;
+            color: var(--font-color);
+        }
+
+        :hover {
+            color: var(--secondary-hover);
         }
         
         > svg {
@@ -78,20 +86,35 @@ const NavLinks = styled.ul`
                 font-size: 1.1rem;
             }
         }
-    }
+`;
 
-    > #register {
-        display: none;
+const RegisterLink = styled.li`
+    display: none;
 
-        @media(min-width: 768px) {
-            display: block;
+    @media (min-width: 768px) {
+        display: inline-block;
+        background-color: var(--secondary-color);
+        padding: 0.5rem 1rem;
+        border-radius: 2rem;
+
+        :hover {
+            background-color: var(--secondary-hover);
+        }
+
+        > a  {
+            color: #fff;
+            text-decoration: none;
         }
     }
 `;
 
-const NavUser = styled.img`
-    border-radius: 100%;
-    max-width: 40px;
+const NavUser = styled.li`
+    display: flex;
+    align-items: center;
+    > img {
+        border-radius: 100%;
+        max-width: 50px;
+    }
 `;
 
 const Navbar = () => {
@@ -110,34 +133,28 @@ const Navbar = () => {
     return (
         <Nav>
             <NavLogo>
-                <Link to="/"><img src={sprout} alt="" /></Link>
+                <Link to="/"><img src={logo} alt="" /></Link>
             </NavLogo>
             <NavLinks>
-                <li><NavLink to="/"><MdHome /><span>Home</span></NavLink></li>
-                <li><NavLink to="explore"><MdSearch /><span>Explore</span></NavLink></li>
+                <NavItem><NavLink to="/"><MdHome /><span>Home</span></NavLink></NavItem>
+                <NavItem><NavLink to="explore"><MdSearch /><span>Explore</span></NavLink></NavItem>
                 { !user ?
-                    <li><NavLink to="login"><MdLogin /><span>Log in</span></NavLink></li> :
-                    <li><NavLink to="dashboard"><MdSettings /><span>Dashboard</span></NavLink></li>
+                    <NavItem><NavLink to="login"><MdLogin /><span>Log in</span></NavLink></NavItem> :
+                    <NavItem><NavLink to="dashboard"><MdSettings /><span>Dashboard</span></NavLink></NavItem>
                 }
                 { !user && 
-                    <li id="register"><NavLink to="register"><span>Sign up</span></NavLink></li>
+                    <RegisterLink><NavLink to="register">Sign up</NavLink></RegisterLink>
                 }
                 { user && 
-                <li>
-                    { user.photoURL ? 
-                        <NavUser 
+                    <NavUser>
+                        <img
                             src={user.photoURL} 
                             referrerPolicy="no-referrer" 
                             alt={user.displayName}
                             onClick={signOutUser}
-                        /> :
-                        <FaUserCircle 
-                            style={{fontSize: '1.6rem'}}
-                            onClick={signOutUser}
-                        />
-                    }
-                </li>
-            }
+                        /> 
+                    </NavUser>
+                }
             </NavLinks>
             
         </Nav>

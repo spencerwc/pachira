@@ -1,37 +1,54 @@
 import { Link } from "react-router-dom";
 import { getAuth } from "firebase/auth";
 import styled from "styled-components";
-import sprout from './sprout.png';
+import logo from '../../images/logo.png';
 
 const Header = styled.div`
-    position: relative;
-    height: 60px;
+    background-color: #fff;
+    position: relative; 
+    height: 50px;
     padding: 0.5rem;
+    width: calc(100vw - 1rem);
     display: flex;
     justify-content: center;
-    margin-bottom: 1rem;
-    box-shadow: 0 2px 2px 0px rgba(0, 0, 0, 0.1);
-
-    > img {
-        padding: 0.5rem;
-    }
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05), 0 3px 10px rgba(0,0,0,0.05);
 
     @media(min-width: 768px) {
         display: none;
     }
 `;
 
-const SignUp = styled.div`
+const Logo = styled.div`
     display: flex;
-    align-items: center;
-    margin-right: 1rem;
-    margin-left: auto;
+    flex-grow: 1;
 
     > a {
+        display: flex;
+    }
+`;
+
+const LinkContainer = styled.div`
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+`;
+
+const RegisterLink = styled.div`
+    display: flex;
+    align-items: center;
+    background-color: var(--secondary-color);
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    :hover {
+        background-color: var(--secondary-hover);
+    }
+
+    > a {
+        color: #fff;
         text-decoration: none;
-        color: inherit;
+        
         :visited {
-            color: inherit;
+            color: #fff;
         }
     }
 `;
@@ -43,14 +60,18 @@ const MobileHeader = () => {
 
     return (
         <Header>
-            <img src={sprout} alt="Pachira" />
-            
-            { !user && (
-                <SignUp>
-                    <Link to="../register">Sign up</Link>
-                </SignUp>)
-            }
+            <Logo>
+                <Link to="/">
+                    <img src={logo} alt="Pachira" />
+                </Link>
+            </Logo>
 
+            { !user && 
+            <LinkContainer>
+                <RegisterLink>
+                    <Link to="../register">Sign up</Link>
+                </RegisterLink>
+            </LinkContainer> }
         </Header>
     );
 }
