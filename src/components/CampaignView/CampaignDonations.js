@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
 const RecentDonations = styled.section`
-    background-color: rgba(0, 0, 0, 0.05);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    border: 2px solid var(--border-color);
     border-radius: 1rem;
     padding: 1rem 1rem 0.7rem 1rem;
 `;
@@ -16,7 +16,7 @@ const Donations = styled.ol`
 `;
 
 const Donation = styled.li`
-    border-bottom: 1px solid;
+    border-bottom: 2px solid var(--border-color);
     padding: 0.5rem 0;
     display: flex;
     
@@ -39,15 +39,12 @@ const Avatar = styled.img`
 
 const DonationDetails = styled.div`
     width: 100%;
-    display: flex;
-    flex-direction: column;
 `;
 
 const DonationHeader = styled.div`
     display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr;
-    flex-grow: 1;
-    padding-top: 0.2rem;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
 `;
 
 const DonationMessage = styled.p`
@@ -67,8 +64,8 @@ const CampaignDonations = ({donations}) => {
                         <DonationDetails>
                             <DonationHeader>
                                 <strong>{donation.id}</strong>
-                                <strong style={{textAlign: 'right'}}>${donation.donationAmount.toLocaleString()}</strong>
-                                <span style={{textAlign: 'right'}}>{new Date(donation.date.seconds * 1000).toLocaleDateString()}</span>
+                                <strong style={{textAlign: 'right'}}>$ {donation.donationAmount.toLocaleString()}</strong>
+                                <span style={{fontSize: '0.9rem'}}>{new Date(donation.date.seconds * 1000).toLocaleDateString()}</span>
                             </DonationHeader>
                         <DonationMessage>{donation.donationMessage}</DonationMessage>
                         </DonationDetails>

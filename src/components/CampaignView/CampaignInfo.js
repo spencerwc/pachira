@@ -1,44 +1,103 @@
 import styled from "styled-components";
 
 const Info = styled.section`
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 0.5rem;
-    margin: 0.5rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 1rem;
+`;
 
-    @media(min-width: 768px) {
-        grid-template-columns: 1fr 1fr 1fr;
+const Avatar = styled.div`
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    margin: -3rem 1rem 0 0;
+    background-color: #fff;
+
+    @media (min-width: 768px) {
+        width: 120px;
+        height: 120px;
+        margin-left: 0.5rem;
+        margin-top: -4rem;
     }
 `;
 
-const Detail = styled.div`
-    height: 100px;
-    background-color: rgba(0, 0, 0, 0.05);
-    padding: 1rem;
+const Details = styled.div`
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    border-radius: 1rem;
+    align-items: center;
 `;
 
-const Value = styled.h3`
-    font-size: 1.5rem;
-    margin: 0;
+const Detail = styled.span`
+    :first-child {
+        margin-right: 1rem;
+    }
+`;
+
+const Buttons = styled.div`
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-top: 2rem;
+
+    @media (min-width: 768px) {
+        margin-left: auto;
+        margin-top: 0;
+        width: auto;
+    }
+`;
+
+const SupportButton = styled.button`
+    border: none;
+    border-radius: 2rem;
+    padding: 0 1rem;
+    color: #fff;
+    background-color: var(--secondary-color);
+    font-weight: bold;
+    min-height: 40px;
+    cursor: pointer;
+    flex-grow: 1;
+    margin-right: 0.5rem;
+    :hover {
+        background-color: var(--secondary-hover);
+    }
+
+    @media (min-width: 768px) {
+        width: auto;
+    }
+`;
+
+const FollowButton = styled.button`
+    border: 2px solid var(--border-color);
+    border-radius: 2rem;
+    padding: 0 1rem;
+    background-color: transparent;
+    font-weight: bold;
+    min-height: 40px;
+    cursor: pointer;
+    :hover {
+        border-color: var(--border-hover);
+    }
 `;
 
 const CampaignInfo = ({supporters, followers, posts}) => {
     const supportersLength = Object.keys(supporters).length;
     return (
         <Info>
-            <Detail>
-                <Value>{supportersLength}</Value> supporter{supportersLength !== 1 && 's'}
-            </Detail>
-            <Detail>
-                <Value>{followers.length}</Value> follower{followers.length !== 1 && 's'}
-            </Detail>
-            <Detail>
-                <Value>{posts.length}</Value> post{posts.length !== 1 && 's'}
-            </Detail>
+            <Avatar>
+                <img src="" alt="" />
+            </Avatar>
+            <Details>
+                <Detail>
+                    {supportersLength} supporter{supportersLength !== 1 && 's'}
+                </Detail>
+                <Detail>
+                    {followers.length} follower{followers.length !== 1 && 's'}
+                </Detail>
+            </Details>
+            <Buttons>
+                {/* TODO: Add functionality later */}
+                <SupportButton>Support</SupportButton>
+                <FollowButton>Follow</FollowButton>
+            </Buttons>
         </Info>
     )
 }

@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
 const About = styled.section`
-    background-color: rgba(0, 0, 0, 0.05);
     padding: 1rem;
     border-radius: 1rem;
+    border: 2px solid var(--border-color);
 
     > p {
         margin: 0 auto;
@@ -11,13 +11,11 @@ const About = styled.section`
 `;
 
 const CampaignAbout = ({about}) => {
-    if (about) {
-        return (
-            <About>
-                {about}
-            </About>
-        );
-    }
+    return (
+        <About>
+            {about ? about : `We don't know much about them yet, but we're sure they are great!`}
+        </About>
+    );
 }
 
 export default CampaignAbout;

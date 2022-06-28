@@ -6,12 +6,13 @@ import styled from "styled-components";
 import { db } from '../../index';
 
 const Donate = styled.form`
-    background-color: rgba(0, 0, 0, 0.05);
     padding: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     border-radius: 1rem;
+    border: 2px solid var(--border-color);
+
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
         -webkit-appearance: none;
@@ -22,10 +23,11 @@ const Donate = styled.form`
 const DonateAmount = styled.input`
     border-radius: 0.5rem;
     padding: 0.5rem;
-    border: none;
+    border: 2px solid var(--border-color);
 
     :focus {
         outline: none;
+        border-color: var(--border-hover);
     }
 `;
 
@@ -34,24 +36,37 @@ const DonateMessage = styled.textarea`
     flex-grow: 1;
     margin: 0.5rem 0;
     min-height: 100px;
-    border: none;
+    border: 2px solid var(--border-color);
     border-radius: 0.5rem;
     padding: 0.5rem;
 
     :focus {
         outline: none;
+        border-color: var(--border-hover);
     }
 `;
 
 const DonateButton = styled.button`
     border: none;
-    border-radius: 0.7rem;
+    border-radius: 2rem;
     padding: 0.5rem;
-    background-color: #fff;
+    color: #fff;
+    background-color: var(--secondary-color);
     cursor: pointer;
+    font-weight: bold;
+    min-height: 40px;
+    margin-top: 1rem;
     :hover {
-        background-color: rgba(0, 0, 0, 0.1);
+        background-color: var(--secondary-hover);
     }
+`;
+
+const CharLimit = styled.p`
+    margin: 0;
+    margin-top: -2rem;
+    margin-right: 0.5rem;
+    font-size: 0.9rem;
+    text-align: right;
 `;
 
 const ErrorMessage = styled.p`
@@ -74,11 +89,12 @@ const ErrorMessage = styled.p`
 `;
 
 const CampaignSupport = ({ handleDonation }) => {
-    const [donateAmount, setDonateAmount] = useState(5);
+    const [donateAmount, setDonateAmount] = useState();
     const [donateMessage, setDonateMessage] = useState('');
     const [error, setError] = useState(null);
     const auth = getAuth();
     const user = auth.currentUser;
+    const MESSAGE_LIMIT = 90;
 
     const getCurrentUserDetails = async () => {
         const docRef = doc(db, 'users', user.uid);
@@ -131,7 +147,7 @@ const CampaignSupport = ({ handleDonation }) => {
                 type="number" 
                 min={1}
                 max={10000}
-                placeholder={5} 
+                placeholder={'$5'} 
                 value={donateAmount} 
                 onChange={handleAmountChange}
                 required
@@ -141,9 +157,12 @@ const CampaignSupport = ({ handleDonation }) => {
                 value={donateMessage}
                 onChange={handleMessageChange}
                 minLength={1}
-                maxLength={100}
+                maxLength={MESSAGE_LIMIT}
             />
-            <DonateButton>Donate</DonateButton>
+            <CharLimit>
+                {donateMessage.length} / {MESSAGE_LIMIT}
+            </CharLimit>
+            <DonateButton>Support</DonateButton>
         </Donate>
     );
 }

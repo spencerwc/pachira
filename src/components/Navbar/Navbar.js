@@ -10,14 +10,13 @@ const Nav = styled.nav`
     position: fixed; 
     bottom: 0;
     height: 50px;
-    padding: 0.5rem;
-    width: calc(100vw - 1rem);
+    padding: 0.5rem 0;
+    width: 100%;
     display: flex;
     box-shadow: 0 -3px 10px rgba(0,0,0,0.05), 0 -3px 10px rgba(0,0,0,0.05);
 
     @media(min-width: 768px) {
         position: relative;
-        margin-bottom: 1rem;
         width: auto;
         font-weight: bold;
         box-shadow: 0 3px 10px rgba(0,0,0,0.05), 0 3px 10px rgba(0,0,0,0.05);
@@ -30,6 +29,7 @@ const NavLogo = styled.div`
     @media(min-width: 768px) {
         display: flex;
         flex-grow: 1;
+        margin-left: 1rem;
 
         > a {
             display: flex;
@@ -96,6 +96,7 @@ const RegisterLink = styled.li`
         background-color: var(--secondary-color);
         padding: 0.5rem 1rem;
         border-radius: 2rem;
+        margin-right: 1rem;
 
         :hover {
             background-color: var(--secondary-hover);
@@ -111,6 +112,8 @@ const RegisterLink = styled.li`
 const NavUser = styled.li`
     display: flex;
     align-items: center;
+    margin-right: 1rem;
+
     > img {
         border-radius: 100%;
         max-width: 50px;

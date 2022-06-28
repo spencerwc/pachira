@@ -15,22 +15,26 @@ const CampaignContainer = styled.section`
     max-width: 1000px;
     margin: 0 auto;
     margin-bottom: 80px;
-    padding: 0.5rem;
-`;
-
-const SectionName = styled.h2`
-    font-size: 1.2rem;
-    margin: 0.7rem 0;
 `;
 
 const CampaignSections = styled.section`
     display: grid;
     grid-template-columns: 1fr;
-    grid-gap: 0.5rem;
+    grid-gap: 1rem;
+    padding: 0 1rem;
         
     @media(min-width: 768px) {
         grid-template-columns: 1fr 1fr;
     }
+`;
+
+const SectionColumn = styled.div`
+
+`;
+
+const SectionName = styled.h2`
+    font-size: 1.2rem;
+    margin: 0.7rem 0;
 `;
 
 const CampaignView = () => {
@@ -101,8 +105,6 @@ const CampaignView = () => {
                     name={campaign.name} 
                     summary={campaign.summary} 
                 />
-    
-                <SectionName>Details</SectionName>
                 <CampaignInfo 
                     supporters={campaign.supporters}
                     followers={campaign.followers}
@@ -110,33 +112,38 @@ const CampaignView = () => {
                 />
 
                 <CampaignSections>
-                    {campaign.about && (
+                    <SectionColumn>
                         <div>
                             <SectionName>About</SectionName>
                             <CampaignAbout about={campaign.about} />
                         </div>
-                    )}
-                    <div>
-                        <SectionName>Make a Donation</SectionName>
-                        <CampaignSupport handleDonation={handleDonation} />
-                    </div>
-                    {campaign.goal && (
+
                         <div>
                             <SectionName>Support</SectionName>
-                            <CampaignGoal goal={campaign.goal} />
+                            <CampaignSupport handleDonation={handleDonation} />
                         </div>
-                    )}
-                    <div>
-                        <SectionName>Top Supporters</SectionName> 
-                        <CampaignTopSupport supporters={campaign.supporters} />
-                    </div>
+                    </SectionColumn>
 
-                    {campaign.donations && (
+                    <SectionColumn>
+                        {campaign.goal && 
+                            <div>
+                                <SectionName>Goal</SectionName>
+                                <CampaignGoal goal={campaign.goal} />
+                            </div>
+                        }
+                        
                         <div>
-                            <SectionName>Recent Donations</SectionName>
-                            <CampaignDonations donations={campaign.donations} />
+                            <SectionName>Top Supporters</SectionName> 
+                            <CampaignTopSupport supporters={campaign.supporters} />
                         </div>
-                    )}
+                    
+                        {campaign.donations.length > 0 && (
+                            <div>
+                                <SectionName>Recent Donations</SectionName>
+                                <CampaignDonations donations={campaign.donations} />
+                            </div>
+                        )}
+                    </SectionColumn>
                 </CampaignSections>
             </CampaignContainer>
         );

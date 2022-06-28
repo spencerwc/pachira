@@ -12,13 +12,11 @@ describe('campaign details', () => {
             <CampaignInfo 
                 supporters={testCampaign.supporters} 
                 followers={testCampaign.followers}
-                posts={testCampaign.posts}
             />
         );
         
         expect(screen.getByText(`${supportersLength}`)).toBeInTheDocument();
         expect(screen.getByText(`${testCampaign.followers.length.toLocaleString()}`)).toBeInTheDocument();
-        expect(screen.getByText(`${testCampaign.posts.length.toLocaleString()}`)).toBeInTheDocument();
     });
     
     it('renders proper descriptors when count is exactly 1', () => {
@@ -26,13 +24,11 @@ describe('campaign details', () => {
             <CampaignInfo 
                 supporters={[""]} 
                 followers={[""]}
-                posts={[""]}
             />
         );
 
         expect(screen.getByText('supporter')).toBeInTheDocument();
         expect(screen.getByText('follower')).toBeInTheDocument();
-        expect(screen.getByText('post')).toBeInTheDocument();
     });
 
     it('renders proper descriptors when count is > 1', () => {
@@ -40,12 +36,10 @@ describe('campaign details', () => {
             <CampaignInfo 
                 supporters={["", ""]} 
                 followers={["", ""]}
-                posts={["", "", ""]}
             />
         );
 
         expect(screen.getByText('supporters')).toBeInTheDocument();
         expect(screen.getByText('followers')).toBeInTheDocument();
-        expect(screen.getByText('posts')).toBeInTheDocument();
     })
 })

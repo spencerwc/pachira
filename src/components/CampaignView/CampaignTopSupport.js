@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const TopSupport = styled.section`
-    background-color: rgba(0, 0, 0, 0.05);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    border: 2px solid var(--border-color);
     border-radius: 1rem;
     padding: 1rem;
 `;
@@ -18,7 +18,7 @@ const Supporters = styled.ul`
 `;
 
 const Supporter = styled.li`
-    border-bottom: 1px solid;
+    border-bottom: 2px solid var(--border-color);
     padding: 0.5rem 0;
     
     :first-of-type {
@@ -32,10 +32,10 @@ const Supporter = styled.li`
     > a {
         display: flex;
         text-decoration: none;
-        color: inherit;
+        color: var(--font-color);
 
         :visited {
-            color: inherit;
+            color: var(--font-color);
         }
     }
 `;
@@ -57,24 +57,31 @@ const SupporterDetails = styled.div`
 
 const ViewAllButton = styled.button`
     border: none;
-    border-radius: 0.7rem;
+    border-radius: 2rem;
     padding: 0.5rem;
-    background-color: #fff;
+    color: #fff;
+    background-color: var(--secondary-color);
     cursor: pointer;
-    :hover {
-        background-color: rgba(0, 0, 0, 0.1);
-    }
+    font-weight: bold;
+    min-height: 40px;
     margin-top: 0.5rem;
+    :hover {
+        background-color: var(--secondary-hover);
+    }
 `;
 
 const DonateButton = styled.button`
     border: none;
-    border-radius: 0.7rem;
+    border-radius: 2rem;
     padding: 0.5rem;
-    background-color: #fff;
+    color: #fff;
+    background-color: var(--secondary-color);
     cursor: pointer;
+    font-weight: bold;
+    min-height: 40px;
+    margin-top: 0.5rem;
     :hover {
-        background-color: rgba(0, 0, 0, 0.1);
+        background-color: var(--secondary-hover);
     }
 `;
 
@@ -94,7 +101,7 @@ const CampaignTopSupport = ({supporters}) => {
                                 <Avatar src={supporter.avatar} alt="" />
                                 <SupporterDetails>
                                     <strong>{supporter.id}</strong>
-                                    <strong>${supporter.donationTotal.toLocaleString()}</strong>
+                                    <strong>$ {supporter.donationTotal.toLocaleString()}</strong>
                                 </SupporterDetails>
                             </Link>
                         </Supporter>
@@ -107,8 +114,9 @@ const CampaignTopSupport = ({supporters}) => {
     else {
         return (
             <TopSupport>
-                <p style={{marginTop: 0}}>You could be the first!</p>
-                <DonateButton>Donate</DonateButton>
+                {/* TODO: Add functionality */}
+                <p style={{marginTop: 0, marginBottom: '0.5rem'}}>You could be the first!</p>
+                <DonateButton>Support</DonateButton>
             </TopSupport>
         );
     }

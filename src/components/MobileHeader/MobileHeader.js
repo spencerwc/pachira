@@ -7,8 +7,8 @@ const Header = styled.div`
     background-color: #fff;
     position: relative; 
     height: 50px;
-    padding: 0.5rem;
-    width: calc(100vw - 1rem);
+    padding: 0.5rem 0;
+    width: 100%;
     display: flex;
     justify-content: center;
     box-shadow: 0 3px 10px rgba(0,0,0,0.05), 0 3px 10px rgba(0,0,0,0.05);
@@ -18,19 +18,11 @@ const Header = styled.div`
     }
 `;
 
-const Logo = styled.div`
-    display: flex;
-    flex-grow: 1;
-
-    > a {
-        display: flex;
-    }
-`;
-
 const LinkContainer = styled.div`
     display: flex;
     align-items: center;
     margin-left: auto;
+    margin-right: 0.5rem;
 `;
 
 const RegisterLink = styled.div`
@@ -53,18 +45,15 @@ const RegisterLink = styled.div`
     }
 `;
 
-
 const MobileHeader = () => {
     const auth = getAuth();
     const user = auth.currentUser;
 
     return (
         <Header>
-            <Logo>
-                <Link to="/">
-                    <img src={logo} alt="Pachira" />
-                </Link>
-            </Logo>
+            <Link to="/">
+                <img src={logo} alt="Pachira" style={{maxWidth: '50px', marginLeft: '0.5rem'}}/>
+            </Link>
 
             { !user && 
             <LinkContainer>
