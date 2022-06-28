@@ -114,6 +114,8 @@ const LoginView = () => {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+    const auth = getAuth();
+
 
     const checkForExistingDoc = async (collection, identifier) => {
         const docRef = doc(db, collection, identifier);
@@ -128,35 +130,37 @@ const LoginView = () => {
             setDoc(doc(db, 'users', user.uid), {
                 avatar: user.photoURL,
                 displayName: user.uid,
-                email: user.email
+                email: user.email,
+                isActive: false,
             });
         }
     }
 
     const signInUser = () => {
-        const auth = getAuth();
-        setIsLoading(true);
-        
-        signInWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-
-            // TODO: Revisit
-            // const user = userCredential.user;
-            navigate('../dashboard');
-          })
-          .catch((error) => {
-            setError({code: error});
-            setIsLoading(false);
-          });
+        if (email.length) {
+            setIsLoading(true);
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                // TODO: Revisit
+                // const user = userCredential.user;
+                    navigate('../dashboard');
+                })
+                .catch((error) => {
+                    setError({code: error});
+                    setIsLoading(false);
+                });
+        }
+        else {
+            setError({code: 'Invalid username or password'});
+        }
     }
 
     const signInGoogleUser = async () => {
-        setIsLoading(true);
-        const auth = getAuth();
         const provider = new GoogleAuthProvider();
         
         signInWithPopup(auth, provider)
             .then(async (result) => {
+                setIsLoading(true);
                 await addToUserCollection(result.user);
                 navigate("../dashboard");
             }).catch((error) => {
@@ -184,6 +188,7 @@ const LoginView = () => {
                             setEmail(e.target.value);
                             setError(null);
                         }}
+                        required
                     />
                     <input 
                         type="password" 
@@ -193,6 +198,7 @@ const LoginView = () => {
                             setPassword(e.target.value);
                             setError(null);
                         }}
+                        required
                     />
                     {error && <ErrorMessage><MdErrorOutline />{error.code}</ErrorMessage>}
                     <p style={{fontSize: '0.8rem'}}>

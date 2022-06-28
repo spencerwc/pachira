@@ -126,16 +126,17 @@ const SignUpView = () => {
         const userExists = await checkForExistingDoc('users', user.uid);
         
         if (!userExists) {
-            setDoc(doc(db, 'users', user.uid), {
+            await setDoc(doc(db, 'users', user.uid), {
                 avatar: user.photoURL,
                 displayName: displayName.length ? displayName.toLocaleLowerCase() : user.uid,
-                email: user.email
+                email: user.email,
+                isActive: false
             });
         }
     }
 
     const addToCampaignCollection = async () => {
-        setDoc(doc(db, 'campaigns', displayName.toLowerCase()), {
+        await setDoc(doc(db, 'campaigns', displayName.toLowerCase()), {
             about: null,
             bannerImage: null,
             created: new Date(),
@@ -161,7 +162,7 @@ const SignUpView = () => {
                     const user = userCredential.user;
 
                     // Add to user collection
-                    await addToUserCollection(user);
+                    await addToUserCollection({...user, isActive: true});
 
                     // Create a new campaign using the user display name
                     await addToCampaignCollection();
@@ -190,6 +191,7 @@ const SignUpView = () => {
                 setDisplayName(''); 
 
                 await addToUserCollection(result.user);
+                
                 navigate("../dashboard");
             }).catch((error) => {
                 setError(error);
@@ -223,6 +225,7 @@ const SignUpView = () => {
                             setDisplayName(e.target.value);
                             setError(null);
                         }}
+                        required
                     />
                     <input 
                         type="email" 
@@ -232,6 +235,7 @@ const SignUpView = () => {
                             setEmail(e.target.value);
                             setError(null);
                         }}
+                        required
                     />
                     <input 
                         type="password" 
@@ -241,6 +245,7 @@ const SignUpView = () => {
                             setPassword(e.target.value);
                             setError(null);
                         }}
+                        required
                     />
                     {error && <ErrorMessage><MdErrorOutline />Error: {error.code}</ErrorMessage>}
                     <p style={{fontSize: '0.8rem'}}>Pachira is a demo application and is only intended to showcase example features. This is not an actual service.</p>

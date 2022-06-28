@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { doc, getDoc } from "firebase/firestore"; 
+import { doc, getDoc, updateDoc } from "firebase/firestore"; 
 import styled from "styled-components";
 import CampaignBanner from "./CampaignBanner";
 import CampaignInfo from "./CampaignInfo";
@@ -39,10 +39,54 @@ const CampaignView = () => {
     let { campaignName } = useParams();
 
     const getCampaign = async () => {
+        setIsLoading(true);
+
         const docRef = doc(db, "campaigns", campaignName);
         const docSnap = await getDoc(docRef);
+        
         setCampaign(docSnap.data());
         setIsLoading(false);
+    }
+
+    const updateDonations = async (newDonation) => {
+        const docRef = doc(db, 'campaigns', campaignName);
+        const docSnap = await getDoc(docRef);
+        const donations = docSnap.data().donations;
+        donations.push(newDonation);
+        
+        // Update doc with new changes
+        await updateDoc(docRef, {
+            donations: donations
+        });
+    }
+
+    const updateSupporters = async (supporterId, donationAmount) => {
+        const docRef = doc(db, 'campaigns', campaignName);
+        const docSnap = await getDoc(docRef);
+        const supporters = docSnap.data().supporters;
+
+        // Check for existing donations
+        if (supporters.hasOwnProperty(supporterId)) {
+            supporters[supporterId].donationTotal += donationAmount; 
+        }
+        else {
+            const newSupporter = {
+                id: supporterId,
+                donationTotal: donationAmount
+            }
+            supporters[supporterId] = newSupporter;
+        }
+
+        await updateDoc(docRef, {
+            supporters: supporters
+        });
+    }
+
+    const handleDonation = async (newDonation) => {
+        setIsLoading(true);
+        await updateDonations(newDonation);
+        await updateSupporters(newDonation.id, newDonation.donationAmount);
+        getCampaign();
     }
 
     useEffect(() => {
@@ -74,7 +118,7 @@ const CampaignView = () => {
                     )}
                     <div>
                         <SectionName>Make a Donation</SectionName>
-                        <CampaignSupport  />
+                        <CampaignSupport handleDonation={handleDonation} />
                     </div>
                     {campaign.goal && (
                         <div>

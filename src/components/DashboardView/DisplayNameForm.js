@@ -66,7 +66,7 @@ const DisplayNameForm = ({ handleUpdate }) => {
 
         if (!nameExists) {
             // Update user display name
-            handleUpdate('users', user.uid, { displayName: displayName.toLowerCase() });
+            handleUpdate('users', user.uid, { displayName: displayName.toLowerCase(), isActive: true });
 
             // Create campaign using the new display name
             addToCampaignCollection();
