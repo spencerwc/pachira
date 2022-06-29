@@ -2,21 +2,25 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 const Card = styled.li`
-    background-color: rgba(0, 0, 0, 0.05);
+    border: 2px solid var(--border-color);
     border-radius: 1rem;
+
+    :hover {
+        border-color: var(--border-hover);
+    }
     
     > a {
+        color: var(--font-color);
         text-decoration: none;
 
         :visited {
-            color: inherit;
+            color: var(--font-color);
         }
     }
 `;
 
 const CardBanner = styled.div`
-    background-color: rgba(0, 0, 0, 0.1);
-    height: 100px;
+    height: 150px;
     border-radius: 1rem 1rem 0 0;
 `;
 
@@ -28,11 +32,13 @@ const ViewPage = styled.div`
     border: none;
     border-radius: 0.7rem;
     padding: 0.5rem 1rem;
-    background-color: #fff;
-    cursor: pointer;
-    text-align: center;
+    color: #fff;
+    background-color: var(--secondary-color);
+    font-weight: bold;
     width: fit-content;
-    margin-top: 2rem;
+    :hover {
+        background-color: var(--secondary-hover);
+    }
 `;
 
 const CampaignCard = ({id, name, summary}) => {

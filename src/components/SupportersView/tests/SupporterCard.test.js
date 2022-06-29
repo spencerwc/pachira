@@ -12,20 +12,20 @@ describe('supporter card', () => {
         render(
             <BrowserRouter>
                 <SupporterCard
-                    name={supporter.name}
+                    id={supporter.id}
                     donationTotal={supporter.donationTotal}
                 />
             </BrowserRouter>
         );
         
-        expect(screen.getByText(supporter.name)).toBeInTheDocument();
+        expect(screen.getByText(supporter.id)).toBeInTheDocument();
     });
 
     it('renders the donation total', () => {
         render(
             <BrowserRouter>
                 <SupporterCard
-                    name={supporter.name}
+                    id={supporter.id}
                     donationTotal={6000}
                 />
             </BrowserRouter>
@@ -38,7 +38,7 @@ describe('supporter card', () => {
         render(
             <BrowserRouter>
                 <SupporterCard
-                    name={supporter.name}
+                    id={supporter.id}
                     donationTotal={supporter.donationTotal}
                 />
             </BrowserRouter>
@@ -51,7 +51,7 @@ describe('supporter card', () => {
         render(
             <BrowserRouter>
                 <SupporterCard
-                    name={supporter.name}
+                    supporter={supporter.id}
                     donationTotal={supporter.donationTotal}
                 />
             </BrowserRouter>

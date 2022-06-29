@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { MdErrorOutline } from 'react-icons/md';
 import styled from "styled-components";
@@ -89,7 +89,7 @@ const ErrorMessage = styled.p`
 `;
 
 const CampaignSupport = ({ handleDonation }) => {
-    const [donateAmount, setDonateAmount] = useState();
+    const [donateAmount, setDonateAmount] = useState(5);
     const [donateMessage, setDonateMessage] = useState('');
     const [error, setError] = useState(null);
     const auth = getAuth();

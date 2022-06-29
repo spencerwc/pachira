@@ -6,19 +6,21 @@ import styled from "styled-components";
 import SupporterCard from "./SupporterCard";
 
 const SupportersContainer = styled.section`
-    max-width: 1000px;
-    margin: 0 auto;
+    max-width: 800px;
+    margin: 1rem auto;
     margin-bottom: 80px;
-    padding: 0.5rem;
+    padding: 1rem;
 `;
 
 const Supporters = styled.ul`
-    display: grid;
-    grid-template-columns: repeat( auto-fit, minmax(200px, 1fr) );
-    grid-gap: 1rem;
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 0.7rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 `;
 
 const Heading = styled.h1`

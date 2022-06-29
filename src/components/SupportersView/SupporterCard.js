@@ -2,37 +2,46 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 const Card = styled.li`
-    background-color: rgba(0, 0, 0, 0.05);
-    border-radius: 1rem;
-    
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.5rem;
+   
+    :last-of-type {
+        border: none;
+        padding-bottom: 0;
+    }
+
     > a {
+        display: flex;
+        align-items: center;
         text-decoration: none;
+        color: var(--font-color);
 
         :visited {
-            color: inherit;
+            color: var(--font-color);
         }
     }
 `;
 
-const CardBanner = styled.div`
-    background-color: rgba(0, 0, 0, 0.1);
-    height: 100px;
-    border-radius: 1rem 1rem 0 0;
+const Avatar = styled.div`
+    height: 60px;
+    width: 60px;
+    border-radius: 100%;
+    margin-right: 1rem;
 `;
 
 const CardDetails = styled.div`
     padding: 1rem;
 `;
 
-const SupporterCard = ({id, name, donationTotal}) => {
+const SupporterCard = ({id, donationTotal}) => {
     return (
         <Card>
             <Link to={`../${id}`}>
-                <CardBanner />
-                <CardDetails>
-                    <h2>{name}</h2>
-                    <h3>${donationTotal.toLocaleString()}</h3>
-                </CardDetails>
+                <Avatar>
+                    <img src="" alt="" />
+                </Avatar>
+                <strong style={{marginRight: 'auto'}}>{id}</strong>
+                <strong>${donationTotal.toLocaleString()}</strong>
             </Link>
         </Card>
     );

@@ -6,9 +6,9 @@ import CampaignCard from "./CampaignCard";
 
 const ExploreContainer = styled.section`
     max-width: 1000px;
-    margin: 0 auto;
+    margin: 1rem auto;
     margin-bottom: 80px;
-    padding: 0.5rem;
+    padding: 1rem;
 `;
 
 const Container = styled.ul`
@@ -25,13 +25,18 @@ const Heading = styled.h1`
 `;
 
 const Search = styled.input`
+    border: 2px solid var(--border-color);
     border-radius: 2rem;
     outline: none;
-    border: none;
-    background-color: rgba(0, 0, 0, 0.05);
     padding: 1rem;
-    width: 40%;
+    width: 100%;
+    max-width: 350px;
     margin-bottom: 1rem;
+    font-size: 1rem;
+
+    :focus {
+        border-color: var(--border-hover);
+    }
 `;
 
 const ExploreView = () => {
