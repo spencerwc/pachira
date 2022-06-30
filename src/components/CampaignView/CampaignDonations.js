@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "styled-components"; 
 
 const RecentDonations = styled.section`
     display: flex;
@@ -31,7 +31,7 @@ const Donation = styled.li`
 
 const Avatar = styled.img`
     background-color: #fff;
-    border-radius: 0.5rem;
+    border-radius: 100%;
     width: 50px;
     height: 50px;
     margin-right: 0.5rem;
@@ -53,8 +53,12 @@ const DonationMessage = styled.p`
 `;
 
 const CampaignDonations = ({donations}) => {
-    const recentDonations = donations.sort((a, b) => b.date.seconds - a.date.seconds).slice(0, 3);
-    
+    const getRecentDonations = (donations) => {
+        return donations.sort((a, b) => b.date.seconds - a.date.seconds).slice(0, 3);
+    }
+
+    const recentDonations = getRecentDonations(donations);
+
     return (
         <RecentDonations>
             <Donations>
@@ -63,7 +67,7 @@ const CampaignDonations = ({donations}) => {
                         <Avatar src={donation.avatar} alt="" />
                         <DonationDetails>
                             <DonationHeader>
-                                <strong>{donation.id}</strong>
+                                <strong>{donation.displayName}</strong>
                                 <strong style={{textAlign: 'right'}}>$ {donation.donationAmount.toLocaleString()}</strong>
                                 <span style={{fontSize: '0.9rem'}}>{new Date(donation.date.seconds * 1000).toLocaleDateString()}</span>
                             </DonationHeader>

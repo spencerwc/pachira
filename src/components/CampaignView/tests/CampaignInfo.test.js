@@ -15,8 +15,8 @@ describe('campaign details', () => {
             />
         );
         
-        expect(screen.getByText(`${supportersLength}`)).toBeInTheDocument();
-        expect(screen.getByText(`${testCampaign.followers.length.toLocaleString()}`)).toBeInTheDocument();
+        expect(screen.getByText(`${supportersLength} supporters`)).toBeInTheDocument();
+        expect(screen.getByText(`${testCampaign.followers.length.toLocaleString()} followers`)).toBeInTheDocument();
     });
     
     it('renders proper descriptors when count is exactly 1', () => {
@@ -27,8 +27,8 @@ describe('campaign details', () => {
             />
         );
 
-        expect(screen.getByText('supporter')).toBeInTheDocument();
-        expect(screen.getByText('follower')).toBeInTheDocument();
+        expect(screen.getByText('1 supporter')).toBeInTheDocument();
+        expect(screen.getByText('1 follower')).toBeInTheDocument();
     });
 
     it('renders proper descriptors when count is > 1', () => {
@@ -39,7 +39,7 @@ describe('campaign details', () => {
             />
         );
 
-        expect(screen.getByText('supporters')).toBeInTheDocument();
-        expect(screen.getByText('followers')).toBeInTheDocument();
+        expect(screen.getByText('2 supporters')).toBeInTheDocument();
+        expect(screen.getByText('2 followers')).toBeInTheDocument();
     })
 })

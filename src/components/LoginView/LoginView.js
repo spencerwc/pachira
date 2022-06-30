@@ -136,7 +136,7 @@ const LoginView = () => {
                 avatar: user.photoURL,
                 displayName: user.uid,
                 email: user.email,
-                isActive: false,
+                isActive: user.isActive,
             });
         }
     }
@@ -166,7 +166,7 @@ const LoginView = () => {
         signInWithPopup(auth, provider)
             .then(async (result) => {
                 setIsLoading(true);
-                await addToUserCollection(result.user);
+                await addToUserCollection({...result.user, isActive: false});
                 navigate("../dashboard");
             }).catch((error) => {
                 setError({code: error});

@@ -11,7 +11,7 @@ describe('campaign recent donations', () => {
         );
         
         expect(screen.getByText(testCampaign.donations[0].id)).toBeInTheDocument();
-        expect(screen.getByText(`$${testCampaign.donations[1].donationAmount.toLocaleString()}`)).toBeInTheDocument();
+        expect(screen.getByText(`$ ${testCampaign.donations[1].donationAmount.toLocaleString()}`)).toBeInTheDocument();
     });
 
     it('renders donation date', () => {

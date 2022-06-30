@@ -29,10 +29,6 @@ const Avatar = styled.div`
     margin-right: 1rem;
 `;
 
-const CardDetails = styled.div`
-    padding: 1rem;
-`;
-
 const SupporterCard = ({id, donationTotal}) => {
     return (
         <Card>

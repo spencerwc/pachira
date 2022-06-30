@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
+import styled from "styled-components"; 
 
 const TopSupport = styled.section`
     display: flex;
@@ -42,7 +42,7 @@ const Supporter = styled.li`
 
 const Avatar = styled.img`
     background-color: #fff;
-    border-radius: 0.5rem;
+    border-radius: 100%;
     width: 50px;
     height: 50px;
     margin-right: 0.5rem;
@@ -86,25 +86,32 @@ const DonateButton = styled.button`
 `;
 
 const CampaignTopSupport = ({supporters}) => {
-    let navigate = useNavigate();
-    const supporterValues = Object.values(supporters);
+    const navigate = useNavigate();
+    
+    const getTopSupporters = (supporters) => {
+        const supportersArr = Object.values(supporters);
+        return supportersArr.sort((a, b) => b.donationTotal - a.donationTotal).slice(0, 3);
+    }
 
-    if (supporterValues.length > 0) {
-        const topSupporters = supporterValues.sort((a, b) => b.donationTotal - a.donationTotal).slice(0, 3);
-        
+    const topSupporters = getTopSupporters(supporters);
+
+    if (topSupporters.length > 0) {
         return (
             <TopSupport>
                 <Supporters>
-                    {topSupporters.map(supporter => 
-                        <Supporter key={supporter.id}>
-                            <Link to={`../${supporter.id}`}>
-                                <Avatar src={supporter.avatar} alt="" />
-                                <SupporterDetails>
-                                    <strong>{supporter.id}</strong>
-                                    <strong>$ {supporter.donationTotal.toLocaleString()}</strong>
-                                </SupporterDetails>
-                            </Link>
-                        </Supporter>
+                    {topSupporters.map((supporter, index) => {
+                        return (
+                            <Supporter key={`${supporter.displayName}_${index}`}>
+                                <Link to={`../${supporter.displayName}`}>
+                                    <Avatar src={supporter.avatar} alt={supporter.displayName} referrerPolicy="no-referrer"/>
+                                    <SupporterDetails>
+                                        <strong>{supporter.displayName}</strong>
+                                        <strong>$ {supporter.donationTotal.toLocaleString()}</strong>
+                                    </SupporterDetails>
+                                </Link>
+                            </Supporter>
+                            );
+                        }
                     )}
                 </Supporters>
                 <ViewAllButton onClick={() => navigate('./supporters')}>View all supporters</ViewAllButton>

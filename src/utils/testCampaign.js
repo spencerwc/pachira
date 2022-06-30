@@ -1,3 +1,5 @@
+import avatar from '../images/avatar.png';
+
 export const testCampaign = {
     created: new Date(),
     campaignName: 'stardropvalley',
@@ -8,8 +10,8 @@ export const testCampaign = {
     donations: [
         {
             id: 'test',
-            name: 'Test',
-            avatar: '',
+            displayName: 'test',
+            avatar: avatar,
             date: {
                 seconds: Date.now() / 1000
             },
@@ -18,8 +20,8 @@ export const testCampaign = {
         },
         {
             id: 'test2',
-            name: 'Test 2',
-            avatar: '',
+            displayName: 'Test 2',
+            avatar: avatar,
             date: {
                 seconds: Date.now() / 1000
             },
@@ -30,38 +32,38 @@ export const testCampaign = {
     supporters: {
         test: {
             id: 'test',
-            name: 'Test',
-            avatar: '',
+            displayName: 'test',
+            avatar: avatar,
             donationTotal: 100
         },
         test2: {
             id: 'test2',
-            name: 'Test 2',
-            avatar: '',
+            displayName: 'test2',
+            avatar: avatar,
             donationTotal: 200
         },
         test3: {
             id: 'test3',
-            name: 'Test 3',
-            avatar: '',
+            displayName: 'test3',
+            avatar: avatar,
             donationTotal: 300
         },
         test4: {
             id: 'test4',
-            name: 'Test 4',
-            avatar: '',
+            displayName: 'test4',
+            avatar: avatar,
             donationTotal: 400
         },
         test5: {
             id: 'test5',
-            name: 'Test 5',
-            avatar: '',
+            displayName: 'test5',
+            avatar: avatar,
             donationTotal: 500
         },
         test6: {
             id: 'test6',
-            name: 'Test 6',
-            avatar: '',
+            name: 'test6',
+            avatar: avatar,
             donationTotal: 600
         }
     },

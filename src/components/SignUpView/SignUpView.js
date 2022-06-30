@@ -6,6 +6,7 @@ import { MdErrorOutline } from 'react-icons/md';
 import { FcGoogle } from 'react-icons/fc';
 import styled from "styled-components";
 import logo from '../../images/logo.png';
+import avatar from '../../images/avatar.png';
 import { db } from '../../index';
 
 const SignUpContainer = styled.section`
@@ -129,13 +130,14 @@ const SignUpView = () => {
 
     const addToUserCollection = async (user) => {
         const userExists = await checkForExistingDoc('users', user.uid);
+        console.log(user);
         
         if (!userExists) {
             await setDoc(doc(db, 'users', user.uid), {
-                avatar: user.photoURL,
+                avatar: user.photoURL ? user.photoURL : avatar,
                 displayName: displayName.length ? displayName.toLocaleLowerCase() : user.uid,
                 email: user.email,
-                isActive: false
+                isActive: user.isActive
             });
         }
     }
@@ -167,6 +169,7 @@ const SignUpView = () => {
                     const user = userCredential.user;
 
                     // Add to user collection
+                    console.log({...user, isActive: true});
                     await addToUserCollection({...user, isActive: true});
 
                     // Create a new campaign using the user display name
@@ -195,7 +198,7 @@ const SignUpView = () => {
                 // Clear display name for any leftover input
                 setDisplayName(''); 
 
-                await addToUserCollection(result.user);
+                await addToUserCollection({...result.user, isActive: false});
                 
                 navigate("../dashboard");
             }).catch((error) => {

@@ -126,7 +126,7 @@ const CampaignSupport = ({ handleDonation }) => {
 
             if (currentUserData.isActive) {
                 const newDonation = {
-                    id: currentUserData.displayName,
+                    uid: user.uid,
                     date: new Date(),
                     donationAmount: Number(donateAmount),
                     donationMessage: donateMessage

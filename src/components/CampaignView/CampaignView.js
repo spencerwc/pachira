@@ -28,9 +28,7 @@ const CampaignSections = styled.section`
     }
 `;
 
-const SectionColumn = styled.div`
-
-`;
+const SectionColumn = styled.div``;
 
 const SectionName = styled.h2`
     font-size: 1.2rem;
@@ -39,16 +37,54 @@ const SectionName = styled.h2`
 
 const CampaignView = () => {
     const [isLoading, setIsLoading] = useState(false);
-    const [campaign, setCampaign] = useState();
+    const [error, setError] = useState(null);
+    const [campaign, setCampaign] = useState(null);
+    const [donations, setDonations] = useState([]);
+    const [supporters, setSupporters] = useState([]);
     let { campaignName } = useParams();
 
-    const getCampaign = async () => {
-        setIsLoading(true);
-
+    const getCampaignData = async () => {
         const docRef = doc(db, "campaigns", campaignName);
         const docSnap = await getDoc(docRef);
+        return docSnap.data();
+    }
+
+    const getUserData = async (userId) => {
+        const docRef = doc(db, "users", userId);
+        const docSnap = await getDoc(docRef);
+        return docSnap.data();
+    }
+
+    const getSupporterData = async (supporters) => {
+        const supportersArr = Object.values(supporters);
+        const supporterData = await Promise.all(supportersArr.map(async supporter => {
+            const userData = await getUserData(supporter.uid);
+            return {...userData, ...supporter};
+        }));
+        return supporterData;
+    }
+
+    const getDonationData = async (donations) => {
+        const donationData = await Promise.all(donations.map(async donation => {
+            const userData = await getUserData(donation.uid);
+            return {...userData, ...donation};
+        }));
+        return donationData;
+    }
+
+    const getData = async () => {
+        setIsLoading(true);
+        const campaignData = await getCampaignData();
         
-        setCampaign(docSnap.data());
+        if (campaignData) {
+            const supporterData = await getSupporterData(campaignData.supporters);
+            const donationData = await getDonationData(campaignData.donations);
+            
+            setCampaign(campaignData);
+            setSupporters(supporterData);
+            setDonations(donationData);
+        }
+        setError({code: 'Campaign not found'});
         setIsLoading(false);
     }
 
@@ -75,7 +111,7 @@ const CampaignView = () => {
         }
         else {
             const newSupporter = {
-                id: supporterId,
+                uid: supporterId,
                 donationTotal: donationAmount
             }
             supporters[supporterId] = newSupporter;
@@ -89,13 +125,13 @@ const CampaignView = () => {
     const handleDonation = async (newDonation) => {
         setIsLoading(true);
         await updateDonations(newDonation);
-        await updateSupporters(newDonation.id, newDonation.donationAmount);
-        getCampaign();
+        await updateSupporters(newDonation.uid, newDonation.donationAmount);
+        getData();
     }
 
     useEffect(() => {
         setIsLoading(true);
-        getCampaign();
+        getData();
     }, [campaignName]);
 
     if (!isLoading && campaign) {
@@ -134,19 +170,22 @@ const CampaignView = () => {
                         
                         <div>
                             <SectionName>Top Supporters</SectionName> 
-                            <CampaignTopSupport supporters={campaign.supporters} />
+                            <CampaignTopSupport supporters={supporters} />
                         </div>
                     
                         {campaign.donations.length > 0 && (
                             <div>
                                 <SectionName>Recent Donations</SectionName>
-                                <CampaignDonations donations={campaign.donations} />
+                                <CampaignDonations donations={donations} />
                             </div>
                         )}
                     </SectionColumn>
                 </CampaignSections>
             </CampaignContainer>
         );
+    }
+    else if (!isLoading && error) {
+        return <div>Not found</div>
     }
     else {
         return <div>Loading</div>
