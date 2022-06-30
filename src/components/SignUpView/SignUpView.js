@@ -1,13 +1,10 @@
-import { useState } from "react";
-import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore"; 
+import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { MdErrorOutline } from 'react-icons/md';
 import { FcGoogle } from 'react-icons/fc';
 import styled from "styled-components";
 import logo from '../../images/logo.png';
-import avatar from '../../images/avatar.png';
-import { db } from '../../index';
+import { UserAuthContext } from "../../context/UserAuthContext";
 
 const SignUpContainer = styled.section`
     margin: 0 auto;
@@ -84,11 +81,8 @@ const OAuthSignUpButton = styled.button`
 `;
 
 const ErrorMessage = styled.p`
-    color: var(--secondary-color);
+    color: red;
     margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     animation: fadeIn 1s;
     > svg {
         margin-right: 0.3rem;
@@ -104,7 +98,6 @@ const Login = styled.p`
     > a {
         color: var(--font-color);
         text-decoration: none;
-
         :visited {
             color: var(--font-color);
         }
@@ -120,97 +113,36 @@ const SignUpView = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const { signUp, googleSignIn } = useContext(UserAuthContext);
     const navigate = useNavigate();
-
-    const checkForExistingDoc = async (collection, identifier) => {
-        const docRef = doc(db, collection, identifier);
-        const docSnap = await getDoc(docRef);
-        return docSnap.exists();
-    }
-
-    const addToUserCollection = async (user) => {
-        const userExists = await checkForExistingDoc('users', user.uid);
-        console.log(user);
         
-        if (!userExists) {
-            await setDoc(doc(db, 'users', user.uid), {
-                avatar: user.photoURL ? user.photoURL : avatar,
-                displayName: displayName.length ? displayName.toLocaleLowerCase() : user.uid,
-                email: user.email,
-                isActive: user.isActive
-            });
-        }
-    }
-
-    const addToCampaignCollection = async () => {
-        await setDoc(doc(db, 'campaigns', displayName.toLowerCase()), {
-            about: null,
-            bannerImage: null,
-            created: new Date(),
-            currentGoal: null,
-            donations: [],
-            followers: [],
-            name: null,
-            posts: [],
-            summary: null,
-            supporters: []
-        });
-    }
-    
     const createUser = async (email, password) => {
-        const campaignExists = await checkForExistingDoc('campaigns', displayName);        
-
-        if (!campaignExists) {
+        try {
             setIsLoading(true);
-            const auth = getAuth();
-
-            createUserWithEmailAndPassword(auth, email, password)
-                .then(async (userCredential) => {
-                    const user = userCredential.user;
-
-                    // Add to user collection
-                    console.log({...user, isActive: true});
-                    await addToUserCollection({...user, isActive: true});
-
-                    // Create a new campaign using the user display name
-                    await addToCampaignCollection();
-
-                    navigate('../dashboard');
-                })
-                .catch((error) => {
-                    setError({code: error});
-                    setIsLoading(false);
-                });
+            await signUp(displayName, email, password);
+            navigate('../dashboard');
         }
-        else {
-            setError({code: 'That username already exists'});
-        }
+        catch(error) {
+            setError(error.message);
+            setIsLoading(false);
+        };
     }
     
     const signInGoogleUser = async () => {
-        const auth = getAuth();
-        const provider = new GoogleAuthProvider();
-        
-        signInWithPopup(auth, provider)
-            .then(async (result) => {
-                setIsLoading(true);
-                
-                // Clear display name for any leftover input
-                setDisplayName(''); 
-
-                await addToUserCollection({...result.user, isActive: false});
-                
-                navigate("../dashboard");
-            }).catch((error) => {
-                setError(error);
-            });
+        try {
+            await googleSignIn();
+            navigate('../dashboard');
+        }
+        catch (error) {
+            setError(error.message)
+        }
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
             
         if (!displayName.match(/^[a-z\d]+$/i)) {
-            setError({code: 'Display name only allows A-Z, a-z, 0-9 and _.'});
+            setError('Display name only allows A-Z, a-z, 0-9 and _.');
         }
         else {
             createUser(email, password);
@@ -255,7 +187,7 @@ const SignUpView = () => {
                         }}
                         required
                     />
-                    {error && <ErrorMessage><MdErrorOutline />Error: {error.code}</ErrorMessage>}
+                    {error && <ErrorMessage><MdErrorOutline />{error}</ErrorMessage>}
                     <p style={{fontSize: '0.8rem'}}>Pachira is a demo application and is only intended to showcase example features. This is not an actual service.</p>
                     <SignUpButton type="submit">Create Account</SignUpButton>
                 </SignUpForm>

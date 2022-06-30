@@ -1,22 +1,18 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { getAuth } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore"; 
 import { MdErrorOutline } from 'react-icons/md';
 import styled from "styled-components";
 import { db } from '../../index';
+import { UserAuthContext } from "../../context/UserAuthContext";
 
 const ErrorMessage = styled.p`
     color: red;
     margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     animation: fadeIn 1s;
-
     > svg {
         margin-right: 0.3rem;
     }
-
     @keyframes fadeIn {
         0% { opacity: 0; }
         100% { opacity: 1; }
@@ -26,8 +22,7 @@ const ErrorMessage = styled.p`
 const DisplayNameForm = ({ handleUpdate }) => {
     const [displayName, setDisplayName] = useState("");
     const [error, setError] = useState(null);
-    const auth = getAuth();
-    const user = auth.currentUser;
+    const {currentUser} = useContext(UserAuthContext);
     
     const handleChange = (e) => {
         setDisplayName(e.target.value);
@@ -66,13 +61,13 @@ const DisplayNameForm = ({ handleUpdate }) => {
 
         if (!nameExists) {
             // Update user display name
-            handleUpdate('users', user.uid, { displayName: displayName.toLowerCase(), isActive: true });
+            handleUpdate('users', currentUser.uid, { displayName: displayName.toLowerCase(), isActive: true });
 
             // Create campaign using the new display name
             addToCampaignCollection();
         }
         else {
-            setError({code: 'That username already exists'});
+            setError('That username already exists');
         }
     }
 
@@ -89,7 +84,7 @@ const DisplayNameForm = ({ handleUpdate }) => {
                     value={displayName} 
                     onChange={handleChange}
                 />
-                {error && <ErrorMessage><MdErrorOutline />Error: {error.code}</ErrorMessage>}
+                {error && <ErrorMessage><MdErrorOutline />{error}</ErrorMessage>}
             </form>
         </div>
     );

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { doc, getDoc, updateDoc } from "firebase/firestore"; 
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import styled from "styled-components";
 import CampaignBanner from "./CampaignBanner";
 import CampaignInfo from "./CampaignInfo";

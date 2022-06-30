@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
-import { getAuth } from "firebase/auth";
 import styled from "styled-components";
 import logo from '../../images/logo.png';
+import { useContext } from "react";
+import { UserAuthContext } from "../../context/UserAuthContext";
 
 const Header = styled.div`
     background-color: #fff;
@@ -46,8 +47,7 @@ const RegisterLink = styled.div`
 `;
 
 const MobileHeader = () => {
-    const auth = getAuth();
-    const user = auth.currentUser;
+    const {currentUser} = useContext(UserAuthContext);
 
     return (
         <Header>
@@ -55,7 +55,7 @@ const MobileHeader = () => {
                 <img src={logo} alt="Pachira" style={{maxWidth: '50px', marginLeft: '0.5rem'}}/>
             </Link>
 
-            { !user && 
+            { !currentUser && 
             <LinkContainer>
                 <RegisterLink>
                     <Link to="../register">Sign up</Link>

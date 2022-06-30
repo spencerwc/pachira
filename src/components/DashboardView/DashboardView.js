@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { db } from '../../index';
+import { UserAuthContext } from "../../context/UserAuthContext";
 import DisplayNameForm from "./DisplayNameForm";
 
 const DashboardContainer = styled.section`
@@ -16,8 +16,7 @@ const DashboardContainer = styled.section`
 const DashboardView = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [campaign, setCampaign] = useState();
-    const auth = getAuth();
-    const user = auth.currentUser;
+    const {currentUser} = useContext(UserAuthContext);
     const navigate = useNavigate();
 
     const getFromCollection = async (collection, identifier) => {
@@ -30,7 +29,7 @@ const DashboardView = () => {
         setIsLoading(true);
 
         // Get user displayName from user document
-        const userDoc = await getFromCollection('users', user.uid);
+        const userDoc = await getFromCollection('users', currentUser.uid);
 
         // Check campaign collection for user displayName
         const campaignDoc = await getFromCollection('campaigns', userDoc.data().displayName);
@@ -56,13 +55,13 @@ const DashboardView = () => {
     useEffect(() => {
         setIsLoading(true);
 
-        if (user !== null) {
+        if (currentUser !== null) {
             getUserCampaign();
         }
         else {
             navigate('../login');
         }
-    }, [user]);
+    }, []);
     
     if (!isLoading && campaign) {
         const campaignName = campaign.id[0].toUpperCase() + campaign.id.slice(1, campaign.id.length);

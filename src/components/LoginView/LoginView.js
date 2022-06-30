@@ -1,12 +1,10 @@
-import { useState } from "react";
-import { getAuth, signInWithPopup, signInWithEmailAndPassword, GoogleAuthProvider } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore"; 
+import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { MdErrorOutline } from 'react-icons/md';
 import { FcGoogle } from 'react-icons/fc';
 import styled from "styled-components";
 import logo from '../../images/logo.png';
-import { db } from '../../index';
+import { UserAuthContext } from "../../context/UserAuthContext";
 
 const LoginContainer = styled.section`
     margin: 0 auto;
@@ -57,11 +55,8 @@ const LoginButton = styled.button`
 `;
 
 const ErrorMessage = styled.p`
-    color: var(--secondary-color);
+    color: red;
     margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     animation: fadeIn 1s;
     > svg {
         margin-right: 0.3rem;
@@ -118,42 +113,20 @@ const LoginView = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const { logIn, googleSignIn } = useContext(UserAuthContext);
     const navigate = useNavigate();
-    const auth = getAuth();
 
-
-    const checkForExistingDoc = async (collection, identifier) => {
-        const docRef = doc(db, collection, identifier);
-        const docSnap = await getDoc(docRef);
-        return docSnap.exists();
-    }
-
-    const addToUserCollection = async (user) => {
-        const userExists = await checkForExistingDoc('users', user.uid);
-        
-        if (!userExists) {
-            setDoc(doc(db, 'users', user.uid), {
-                avatar: user.photoURL,
-                displayName: user.uid,
-                email: user.email,
-                isActive: user.isActive,
-            });
-        }
-    }
-
-    const signInUser = () => {
+    const signInUser = async () => {
         if (email.length) {
             setIsLoading(true);
-            signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                // TODO: Revisit
-                // const user = userCredential.user;
-                    navigate('../dashboard');
-                })
-                .catch((error) => {
-                    setError({code: error});
-                    setIsLoading(false);
-                });
+            try {
+                await logIn(email, password);
+                navigate('../dashboard');
+            }
+            catch (error) {
+                setError(error.message);
+                setIsLoading(false);
+            }
         }
         else {
             setError({code: 'Invalid username or password'});
@@ -161,17 +134,14 @@ const LoginView = () => {
     }
 
     const signInGoogleUser = async () => {
-        const provider = new GoogleAuthProvider();
-        
-        signInWithPopup(auth, provider)
-            .then(async (result) => {
-                setIsLoading(true);
-                await addToUserCollection({...result.user, isActive: false});
-                navigate("../dashboard");
-            }).catch((error) => {
-                setError({code: error});
-                setIsLoading(false);
-            });
+        try {
+            await googleSignIn();
+            navigate('../dashboard');
+        }
+        catch (error) {
+            console.error(error);
+            setError(error.message)
+        }
     }
 
     const handleSubmit = (e) => {
@@ -205,7 +175,7 @@ const LoginView = () => {
                         }}
                         required
                     />
-                    {error && <ErrorMessage><MdErrorOutline />{error.code}</ErrorMessage>}
+                    {error && <ErrorMessage><MdErrorOutline />{error}</ErrorMessage>}
                     <p style={{fontSize: '0.8rem'}}>
                         Pachira is a demo application and is only intended to showcase example features. This is not an actual service.
                     </p>

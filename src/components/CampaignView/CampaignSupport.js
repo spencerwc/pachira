@@ -1,9 +1,7 @@
-import { useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { useContext, useState } from "react";
 import { MdErrorOutline } from 'react-icons/md';
 import styled from "styled-components";
-import { db } from '../../index';
+import { UserAuthContext } from "../../context/UserAuthContext";
 
 const Donate = styled.form`
     padding: 1rem;
@@ -92,15 +90,8 @@ const CampaignSupport = ({ handleDonation }) => {
     const [donateAmount, setDonateAmount] = useState(5);
     const [donateMessage, setDonateMessage] = useState('');
     const [error, setError] = useState(null);
-    const auth = getAuth();
-    const user = auth.currentUser;
+    const {currentUser} = useContext(UserAuthContext);
     const MESSAGE_LIMIT = 90;
-
-    const getCurrentUserDetails = async () => {
-        const docRef = doc(db, 'users', user.uid);
-        const docSnap = await getDoc(docRef);
-        return docSnap;
-    }
 
     const handleAmountChange = (e) => {
         setDonateAmount(e.target.value);
@@ -116,17 +107,14 @@ const CampaignSupport = ({ handleDonation }) => {
         e.preventDefault();
 
         // Check if user is logged in
-        if (!user) {
-            setError({code: 'You are not logged in.'});
+        if (!currentUser) {
+            setError('You are not logged in.');
         }
         else {
-            // Get the current user and check if account is activated
-            const currentUser = await getCurrentUserDetails();
-            const currentUserData = currentUser.data();
-
-            if (currentUserData.isActive) {
+            // Check if user is activated
+            if (currentUser.isActive) {
                 const newDonation = {
-                    uid: user.uid,
+                    uid: currentUser.uid,
                     date: new Date(),
                     donationAmount: Number(donateAmount),
                     donationMessage: donateMessage
@@ -135,14 +123,14 @@ const CampaignSupport = ({ handleDonation }) => {
             }
             else {
                 // Prompt inactive users to activate on dashboard
-                setError({code: 'Activate your account on your dashboard.'});
+                setError('Activate your account on your dashboard.');
             }
         }
     }
 
     return (
         <Donate onSubmit={handleSubmit}>
-            {error && <ErrorMessage><MdErrorOutline />Error: {error.code}</ErrorMessage>}
+            {error && <ErrorMessage><MdErrorOutline />Error: {error}</ErrorMessage>}
             <DonateAmount 
                 type="number" 
                 min={1}

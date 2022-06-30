@@ -1,9 +1,9 @@
-import { Link, NavLink } from "react-router-dom";
+import { useContext } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { MdHome, MdSearch, MdSettings, MdLogin } from 'react-icons/md';
-import { getAuth, signOut } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logo from '../../images/logo.png';
+import { UserAuthContext } from "../../context/UserAuthContext";
 
 const Nav = styled.nav`
     background-color: #fff;
@@ -116,45 +116,49 @@ const NavUser = styled.li`
 
     > img {
         border-radius: 100%;
-        max-width: 50px;
+        width: 45px;
+        height: 45px;
+        background-color: var(--border-color);
+        cursor: pointer;
     }
 `;
 
 const Navbar = () => {
+    const { currentUser, logOut } = useContext(UserAuthContext);
     const navigate = useNavigate();
-    const auth = getAuth();
-    const user = auth.currentUser;
 
-    const signOutUser = () => {
-        signOut(auth).then(() => {
-            navigate('login');
-          }).catch((error) => {
+    const handleLogOut = async () => {
+        try {
+            await logOut();
+            navigate('../login');
+        }
+        catch (error) {
             console.error(error);
-          });
+        }
     }
 
     return (
         <Nav>
             <NavLogo>
-                <Link to="/"><img src={logo} alt="" /></Link>
+                <Link to="/"><img src={logo} alt="pachira" style={{maxWidth: '50px'}}/></Link>
             </NavLogo>
             <NavLinks>
                 <NavItem><NavLink to="/"><MdHome /><span>Home</span></NavLink></NavItem>
                 <NavItem><NavLink to="explore"><MdSearch /><span>Explore</span></NavLink></NavItem>
-                { !user ?
+                { !currentUser ?
                     <NavItem><NavLink to="login"><MdLogin /><span>Log in</span></NavLink></NavItem> :
                     <NavItem><NavLink to="dashboard"><MdSettings /><span>Dashboard</span></NavLink></NavItem>
                 }
-                { !user && 
+                { !currentUser && 
                     <RegisterLink><NavLink to="register">Sign up</NavLink></RegisterLink>
                 }
-                { user && 
+                { currentUser && 
                     <NavUser>
                         <img
-                            src={user.photoURL} 
+                            src={currentUser.avatar} 
                             referrerPolicy="no-referrer" 
-                            alt={user.displayName}
-                            onClick={signOutUser}
+                            alt=""
+                            onClick={handleLogOut}
                         /> 
                     </NavUser>
                 }
