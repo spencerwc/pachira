@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { MdErrorOutline } from 'react-icons/md';
+import { MdErrorOutline, MdClose } from 'react-icons/md';
 import styled from "styled-components";
 import { UserAuthContext } from "../../context/UserAuthContext";
 
@@ -103,10 +103,9 @@ const CampaignSupport = ({ handleDonation }) => {
         setError(null);
     }
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-
-        // Check if user is logged in
+        
         if (!currentUser) {
             setError('You are not logged in.');
         }
@@ -117,7 +116,7 @@ const CampaignSupport = ({ handleDonation }) => {
                     uid: currentUser.uid,
                     date: new Date(),
                     donationAmount: Number(donateAmount),
-                    donationMessage: donateMessage
+                    donationMessage: donateMessage.length > 1 ? donateMessage : 'No message included.'
                 }
                 handleDonation(newDonation);
             }
@@ -130,7 +129,8 @@ const CampaignSupport = ({ handleDonation }) => {
 
     return (
         <Donate onSubmit={handleSubmit}>
-            {error && <ErrorMessage><MdErrorOutline />Error: {error}</ErrorMessage>}
+            <h2 style={{margin: 0, marginBottom: '0.5rem', fontSize: '1rem'}}>Make a Donation</h2>
+            {error && <ErrorMessage><MdErrorOutline />{error}</ErrorMessage>}
             <DonateAmount 
                 type="number" 
                 min={1}

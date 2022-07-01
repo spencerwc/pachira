@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Card = styled.li`
     border: 2px solid var(--border-color);
-    border-radius: 1rem;
+    border-radius: 1.1rem;
 
     :hover {
         border-color: var(--border-hover);
@@ -22,10 +22,17 @@ const Card = styled.li`
 const CardBanner = styled.div`
     height: 150px;
     border-radius: 1rem 1rem 0 0;
+    background-color: rgba(0, 0, 0, 0.05);
+    background-image: url(${props => props.image});
+    background-size: cover;
 `;
 
 const CardDetails = styled.div`
     padding: 1rem;
+
+    > p {
+        font-size: 0.9rem;
+    }
 `;
 
 const ViewPage = styled.div`
@@ -34,20 +41,21 @@ const ViewPage = styled.div`
     padding: 0.5rem 1rem;
     color: #fff;
     background-color: var(--secondary-color);
-    font-weight: bold;
+    font-weight: 500;
+    font-size: 0.9rem;
     width: fit-content;
     :hover {
         background-color: var(--secondary-hover);
     }
 `;
 
-const CampaignCard = ({id, name, summary}) => {
+const CampaignCard = ({id, image, name, summary}) => {
     const MAX_SUMMARY_LENGTH = 80;
 
     return (
         <Card>
             <Link to={`../${id}`}>
-                <CardBanner />
+                <CardBanner image={image}/>
                 <CardDetails>
                     <strong>{name}</strong>
                     {/* TODO: Revisit this */}

@@ -1,8 +1,11 @@
 import styled from "styled-components";
 
 const Banner = styled.div`
-    background-image: ${props => props.image};
+    background-image: url(${props => props.image});
+    background-repeat: no-repeat;
     background-color: rgba(0, 0, 0, 0.05);
+    background-size: cover;
+    background-position: center;
     text-align: center;
     height: 40vh;
     display: flex;
@@ -11,6 +14,7 @@ const Banner = styled.div`
 
     @media(min-width: 768px) {
         height: 30vh;
+        min-height: 350px;
         text-align: left;
         border-radius: 0 0 3rem 3rem;
     }
@@ -18,8 +22,15 @@ const Banner = styled.div`
 
 const Details = styled.div`
     padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #000;
+
+    > p {
+        margin-bottom: 0;
+    }
     
     @media (min-width: 768px) {
+        border-radius: 1rem;
         max-width: 40%;
         margin-left: 1rem;
     }
@@ -30,12 +41,12 @@ const Name = styled.h1`
     margin: 0;
 `;
 
-const CampaignBanner = ({name, summary, image}) => {
+const CampaignBanner = ({name, id, summary, image}) => {
     return (
         <Banner image={image}>
             <Details>
-                <Name>{name}</Name>
-                <p>{summary}</p>
+                <Name>{name ? name : id}</Name>
+                {summary && <p>{summary}</p>}
             </Details>
         </Banner>
     );

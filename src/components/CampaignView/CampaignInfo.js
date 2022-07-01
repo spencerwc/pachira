@@ -6,12 +6,13 @@ const Info = styled.section`
     padding: 0 1rem;
 `;
 
-const Avatar = styled.div`
+const Avatar = styled.img`
     width: 100px;
     height: 100px;
     border-radius: 100%;
     margin: -3rem 1rem 0 0;
     background-color: #fff;
+    border: 4px solid #fff;
 
     @media (min-width: 768px) {
         width: 120px;
@@ -36,7 +37,7 @@ const Buttons = styled.div`
     display: flex;
     align-items: center;
     width: 100%;
-    margin-top: 2rem;
+    margin-top: 0.5rem;
 
     @media (min-width: 768px) {
         margin-left: auto;
@@ -78,13 +79,11 @@ const FollowButton = styled.button`
     }
 `;
 
-const CampaignInfo = ({supporters, followers, posts}) => {
+const CampaignInfo = ({avatar, supporters, followers, setDonationIsActive}) => {
     const supportersLength = Object.keys(supporters).length;
     return (
         <Info>
-            <Avatar>
-                <img src="" alt="" />
-            </Avatar>
+            <Avatar src={avatar} alt="" referrerPolicy="no-referrer"/>
             <Details>
                 <Detail>
                     {supportersLength} supporter{supportersLength !== 1 && 's'}
@@ -95,7 +94,7 @@ const CampaignInfo = ({supporters, followers, posts}) => {
             </Details>
             <Buttons>
                 {/* TODO: Add functionality later */}
-                <SupportButton>Support</SupportButton>
+                <SupportButton onClick={() => setDonationIsActive(true)}>Support</SupportButton>
                 <FollowButton>Follow</FollowButton>
             </Buttons>
         </Info>

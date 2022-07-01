@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import styled from "styled-components";
+import { MdClose } from 'react-icons/md';
 import CampaignBanner from "./CampaignBanner";
 import CampaignInfo from "./CampaignInfo";
 import CampaignGoal from './CampaignGoal';
@@ -35,12 +36,50 @@ const SectionName = styled.h2`
     margin: 0.7rem 0;
 `;
 
+const SupportContainer = styled.div`
+    height: calc(100vh + 140px);
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: fixed;
+    top: -66px;
+    display: ${props => props.active === true ? 'flex' : 'none'};
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    > form {
+        min-width: 300px;
+        background-color: #fff;
+    }
+
+    @media (min-width: 768px) {
+        height: calc(100vh + 80px);
+    }
+`;
+
+const CloseButton = styled.button`
+    background: none;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    margin-left: 100%;
+    margin-bottom: 0.5rem;
+
+    > svg {
+        font-size: 1.5rem;
+    }
+`;
+
 const CampaignView = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [campaign, setCampaign] = useState(null);
     const [donations, setDonations] = useState([]);
     const [supporters, setSupporters] = useState([]);
+    const [donationIsActive, setDonationIsActive] = useState(false);
     let { campaignName } = useParams();
 
     const getCampaignData = async () => {
@@ -126,6 +165,7 @@ const CampaignView = () => {
         setIsLoading(true);
         await updateDonations(newDonation);
         await updateSupporters(newDonation.uid, newDonation.donationAmount);
+        setDonationIsActive(false);
         getData();
     }
 
@@ -134,54 +174,76 @@ const CampaignView = () => {
         getData();
     }, [campaignName]);
 
+    useEffect(() => {
+        if (donationIsActive) {
+            document.body.style.overflow = 'hidden';
+        }
+        else {
+            document.body.style.overflow = 'unset';
+        }
+    }, [donationIsActive]);
+
     if (!isLoading && campaign) {
         return (
-            <CampaignContainer>
-                <CampaignBanner 
-                    name={campaign.name} 
-                    summary={campaign.summary} 
-                />
-                <CampaignInfo 
-                    supporters={campaign.supporters}
-                    followers={campaign.followers}
-                    posts={campaign.posts} 
-                />
+            <>
+                <SupportContainer active={donationIsActive} >
+                    <div style={{minWidth: '180px'}}>
+                       <CloseButton onClick={() => setDonationIsActive(false)}><MdClose /> Close</CloseButton>
+                    </div>
+                    <CampaignSupport handleDonation={handleDonation} />
+                </SupportContainer>
 
-                <CampaignSections>
-                    <SectionColumn>
-                        <div>
-                            <SectionName>About</SectionName>
-                            <CampaignAbout about={campaign.about} />
-                        </div>
+                <CampaignContainer>
+                    <CampaignBanner 
+                        name={campaign.name}
+                        id={campaign.id}
+                        summary={campaign.summary}
+                        image={campaign.bannerImage} 
+                    />
+                    <CampaignInfo 
+                        avatar={campaign.avatar}
+                        supporters={campaign.supporters}
+                        followers={campaign.followers}
+                        posts={campaign.posts} 
+                        setDonationIsActive={setDonationIsActive}
+                    />
 
-                        <div>
-                            <SectionName>Support</SectionName>
-                            <CampaignSupport handleDonation={handleDonation} />
-                        </div>
-                    </SectionColumn>
-
-                    <SectionColumn>
-                        {campaign.goal && 
+                    <CampaignSections>
+                        <SectionColumn>
                             <div>
-                                <SectionName>Goal</SectionName>
-                                <CampaignGoal goal={campaign.goal} />
+                                <SectionName>About</SectionName>
+                                <CampaignAbout about={campaign.about} />
                             </div>
-                        }
+
+                            <div>
+                                <SectionName>Support</SectionName>
+                                <CampaignSupport handleDonation={handleDonation} />
+                            </div>
+                        </SectionColumn>
+
+                        <SectionColumn>
+                            {campaign.goal && 
+                                <div>
+                                    <SectionName>Goal</SectionName>
+                                    <CampaignGoal goal={campaign.goal} />
+                                </div>
+                            }
+                            
+                            <div>
+                                <SectionName>Top Supporters</SectionName> 
+                                <CampaignTopSupport supporters={supporters} setDonationIsActive={setDonationIsActive} />
+                            </div>
                         
-                        <div>
-                            <SectionName>Top Supporters</SectionName> 
-                            <CampaignTopSupport supporters={supporters} />
-                        </div>
-                    
-                        {campaign.donations.length > 0 && (
-                            <div>
-                                <SectionName>Recent Donations</SectionName>
-                                <CampaignDonations donations={donations} />
-                            </div>
-                        )}
-                    </SectionColumn>
-                </CampaignSections>
-            </CampaignContainer>
+                            {campaign.donations.length > 0 && (
+                                <div>
+                                    <SectionName>Recent Donations</SectionName>
+                                    <CampaignDonations donations={donations} />
+                                </div>
+                            )}
+                        </SectionColumn>
+                    </CampaignSections>
+                </CampaignContainer>
+            </>
         );
     }
     else if (!isLoading && error) {

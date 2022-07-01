@@ -85,7 +85,7 @@ const DonateButton = styled.button`
     }
 `;
 
-const CampaignTopSupport = ({supporters}) => {
+const CampaignTopSupport = ({supporters, setDonationIsActive}) => {
     const navigate = useNavigate();
     
     const getTopSupporters = (supporters) => {
@@ -103,7 +103,7 @@ const CampaignTopSupport = ({supporters}) => {
                         return (
                             <Supporter key={`${supporter.displayName}_${index}`}>
                                 <Link to={`../${supporter.displayName}`}>
-                                    <Avatar src={supporter.avatar} alt={supporter.displayName} referrerPolicy="no-referrer"/>
+                                    <Avatar src={supporter.avatar} alt="" referrerPolicy="no-referrer"/>
                                     <SupporterDetails>
                                         <strong>{supporter.displayName}</strong>
                                         <strong>$ {supporter.donationTotal.toLocaleString()}</strong>
@@ -121,9 +121,8 @@ const CampaignTopSupport = ({supporters}) => {
     else {
         return (
             <TopSupport>
-                {/* TODO: Add functionality */}
                 <p style={{marginTop: 0, marginBottom: '0.5rem'}}>You could be the first!</p>
-                <DonateButton>Support</DonateButton>
+                <DonateButton onClick={() => setDonationIsActive(true)}>Support</DonateButton>
             </TopSupport>
         );
     }

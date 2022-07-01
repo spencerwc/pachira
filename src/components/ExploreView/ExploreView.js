@@ -48,7 +48,7 @@ const ExploreView = () => {
         const querySnapshot = await getDocs(collection(db, "campaigns"));
         
         querySnapshot.forEach((doc) => {
-            campaignsList.push({id: doc.id, ...doc.data()});
+            campaignsList.push(doc.data());
         });
 
         // Only show campaigns that have been set up by the user
@@ -70,7 +70,15 @@ const ExploreView = () => {
                 {/* TODO: Make this functional */}
                 <Search type="text" placeholder="Search for a campaign..."></Search>
                 <Container>
-                    {campaignsList.length && campaignsList.map(campaign => <CampaignCard key={campaign.id} id={campaign.id} name={campaign.name} summary={campaign.summary} />)}
+                    {campaignsList.length && campaignsList.map(campaign => 
+                        <CampaignCard 
+                            key={campaign.id} 
+                            id={campaign.id} 
+                            image={campaign.bannerImage} 
+                            name={campaign.name} 
+                            summary={campaign.summary} 
+                        />
+                    )}
                 </Container>
             </ExploreContainer>
         );
