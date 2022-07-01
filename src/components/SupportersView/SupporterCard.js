@@ -22,20 +22,19 @@ const Card = styled.li`
     }
 `;
 
-const Avatar = styled.div`
+const Avatar = styled.img`
     height: 60px;
     width: 60px;
     border-radius: 100%;
     margin-right: 1rem;
+    background-color: rgba(0, 0, 0, 0.05);
 `;
 
-const SupporterCard = ({id, donationTotal}) => {
+const SupporterCard = ({id, avatar, donationTotal}) => {
     return (
         <Card>
             <Link to={`../${id}`}>
-                <Avatar>
-                    <img src="" alt="" />
-                </Avatar>
+                <Avatar src={avatar} />
                 <strong style={{marginRight: 'auto'}}>{id}</strong>
                 <strong>${donationTotal.toLocaleString()}</strong>
             </Link>

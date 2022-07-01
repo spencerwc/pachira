@@ -7,10 +7,11 @@ import logo from '../../images/logo.png';
 import { UserAuthContext } from "../../context/UserAuthContext";
 
 const LoginContainer = styled.section`
-    margin: 0 auto;
+    margin: 1rem auto;
     padding: 1rem;
     text-align: center;
     max-width: 400px;
+    margin-bottom: var(--bottom-margin);
 `;
 
 const Logo = styled.img`
@@ -94,7 +95,7 @@ const OAuthLoginButton = styled.button`
 `;
 
 const SignUp = styled.p`
-    margin-top: 4rem;
+    margin-top: 2rem;
     > a {
         color: var(--font-color);
         text-decoration: none;

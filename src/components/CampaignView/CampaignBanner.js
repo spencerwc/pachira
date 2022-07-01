@@ -27,6 +27,7 @@ const Details = styled.div`
 
     > p {
         margin-bottom: 0;
+        margin-top: 0.5rem;
     }
     
     @media (min-width: 768px) {

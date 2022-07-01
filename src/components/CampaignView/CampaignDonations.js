@@ -26,6 +26,7 @@ const Donation = styled.li`
 
     :last-of-type {
         border-bottom: 0px;
+        padding-bottom: 0;
     }
 `;
 

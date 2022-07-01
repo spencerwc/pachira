@@ -15,7 +15,7 @@ import { db } from '../../index';
 const CampaignContainer = styled.section`
     max-width: 1000px;
     margin: 0 auto;
-    margin-bottom: 80px;
+    margin-bottom: var(--bottom-margin);
 `;
 
 const CampaignSections = styled.section`
@@ -23,13 +23,19 @@ const CampaignSections = styled.section`
     grid-template-columns: 1fr;
     grid-gap: 1rem;
     padding: 0 1rem;
+    margin-top: 1rem;
         
     @media(min-width: 768px) {
         grid-template-columns: 1fr 1fr;
+        margin-top: 0;
     }
 `;
 
-const SectionColumn = styled.div``;
+const SectionColumn = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+`;
 
 const SectionName = styled.h2`
     font-size: 1.2rem;
@@ -123,7 +129,9 @@ const CampaignView = () => {
             setSupporters(supporterData);
             setDonations(donationData);
         }
-        setError({code: 'Campaign not found'});
+        else {
+            setError('Campaign not found.');
+        }
         setIsLoading(false);
     }
 

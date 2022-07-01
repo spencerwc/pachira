@@ -6,9 +6,13 @@ import CampaignCard from "./CampaignCard";
 
 const ExploreContainer = styled.section`
     max-width: 1000px;
-    margin: 1rem auto;
-    margin-bottom: 80px;
+    margin: 0.5rem auto;
+    margin-bottom: var(--bottom-margin);
     padding: 1rem;
+
+    @media (min-width: 768px) {
+        margin-top: 1rem;
+    }
 `;
 
 const Container = styled.ul`

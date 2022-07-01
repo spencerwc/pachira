@@ -86,10 +86,10 @@ const CampaignInfo = ({avatar, supporters, followers, setDonationIsActive}) => {
             <Avatar src={avatar} alt="" referrerPolicy="no-referrer"/>
             <Details>
                 <Detail>
-                    {supportersLength} supporter{supportersLength !== 1 && 's'}
+                    ❤️ {supportersLength} supporter{supportersLength !== 1 && 's'}
                 </Detail>
                 <Detail>
-                    {followers.length} follower{followers.length !== 1 && 's'}
+                    😊 {followers.length} follower{followers.length !== 1 && 's'}
                 </Detail>
             </Details>
             <Buttons>
