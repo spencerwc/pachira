@@ -4,6 +4,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../index";
 import styled from "styled-components";
 import SupporterCard from "./SupporterCard";
+import Loader from "../Loader/Loader";
 
 const SupportersContainer = styled.section`
     max-width: 800px;
@@ -101,7 +102,7 @@ const SupportersView = () => {
         );
     }
     else {
-        return <div>Loading</div>
+        return <Loader />;
     }
 }
 

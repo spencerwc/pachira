@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { db } from '../../index';
 import { UserAuthContext } from "../../context/UserAuthContext";
 import DisplayNameForm from "./DisplayNameForm";
+import Loader from "../Loader/Loader";
 
 const DashboardContainer = styled.section`
     max-width: 1000px;
@@ -81,9 +82,7 @@ const DashboardView = () => {
         );
     }
     else {
-        return (
-            <p>Loading</p>
-        );
+        return <Loader />
     }
 }
 

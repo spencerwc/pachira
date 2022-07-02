@@ -1,10 +1,11 @@
-import { useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { MdErrorOutline } from 'react-icons/md';
 import { FcGoogle } from 'react-icons/fc';
 import styled from "styled-components";
 import logo from '../../images/logo.png';
 import { UserAuthContext } from "../../context/UserAuthContext";
+import Loader from "../Loader/Loader";
 
 const SignUpContainer = styled.section`
     margin: 1rem auto;
@@ -151,6 +152,11 @@ const SignUpView = () => {
         }
     }
 
+    useEffect(() => {
+        window.setTimeout(() => setIsLoading(false), 1000);
+        setIsLoading(true);
+    }, []);
+
     if (!isLoading) {
         return (
             <SignUpContainer>
@@ -202,9 +208,7 @@ const SignUpView = () => {
         );
     }
     else {
-        return (
-            <div>Loading</div>
-        );
+        return <Loader />;
     }
 }
 

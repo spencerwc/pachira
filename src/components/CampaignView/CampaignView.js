@@ -10,6 +10,7 @@ import CampaignSupport from "./CampaignSupport";
 import CampaignAbout from "./CampaignAbout";
 import CampaignTopSupport from "./CampaignTopSupport";
 import CampaignDonations from './CampaignDonations';
+import Loader from '../Loader/Loader';
 import { db } from '../../index';
 
 const CampaignContainer = styled.section`
@@ -287,7 +288,7 @@ const CampaignView = () => {
         return <div>Not found</div>
     }
     else {
-        return <div>Loading</div>
+        return <Loader />;
     }
 }
 

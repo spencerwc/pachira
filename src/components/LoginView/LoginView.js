@@ -1,10 +1,11 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { MdErrorOutline } from 'react-icons/md';
 import { FcGoogle } from 'react-icons/fc';
 import styled from "styled-components";
 import logo from '../../images/logo.png';
 import { UserAuthContext } from "../../context/UserAuthContext";
+import Loader from "../Loader/Loader";
 
 const LoginContainer = styled.section`
     margin: 1rem auto;
@@ -151,6 +152,11 @@ const LoginView = () => {
         signInUser();
     }
 
+    useEffect(() => {
+        window.setTimeout(() => setIsLoading(false), 1000);
+        setIsLoading(true);
+    }, []);
+
     if (!isLoading) {
         return (
             <LoginContainer>
@@ -192,9 +198,7 @@ const LoginView = () => {
         );
     }
     else {
-        return (
-            <div>Loading</div>
-        );
+        return <Loader />;
     }
 }
 

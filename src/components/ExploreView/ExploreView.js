@@ -3,6 +3,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from '../../index';
 import styled from "styled-components";
 import CampaignCard from "./CampaignCard";
+import Loader from "../Loader/Loader";
 
 const ExploreContainer = styled.section`
     max-width: 1000px;
@@ -33,13 +34,15 @@ const Search = styled.input`
     border-radius: 2rem;
     outline: none;
     padding: 1rem;
-    width: 100%;
-    max-width: 350px;
     margin-bottom: 1rem;
     font-size: 1rem;
-
     :focus {
         border-color: var(--border-hover);
+
+    }
+    @media (min-width: 768px) {
+        width: 100%;
+        max-width: 350px;
     }
 `;
 
@@ -88,7 +91,7 @@ const ExploreView = () => {
         );
     }
     else {
-        return <div>Loading</div>
+        return <Loader />;
     }
 }
 
