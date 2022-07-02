@@ -1,12 +1,12 @@
 * {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Noto Sans', sans-serif;
 }
 
 :root {
     --primary-color: #6fbf6b;
     --primary-hover: #63aa60;
-    --secondary-color: #6b6fbf;
-    --secondary-hover: #4f54b3;
+    --secondary-color: #a148a6;
+    --secondary-hover: #904094;
 
     --border-color: rgba(0, 0, 0, 0.12);
     --border-hover: rgba(0, 0, 0, 0.24);

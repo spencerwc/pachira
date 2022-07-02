@@ -32,6 +32,8 @@ const CardDetails = styled.div`
 
     > p {
         font-size: 0.9rem;
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
     }
 `;
 

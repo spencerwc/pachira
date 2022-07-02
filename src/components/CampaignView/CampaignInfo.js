@@ -1,4 +1,9 @@
+import { useContext } from "react";
+import { doc, updateDoc } from "firebase/firestore";
+import { HiHeart, HiUser } from 'react-icons/hi';
 import styled from "styled-components";
+import { UserAuthContext } from "../../context/UserAuthContext";
+import { db } from "../..";
 
 const Info = styled.section`
     display: flex;
@@ -56,7 +61,6 @@ const SupportButton = styled.button`
     min-height: 40px;
     cursor: pointer;
     flex-grow: 1;
-    margin-right: 0.5rem;
     :hover {
         background-color: var(--secondary-hover);
     }
@@ -70,7 +74,9 @@ const FollowButton = styled.button`
     border: 2px solid var(--border-color);
     border-radius: 2rem;
     padding: 0 1rem;
+    margin-left: 0.5rem;
     background-color: transparent;
+    color: var(--font-color);
     font-weight: bold;
     min-height: 40px;
     cursor: pointer;
@@ -79,23 +85,50 @@ const FollowButton = styled.button`
     }
 `;
 
-const CampaignInfo = ({avatar, supporters, followers, setDonationIsActive}) => {
+const CampaignInfo = ({avatar, supporters, followers, handleFollow, setDonationIsActive, uid}) => {
+    const {currentUser} = useContext(UserAuthContext);
     const supportersLength = Object.keys(supporters).length;
+
+    const updateFollowing = async () => {
+        const docRef = doc(db, 'users', currentUser.uid);
+        const following = currentUser.following; 
+        const followingIndex = currentUser.following.indexOf(uid);
+
+        if (followingIndex === -1) {
+            following.push(uid);
+        }
+        else {
+            following.splice(followingIndex, 1);
+        }
+
+        await updateDoc(docRef, {
+            following: following
+        });
+
+    }
+
+    const handleFollowClick = () => {
+        handleFollow(currentUser.uid);
+        updateFollowing();
+    }
+
     return (
         <Info>
             <Avatar src={avatar} alt="" referrerPolicy="no-referrer"/>
             <Details>
                 <Detail>
-                    ❤️ {supportersLength} supporter{supportersLength !== 1 && 's'}
+                    <HiHeart style={{color: 'red'}}/> {supportersLength} supporter{supportersLength !== 1 && 's'}
                 </Detail>
                 <Detail>
-                    😊 {followers.length} follower{followers.length !== 1 && 's'}
+                    <HiUser style={{fontSize: '1.05rem',color: 'var(--font-color)'}} /> {followers.length} follower{followers.length !== 1 && 's'}
                 </Detail>
             </Details>
             <Buttons>
                 {/* TODO: Add functionality later */}
                 <SupportButton onClick={() => setDonationIsActive(true)}>Support</SupportButton>
-                <FollowButton>Follow</FollowButton>
+                {currentUser.uid !== uid &&
+                    <FollowButton onClick={handleFollowClick}>{currentUser.following.indexOf(uid) === -1 ? 'Follow' : 'Following'}</FollowButton>
+                }
             </Buttons>
         </Info>
     )

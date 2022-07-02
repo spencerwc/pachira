@@ -33,6 +33,7 @@ export const UserAuthProvider = ({ children }) => {
             displayName: displayName,
             email: user.email,
             isActive: isActive,
+            following: []
         });
     }
   }
@@ -48,7 +49,8 @@ export const UserAuthProvider = ({ children }) => {
         name: null,
         posts: [],
         summary: null,
-        supporters: []
+        supporters: [],
+        uid: currentUser.uid
     });
   }
 

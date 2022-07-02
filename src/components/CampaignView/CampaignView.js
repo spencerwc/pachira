@@ -169,6 +169,33 @@ const CampaignView = () => {
         });
     }
 
+    const updateFollowers = async (followerId) => {
+        const docRef = doc(db, 'campaigns', campaignName);
+        const docSnap = await getDoc(docRef);
+        const followers = docSnap.data().followers;
+        const followerIndex = followers.indexOf(followerId);
+
+        // If user doesn't follow, add to followers
+        if (followerIndex === -1) {
+            followers.push(followerId);
+        }
+        else {
+            // If user already follows, unfollow
+            followers.splice(followerIndex, 1);
+        }
+
+        await updateDoc(docRef, {
+            followers: followers
+        });
+    }
+
+    const handleFollow = async (followerId) => {
+        setIsLoading(true);
+        await updateFollowers(followerId);
+        setDonationIsActive(false);
+        getData();
+    }
+
     const handleDonation = async (newDonation) => {
         setIsLoading(true);
         await updateDonations(newDonation);
@@ -212,8 +239,10 @@ const CampaignView = () => {
                         avatar={campaign.avatar}
                         supporters={campaign.supporters}
                         followers={campaign.followers}
+                        handleFollow={handleFollow}
                         posts={campaign.posts} 
                         setDonationIsActive={setDonationIsActive}
+                        uid={campaign.uid}
                     />
 
                     <CampaignSections>

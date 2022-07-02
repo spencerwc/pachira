@@ -72,6 +72,7 @@ const OAuthSignUpButton = styled.button`
     font-weight: bold;
     min-height: 45px;
     cursor: pointer;
+    color: var(--font-color);
     :hover {
         border-color: var(--border-hover);
     }
