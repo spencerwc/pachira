@@ -33,6 +33,11 @@ const Details = styled.div`
 `;
 
 const Detail = styled.span`
+    display: flex;
+    align-items: center;
+    > svg {
+        margin-right: 0.25rem;
+    }
     :first-child {
         margin-right: 1rem;
     }
@@ -118,10 +123,10 @@ const CampaignInfo = ({avatar, supporters, followers, handleFollow, setDonationI
             <Avatar src={avatar} alt="" referrerPolicy="no-referrer"/>
             <Details>
                 <Detail>
-                    <HiHeart style={{color: 'red'}}/> {supportersLength} supporter{supportersLength !== 1 && 's'}
+                    <HiHeart style={{color: 'red'}}/>{supportersLength} supporter{supportersLength !== 1 && 's'}
                 </Detail>
                 <Detail>
-                    <HiUser style={{fontSize: '1.05rem',color: 'var(--font-color)'}} /> {followers.length} follower{followers.length !== 1 && 's'}
+                    <HiUser style={{fontSize: '1.05rem',color: 'var(--font-color)'}} />{followers.length} follower{followers.length !== 1 && 's'}
                 </Detail>
             </Details>
                     <Buttons>

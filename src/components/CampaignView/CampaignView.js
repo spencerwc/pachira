@@ -39,7 +39,6 @@ const SectionColumn = styled.div`
 `;
 
 const SectionName = styled.h2`
-    font-size: 1.2rem;
     margin: 0.7rem 0;
 `;
 

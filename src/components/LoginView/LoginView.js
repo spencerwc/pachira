@@ -72,13 +72,16 @@ const ErrorMessage = styled.p`
 const OAuthLogin = styled.section`
     display: flex;
     flex-direction: column;
+
+    > p {
+        margin: 1.5rem 0;
+    }
 `;
 
 const OAuthLoginButton = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 0.5rem;
     border: 2px solid var(--border-color);
     border-radius: 2rem;
     padding: 0.5rem;

@@ -44,7 +44,6 @@ const ViewPage = styled.div`
     color: #fff;
     background-color: var(--secondary-color);
     font-weight: 500;
-    font-size: 0.9rem;
     width: fit-content;
     :hover {
         background-color: var(--secondary-hover);
@@ -59,7 +58,7 @@ const CampaignCard = ({id, image, name, summary}) => {
             <Link to={`../${id}`}>
                 <CardBanner image={image}/>
                 <CardDetails>
-                    <strong>{name}</strong>
+                    <strong style={{fontSize: '1.05rem'}}>{name}</strong>
                     {/* TODO: Revisit this */}
 
                     {summary.length > MAX_SUMMARY_LENGTH ? 
