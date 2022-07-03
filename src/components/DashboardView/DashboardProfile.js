@@ -39,16 +39,18 @@ const Avatar = styled.img`
 `;
 
 const ChangeAvatarLabel = styled.label`
-    border: 2px solid var(--border-color);
+    border: none;
     border-radius: 2rem;
     padding: 0.5rem 1rem;
+    margin: 0;
     margin-top: 1rem;
-    background-color: transparent;
+    background-color: var(--secondary-color);
     font-weight: bold;
     cursor: pointer;
-    color: var(--font-color);
+    color: #fff;
+    width: fit-content;
     :hover {
-        border-color: var(--border-hover);
+        background-color: var(--secondary-hover);
     }
 `;
 
@@ -87,6 +89,7 @@ const DashboardProfile = ({avatar, displayName, email, updateCollection, setIsLo
 
     return (
         <Profile>
+            <h2 style={{margin: '0 0 1rem 0'}}>User Settings</h2>
             <AvatarContainer>
                 <Avatar src={avatar} alt="" referrerPolicy="no-referrer"/>
                 <ChangeAvatarLabel htmlFor="avatar">Change Avatar</ChangeAvatarLabel>

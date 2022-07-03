@@ -1,15 +1,19 @@
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useContext } from "react";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import styled from "styled-components";
 import { UserAuthContext } from "../../context/UserAuthContext";
+import CampaignDetails from "./CampaignDetails";
 
 const Campaign= styled.section`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
     border: 2px solid var(--border-color);
     border-radius: 1rem;
     padding: 1rem;
+`;
+
+const BannerContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
 `;
 
 const CampaignBanner = styled.div`
@@ -24,22 +28,18 @@ const CampaignBanner = styled.div`
 `;
 
 const ChangeBannerLabel = styled.label`
-    border: 2px solid var(--border-color);
+    border: none;
     border-radius: 2rem;
     padding: 0.5rem 1rem;
-    margin: 0 auto;
+    margin: 0;
     margin-top: 1rem;
-    background-color: transparent;
+    background-color: var(--secondary-color);
     font-weight: bold;
     cursor: pointer;
-    color: var(--font-color);
+    color: #fff;
     width: fit-content;
     :hover {
-        border-color: var(--border-hover);
-    }
-
-    @media (min-width: 768px) {
-        margin-left: 0;
+        background-color: var(--secondary-hover);
     }
 `;
 
@@ -70,11 +70,24 @@ const DashboardCampaign = ({campaign, updateCollection}) => {
         });
     }
 
+    const handleUpdate = (newData) => {
+        updateCollection('campaigns', currentUser.displayName, {...newData});
+    }
+
     return (
         <Campaign>
-            <CampaignBanner image={campaign.bannerImage} />
-            <ChangeBannerLabel htmlFor="bannerImage">Change Banner</ChangeBannerLabel>
-            <ChangeBanner id="bannerImage" type="file" accept="image/png" onChange={handleChange} />
+            <h2 style={{margin: 0, marginBottom: '1rem'}}>Campaign Settings</h2>
+            <BannerContainer>
+                <CampaignBanner image={campaign.bannerImage} />
+                <ChangeBannerLabel htmlFor="bannerImage">Change Banner</ChangeBannerLabel>
+                <ChangeBanner id="bannerImage" type="file" accept="image/png" onChange={handleChange} />
+            </BannerContainer>
+            <CampaignDetails 
+                name={campaign.name}
+                summary={campaign.summary}
+                about={campaign.about}
+                handleUpdate={handleUpdate}
+            />
         </Campaign>
     );
 }

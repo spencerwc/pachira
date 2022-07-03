@@ -29,11 +29,15 @@ const CardBanner = styled.div`
 
 const CardDetails = styled.div`
     padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 130px;
 
     > p {
         font-size: 0.9rem;
         margin-top: 0.5rem;
         margin-bottom: 1rem;
+        flex-grow: 1;
     }
 `;
 
@@ -51,7 +55,7 @@ const ViewPage = styled.div`
 `;
 
 const CampaignCard = ({id, image, name, summary}) => {
-    const MAX_SUMMARY_LENGTH = 80;
+    const MAX_SUMMARY_LENGTH = 100;
 
     return (
         <Card>

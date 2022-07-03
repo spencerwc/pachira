@@ -129,13 +129,12 @@ const CampaignInfo = ({avatar, supporters, followers, handleFollow, setDonationI
                     <HiUser style={{fontSize: '1.05rem',color: 'var(--font-color)'}} />{followers.length} follower{followers.length !== 1 && 's'}
                 </Detail>
             </Details>
-                    <Buttons>
-                        <SupportButton onClick={() => setDonationIsActive(true)}>Support</SupportButton>
-                        { currentUser && currentUser.uid !== uid &&
-                            <FollowButton onClick={handleFollowClick}>{currentUser.following.indexOf(uid) === -1 ? 'Follow' : 'Following'}</FollowButton>
-                        }
-                    </Buttons>
-
+            <Buttons>
+                <SupportButton onClick={() => setDonationIsActive(true)}>Support</SupportButton>
+                { currentUser && currentUser.uid !== uid &&
+                    <FollowButton onClick={handleFollowClick}>{currentUser.following.indexOf(uid) === -1 ? 'Follow' : 'Following'}</FollowButton>
+                }
+            </Buttons>
         </Info>
     )
 }
