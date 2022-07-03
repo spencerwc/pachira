@@ -17,6 +17,11 @@ const CampaignContainer = styled.section`
     max-width: 1000px;
     margin: 0 auto;
     margin-bottom: var(--bottom-margin);
+    margin-top: calc(var(--top-margin) - 1rem);
+
+    @media (min-width: 768px) {
+        margin-top: 0;
+    }
 `;
 
 const CampaignSections = styled.section`

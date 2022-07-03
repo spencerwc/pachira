@@ -6,8 +6,8 @@ import { UserAuthContext } from "../../context/UserAuthContext";
 
 const Header = styled.div`
     background-color: #fff;
-    position: relative; 
-    height: 50px;
+    position: fixed;
+    top: 0;
     padding: 0.5rem 0;
     width: 100%;
     display: flex;
@@ -15,6 +15,7 @@ const Header = styled.div`
     box-shadow: 0 3px 10px rgba(0,0,0,0.05), 0 3px 10px rgba(0,0,0,0.05);
 
     @media(min-width: 768px) {
+        position: relative;
         display: none;
     }
 `;
@@ -52,7 +53,7 @@ const MobileHeader = () => {
     return (
         <Header>
             <Link to="/">
-                <img src={logo} alt="Pachira" style={{maxWidth: '50px', marginLeft: '0.5rem'}}/>
+                <img src={logo} alt="Pachira" style={{maxWidth: '45px', marginLeft: '0.5rem'}}/>
             </Link>
 
             { !currentUser && 

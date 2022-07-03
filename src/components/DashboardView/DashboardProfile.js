@@ -3,13 +3,11 @@ import { useContext } from "react";
 import { UserAuthContext } from "../../context/UserAuthContext";
 import styled from "styled-components";
 
-const Profile = styled.section`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+const Profile = styled.div`
     border: 2px solid var(--border-color);
     border-radius: 1rem;
     padding: 1rem;
+    overflow-wrap: anywhere;
 `;
 
 const AvatarContainer = styled.div`
@@ -58,7 +56,7 @@ const ChangeAvatar = styled.input`
     display: none;
 `;
 
-const DashboardProfile = ({avatar, displayName, email, handleUpdate, setIsLoading}) => {
+const DashboardProfile = ({avatar, displayName, email, updateCollection, setIsLoading}) => {
     const {currentUser} = useContext(UserAuthContext);
     const storage = getStorage();
 
@@ -79,10 +77,10 @@ const DashboardProfile = ({avatar, displayName, email, handleUpdate, setIsLoadin
         uploadBytes(avatarRef, image).then((snapshot) => {
             getDownloadURL(snapshot.ref).then( url => {
                 // Upload user avatar
-                handleUpdate('users', currentUser.uid, {avatar: url});
+                updateCollection('users', currentUser.uid, {avatar: url});
 
                 // Update campaign avatar
-                handleUpdate('campaigns', currentUser.displayName, {avatar: url});
+                updateCollection('campaigns', currentUser.displayName, {avatar: url});
             });
         });
     }

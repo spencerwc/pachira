@@ -6,13 +6,16 @@ import { db } from '../../index';
 import { UserAuthContext } from "../../context/UserAuthContext";
 import DisplayNameForm from "./DisplayNameForm";
 import DashboardProfile from "./DashboardProfile";
+import DashboardCampaign from "./DashboardCampaign";
 import Loader from "../Loader/Loader";
 
-const DashboardContainer = styled.section`
+const DashboardContainer = styled.div`
     max-width: 1000px;
     margin: 0 auto;
-    margin-bottom: 80px;
+    margin-top: var(--top-margin);
+    margin-bottom: var(--bottom-margin);
     padding: 1rem;
+    padding-bottom: 0;
 
     @media (min-width: 768px) {
         margin-top: 1rem;
@@ -38,7 +41,8 @@ const SectionColumn = styled.div`
 
 const DashboardView = () => {
     const [isLoading, setIsLoading] = useState(false);
-    const [campaign, setCampaign] = useState();
+    const [campaign, setCampaign] = useState(null);
+    const [displayName, setDisplayName] = useState('');
     const {currentUser} = useContext(UserAuthContext);
     const navigate = useNavigate();
 
@@ -63,7 +67,11 @@ const DashboardView = () => {
         setIsLoading(false);
     }
 
-    const handleUpdate = async (collection, identifier, newData) => {
+    const updateDisplayName = (e) => {
+        setDisplayName(e.target.value);
+    }
+
+    const updateCollection = async (collection, identifier, newData) => {
         const docRef = doc(db, collection, identifier);
 
         // Update doc with new changes
@@ -99,12 +107,15 @@ const DashboardView = () => {
                             avatar={currentUser.avatar} 
                             displayName={currentUser.displayName} 
                             email={currentUser.email}
-                            handleUpdate={handleUpdate}
+                            updateCollection={updateCollection}
                             setIsLoading={setIsLoading}
                         />
                     </SectionColumn>
                     <SectionColumn>
-                        {/* TODO: Add campaign settings */}
+                        <DashboardCampaign 
+                            campaign={campaign} 
+                            updateCollection={updateCollection} 
+                        />
                     </SectionColumn>
                 </DashboardSections>
             </DashboardContainer>
@@ -113,7 +124,11 @@ const DashboardView = () => {
     else if (!isLoading && !campaign) {
         return (
             <DashboardContainer>
-                <DisplayNameForm handleUpdate={handleUpdate} />
+                <DisplayNameForm 
+                    displayName={displayName}
+                    updateDisplayName={updateDisplayName} 
+                    updateCollection={updateCollection} 
+                />
             </DashboardContainer>
         );
     }

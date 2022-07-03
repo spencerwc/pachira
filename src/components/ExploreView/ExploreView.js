@@ -7,7 +7,8 @@ import Loader from "../Loader/Loader";
 
 const ExploreContainer = styled.section`
     max-width: 1000px;
-    margin: 0.5rem auto;
+    margin: 0 auto;
+    margin-top: var(--top-margin);
     margin-bottom: var(--bottom-margin);
     padding: 1rem;
     padding-bottom: 0;
@@ -19,7 +20,7 @@ const ExploreContainer = styled.section`
 
 const Container = styled.ul`
     display: grid;
-    grid-template-columns: repeat( auto-fill, minmax(300px, 1fr) );
+    grid-template-columns: repeat( auto-fill, minmax(251px, 1fr));
     grid-gap: 1rem;
     list-style: none;
     margin: 0;
@@ -137,7 +138,6 @@ const ExploreView = () => {
                             summary={campaign.summary} 
                         />
                     ) : 
-                    
                     <div>No campaigns found. Try again.</div>}
                 </Container>
             </ExploreContainer>

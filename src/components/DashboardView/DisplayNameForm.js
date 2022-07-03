@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import { useHistory } from 'react-router';
 import { doc, getDoc, setDoc } from "firebase/firestore"; 
 import { MdErrorOutline } from 'react-icons/md';
 import { UserAuthContext } from "../../context/UserAuthContext";
@@ -90,14 +89,15 @@ const ErrorMessage = styled.p`
     }
 `;
 
-const DisplayNameForm = ({ handleUpdate }) => {
-    const [displayName, setDisplayName] = useState("");
+const DisplayNameForm = ({ displayName, updateDisplayName, updateCollection }) => {
     const [error, setError] = useState(null);
     const {currentUser, getUserData} = useContext(UserAuthContext);
     
     const handleChange = (e) => {
-        setDisplayName(e.target.value);
-        setError(null);
+        if (error){
+            setError(null);
+        }
+        updateDisplayName(e.target.value);
     }
 
     const checkForExistingDoc = async (collection, identifier) => {
@@ -135,7 +135,7 @@ const DisplayNameForm = ({ handleUpdate }) => {
 
         if (!nameExists) {
             // Update user display name
-            await handleUpdate('users', currentUser.uid, { displayName: displayName.toLowerCase(), isActive: true });
+            await updateCollection('users', currentUser.uid, { displayName: displayName.toLowerCase(), isActive: true });
 
             // Create campaign using the new display name
             addToCampaignCollection();
