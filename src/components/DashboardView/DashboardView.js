@@ -5,13 +5,35 @@ import styled from "styled-components";
 import { db } from '../../index';
 import { UserAuthContext } from "../../context/UserAuthContext";
 import DisplayNameForm from "./DisplayNameForm";
+import DashboardProfile from "./DashboardProfile";
 import Loader from "../Loader/Loader";
 
 const DashboardContainer = styled.section`
     max-width: 1000px;
     margin: 0 auto;
     margin-bottom: 80px;
-    padding: 0.5rem;
+    padding: 1rem;
+
+    @media (min-width: 768px) {
+        margin-top: 1rem;
+    }
+`;
+
+const DashboardSections = styled.section`
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 1rem;
+    margin-top: 1rem;
+        
+    @media(min-width: 768px) {
+        grid-template-columns: 1fr 2fr;
+    }
+`;
+
+const SectionColumn = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 `;
 
 const DashboardView = () => {
@@ -60,7 +82,8 @@ const DashboardView = () => {
             getUserCampaign();
         }
         else {
-            navigate('../login');
+            // TODO: Revisit this
+            navigate('/');
         }
     }, []);
     
@@ -69,8 +92,21 @@ const DashboardView = () => {
         
         return (
             <DashboardContainer>
-                {/* TODO: Add sections here */}
-                <h1>Hi {campaignName}!</h1>
+                <h1 style={{margin: 0}}>Hi {campaignName}!</h1>
+                <DashboardSections>
+                    <SectionColumn>
+                        <DashboardProfile 
+                            avatar={currentUser.avatar} 
+                            displayName={currentUser.displayName} 
+                            email={currentUser.email}
+                            handleUpdate={handleUpdate}
+                            setIsLoading={setIsLoading}
+                        />
+                    </SectionColumn>
+                    <SectionColumn>
+                        {/* TODO: Add campaign settings */}
+                    </SectionColumn>
+                </DashboardSections>
             </DashboardContainer>
         )
     }

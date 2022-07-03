@@ -55,13 +55,9 @@ export const UserAuthProvider = ({ children }) => {
   }
 
   const getUserData = async () => {
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const docRef = doc(db, "users", user.uid);
-        const docSnap = await getDoc(docRef);
-        setCurrentUser({...user, ...docSnap.data()});
-      }
-    });
+      const docRef = doc(db, "users", auth.currentUser.uid);
+      const docSnap = await getDoc(docRef);
+      setCurrentUser({...auth.currentUser, ...docSnap.data()});
   }
 
   const signUp = async (displayName, email, password) => {
@@ -105,7 +101,11 @@ export const UserAuthProvider = ({ children }) => {
       setCurrentUser(currentUser);
     });
 
-    getUserData();
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        getUserData();
+      }
+    });
 
     return () => {
       unsubscribe();
@@ -113,7 +113,7 @@ export const UserAuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <UserAuthContext.Provider value={{currentUser, signUp, logIn, googleSignIn, logOut}}>
+    <UserAuthContext.Provider value={{currentUser, getUserData, signUp, logIn, googleSignIn, logOut}}>
       {children}
     </UserAuthContext.Provider>
   );

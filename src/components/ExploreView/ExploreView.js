@@ -125,7 +125,7 @@ const ExploreView = () => {
                 <Heading>Explore</Heading>
                 <SearchForm onSubmit={handleSearch}>
                     <Search type="text" placeholder="Search for a campaign..." value={searchTerm} onChange={handleChange}></Search>
-                    <SearchButton onClick={handleSearch}>Search</SearchButton>
+                    <SearchButton type="submit">Search</SearchButton>
                 </SearchForm>
                 <Container>
                     {campaignsList.length > 0 ? campaignsList.map(campaign => 
