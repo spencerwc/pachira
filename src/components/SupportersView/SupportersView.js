@@ -5,6 +5,7 @@ import { db } from "../../index";
 import styled from "styled-components";
 import SupporterCard from "./SupporterCard";
 import Loader from "../Loader/Loader";
+import Error from "../Error/Error";
 
 const SupportersContainer = styled.section`
     max-width: 800px;
@@ -100,6 +101,9 @@ const SupportersView = () => {
                 </Supporters>
             </SupportersContainer>
         );
+    }
+    else if (!isLoading && error) {
+        return <Error />
     }
     else {
         return <Loader />;

@@ -11,6 +11,7 @@ import CampaignAbout from "./CampaignAbout";
 import CampaignTopSupport from "./CampaignTopSupport";
 import CampaignDonations from './CampaignDonations';
 import Loader from '../Loader/Loader';
+import Error from '../Error/Error';
 import { db } from '../../index';
 
 const CampaignContainer = styled.section`
@@ -289,7 +290,7 @@ const CampaignView = () => {
         );
     }
     else if (!isLoading && error) {
-        return <div>Not found</div>
+        return <Error />;
     }
     else {
         return <Loader />;

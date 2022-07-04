@@ -12,6 +12,7 @@ import CampaignView from "../CampaignView/CampaignView";
 import ExploreView from "../ExploreView/ExploreView";
 import SupportersView from "../SupportersView/SupportersView";
 import DashboardView from '../DashboardView/DashboardView';
+import Error from "../Error/Error";
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
             <Route path=":campaignName/supporters" element={<SupportersView />} />
             <Route path=":campaignName/followers" element={<div>Follower Route</div>} />
             <Route path=":campaignName/posts" element={<div>Posts Route</div>} />
+            <Route path="*" element={<Error />} />
           </Route>
           <Route path="login" element={<LoginView />} />
           <Route path="register" element={<SignUpView />} />

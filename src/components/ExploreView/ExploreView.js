@@ -3,6 +3,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from '../../index';
 import styled from "styled-components";
 import CampaignCard from "./CampaignCard";
+import Error from "../Error/Error";
 import Loader from "../Loader/Loader";
 
 const ExploreContainer = styled.section`
@@ -144,7 +145,7 @@ const ExploreView = () => {
         );
     }
     else if (!isLoading && error) {
-        return <div>Something went wrong.</div>;
+        return <Error />;
     }
     else {
         return <Loader />;
