@@ -74,16 +74,18 @@ const DashboardProfile = ({avatar, displayName, email, updateCollection, setIsLo
 
     const handleUpload = (image) => {
         setIsLoading(true);
-
         const avatarRef = ref(storage, `avatars/${currentUser.uid}`);
         
         uploadBytes(avatarRef, image).then((snapshot) => {
-            getDownloadURL(snapshot.ref).then( url => {
+            getDownloadURL(snapshot.ref).then( async (url) => {
                 // Upload user avatar
                 updateCollection('users', currentUser.uid, {avatar: url});
 
                 // Update campaign avatar
                 updateCollection('campaigns', currentUser.displayName, {avatar: url});
+            }).catch(error => {
+                console.error(error);
+                setIsLoading(false);
             });
         });
     }

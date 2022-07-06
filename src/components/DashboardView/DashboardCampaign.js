@@ -48,7 +48,7 @@ const ChangeBanner = styled.input`
     display: none;
 `;
 
-const DashboardCampaign = ({campaign, updateCollection}) => {
+const DashboardCampaign = ({campaign, updateCollection, setIsLoading}) => {
     const {currentUser} = useContext(UserAuthContext);
     const storage = getStorage();
 
@@ -62,12 +62,16 @@ const DashboardCampaign = ({campaign, updateCollection}) => {
     }
 
     const handleUpload = (image) => {
+        setIsLoading(true);
         const bannerRef = ref(storage, `banners/${currentUser.uid}`);
         
         uploadBytes(bannerRef, image).then((snapshot) => {
             getDownloadURL(snapshot.ref).then( url => {
                 updateCollection('campaigns', currentUser.displayName, {bannerImage: url});
             });
+        }).catch(error => {
+            console.error(error);
+            setIsLoading(false);
         });
     }
 

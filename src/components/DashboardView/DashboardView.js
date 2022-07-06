@@ -43,7 +43,7 @@ const DashboardView = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [campaign, setCampaign] = useState(null);
     const [displayName, setDisplayName] = useState('');
-    const {currentUser} = useContext(UserAuthContext);
+    const {currentUser, getUserData} = useContext(UserAuthContext);
     const navigate = useNavigate();
 
     const getFromCollection = async (collection, identifier) => {
@@ -60,9 +60,11 @@ const DashboardView = () => {
 
         // Check campaign collection for user displayName
         const campaignDoc = await getFromCollection('campaigns', userDoc.data().displayName);
+
+        const campaignData = campaignDoc.data();
        
-        if (campaignDoc.data()) {
-            setCampaign({id: campaignDoc.id, ...campaignDoc.data()});
+        if (campaignData) {
+            setCampaign(campaignData);
         }
         setIsLoading(false);
     }
@@ -79,8 +81,12 @@ const DashboardView = () => {
             ...newData
         });
 
-        // Get the updated campaign
-        getUserCampaign();
+        if (collection === 'campaigns') {
+            getUserCampaign();
+        }
+        else {
+            getUserData();
+        }
     }
 
     useEffect(() => {
@@ -115,6 +121,7 @@ const DashboardView = () => {
                         <DashboardCampaign 
                             campaign={campaign} 
                             updateCollection={updateCollection} 
+                            setIsLoading={setIsLoading}
                         />
                     </SectionColumn>
                 </DashboardSections>

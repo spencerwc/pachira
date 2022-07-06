@@ -30,7 +30,7 @@ export const UserAuthProvider = ({ children }) => {
     if (!userExists) {
         setDoc(doc(db, 'users', user.uid), {
             avatar: user.photoURL ? user.photoURL : avatar,
-            displayName: displayName,
+            displayName: displayName.toLowerCase(),
             email: user.email,
             isActive: isActive,
             following: []
@@ -45,6 +45,7 @@ export const UserAuthProvider = ({ children }) => {
         created: new Date(),
         currentGoal: null,
         donations: [],
+        id: displayName.toLowerCase(),
         followers: [],
         name: null,
         posts: [],
