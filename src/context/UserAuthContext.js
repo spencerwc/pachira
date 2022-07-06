@@ -38,7 +38,7 @@ export const UserAuthProvider = ({ children }) => {
     }
   }
 
-  const addToCampaignCollection = async (displayName) => {
+  const addToCampaignCollection = async (displayName, user) => {
     await setDoc(doc(db, 'campaigns', displayName.toLowerCase()), {
         about: null,
         bannerImage: null,
@@ -50,7 +50,7 @@ export const UserAuthProvider = ({ children }) => {
         posts: [],
         summary: null,
         supporters: [],
-        uid: currentUser.uid
+        uid: user.uid
     });
   }
 
@@ -65,12 +65,13 @@ export const UserAuthProvider = ({ children }) => {
 
     if (!campaignExists) {
       return createUserWithEmailAndPassword(auth, email, password).then(async (userCredential) => {
-        console.log(userCredential);
         // Add to user collection
         await addToUserCollection(userCredential.user, displayName, true);
 
         // Create a new campaign using the user display name
-        await addToCampaignCollection(displayName);
+        await addToCampaignCollection(displayName, userCredential.user);
+
+        getUserData();
       });
     }
     else {

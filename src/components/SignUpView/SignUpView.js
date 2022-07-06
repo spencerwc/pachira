@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { MdErrorOutline } from 'react-icons/md';
 import { FcGoogle } from 'react-icons/fc';
@@ -28,7 +28,7 @@ const SignUpForm = styled.form`
         margin: 0.5rem 0;
         border-radius: 0.5rem;
         padding: 0.5rem;
-        border: 2px solid var(--border-color);
+        border: 1px solid var(--border-color);
         :focus {
             outline: none;
             border-color: var(--border-hover);
@@ -154,11 +154,6 @@ const SignUpView = () => {
             createUser(email, password);
         }
     }
-
-    useEffect(() => {
-        window.setTimeout(() => setIsLoading(false), 1000);
-        setIsLoading(true);
-    }, []);
 
     if (!isLoading) {
         return (

@@ -4,24 +4,25 @@ import { MdErrorOutline } from 'react-icons/md';
 import { UserAuthContext } from "../../context/UserAuthContext";
 import { db } from '../../index';
 import styled from "styled-components";
-import welcome from './images/undraw_welcoming.svg';
+import blob from './images/blob.svg';
+import celebrate from './images/celebrate.png';
 
 const Container = styled.section`
     display: flex;
     flex-direction: column;
     text-align: center;
-    height: calc(100vh - 200px);
 `;
 
-const FormContainer = styled.div`
+const ImageContainer = styled.div`
+    background-image: url(${props => props.image});
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    
     > img {
         width: 100%;
-        max-width: 350px;
+        max-width: 500px;
         margin: 1.5rem auto;
-
-        @media (min-width: 768px) {
-            max-width: 500px;
-        }
     }
 `;
 
@@ -148,10 +149,13 @@ const DisplayNameForm = ({ displayName, updateDisplayName, updateCollection }) =
 
     return (
         <Container>
-            <FormContainer>
-                <h1 style={{margin: 0}}>Welcome!</h1>
-                <img src={welcome} alt="" />
-                <p style={{margin: 0}}>Set a display name for your account to get started!</p>
+            <div>
+                <h1 style={{margin: 0, color: 'var(--secondary-color)'}}>Welcome!</h1>
+                <p style={{marginBottom: 0}}>We're glad you're here!</p>
+                <ImageContainer image={blob}>
+                    <img src={celebrate} alt="" />
+                </ImageContainer>
+                <p style={{marginTop: 0}}>Set a display name for your account to get started.</p>
                 <form onSubmit={handleSubmit} style={{marginTop: '1rem'}}>
                     <DisplayName 
                         type="text" 
@@ -164,7 +168,7 @@ const DisplayNameForm = ({ displayName, updateDisplayName, updateCollection }) =
                     <SetButton type="submit">Submit</SetButton>
                     {error && <ErrorMessage><MdErrorOutline />{error}</ErrorMessage>}
                 </form>
-            </FormContainer>
+            </div>
         </Container>
     );
 }
