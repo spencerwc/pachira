@@ -141,22 +141,14 @@ const CampaignView = () => {
         setIsLoading(false);
     }
 
-    const updateDonations = async (newDonation) => {
-        const docRef = doc(db, 'campaigns', campaignName);
-        const docSnap = await getDoc(docRef);
-        const donations = docSnap.data().donations;
+    const updateDonations = (currentDonations, newDonation) => {
+        const donations = currentDonations;
         donations.push(newDonation);
-        
-        // Update doc with new changes
-        await updateDoc(docRef, {
-            donations: donations
-        });
+        return donations;
     }
 
-    const updateSupporters = async (supporterId, donationAmount) => {
-        const docRef = doc(db, 'campaigns', campaignName);
-        const docSnap = await getDoc(docRef);
-        const supporters = docSnap.data().supporters;
+    const updateSupporters = (currentSupporters, supporterId, donationAmount) => {
+        const supporters = currentSupporters;
 
         // Check for existing donations
         if (supporters.hasOwnProperty(supporterId)) {
@@ -169,10 +161,18 @@ const CampaignView = () => {
             }
             supporters[supporterId] = newSupporter;
         }
+        return supporters;
+    }
 
-        await updateDoc(docRef, {
-            supporters: supporters
-        });
+    const updateGoal = (currentGoal, donationAmount) => {
+        let newGoal = null;
+
+        if (currentGoal) {
+            newGoal = currentGoal;
+            const newFunding = currentGoal.currentFunding + donationAmount;
+            newGoal.currentFunding = newFunding;
+        }
+        return newGoal;
     }
 
     const updateFollowers = async (followerId) => {
@@ -204,8 +204,21 @@ const CampaignView = () => {
 
     const handleDonation = async (newDonation) => {
         setIsLoading(true);
-        await updateDonations(newDonation);
-        await updateSupporters(newDonation.uid, newDonation.donationAmount);
+        
+        const docRef = doc(db, 'campaigns', campaignName);
+        const docSnap = await getDoc(docRef);
+        const campaignData = docSnap.data();
+        const newDonations = updateDonations(campaignData.donations, newDonation);
+        const newSupporters = updateSupporters(campaignData.supporters, newDonation.uid, newDonation.donationAmount);
+        const newGoal = updateGoal(campaignData.currentGoal, newDonation.donationAmount);
+    
+        await updateDoc(docRef, {
+            donations: newDonations,
+            currentGoal: newGoal,
+            supporters: newSupporters,
+        });
+        
+        // Set false to hide modal if opened
         setDonationIsActive(false);
         getData();
     }
@@ -265,10 +278,10 @@ const CampaignView = () => {
                         </SectionColumn>
 
                         <SectionColumn>
-                            {campaign.goal && 
+                            {campaign.currentGoal && 
                                 <div>
-                                    <SectionName>Goal</SectionName>
-                                    <CampaignGoal goal={campaign.goal} />
+                                    <SectionName>Current Goal</SectionName>
+                                    <CampaignGoal goal={campaign.currentGoal} setDonationIsActive={setDonationIsActive} />
                                 </div>
                             }
                             
