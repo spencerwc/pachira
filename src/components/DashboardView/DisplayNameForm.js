@@ -90,7 +90,7 @@ const ErrorMessage = styled.p`
     }
 `;
 
-const DisplayNameForm = ({ displayName, updateDisplayName, updateCollection }) => {
+const DisplayNameForm = ({ displayName, updateDisplayName, updateCollection, getUserCampaign, setIsLoading }) => {
     const [error, setError] = useState(null);
     const {currentUser, getUserData} = useContext(UserAuthContext);
     
@@ -108,7 +108,7 @@ const DisplayNameForm = ({ displayName, updateDisplayName, updateCollection }) =
     }
 
     const addToCampaignCollection = async () => {
-        setDoc(doc(db, 'campaigns', displayName), {
+        setDoc(doc(db, 'campaigns', displayName.toLowerCase()), {
             about: null,
             avatar: currentUser.avatar,
             bannerImage: null,
@@ -116,7 +116,7 @@ const DisplayNameForm = ({ displayName, updateDisplayName, updateCollection }) =
             currentGoal: null,
             donations: [],
             followers: [],
-            id: displayName,
+            id: displayName.toLowerCase(),
             name: null,
             posts: [],
             summary: null,
@@ -131,7 +131,9 @@ const DisplayNameForm = ({ displayName, updateDisplayName, updateCollection }) =
         if (!displayName.match(/^[a-z\d]+$/i)) {
             setError({code: 'Display name only allows A-Z, a-z, 0-9 and _.'});
         }
+
         // Check if name already exists
+        setIsLoading(true);
         const nameExists = await checkForExistingDoc('campaigns', displayName.toLowerCase());
 
         if (!nameExists) {
@@ -139,11 +141,13 @@ const DisplayNameForm = ({ displayName, updateDisplayName, updateCollection }) =
             await updateCollection('users', currentUser.uid, { displayName: displayName.toLowerCase(), isActive: true });
 
             // Create campaign using the new display name
-            addToCampaignCollection();
-            getUserData();
+            await addToCampaignCollection();
+            await getUserData();
+            getUserCampaign();
         }
         else {
             setError('That username already exists');
+            setIsLoading(false);
         }
     }
 

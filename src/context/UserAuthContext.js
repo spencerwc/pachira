@@ -41,6 +41,7 @@ export const UserAuthProvider = ({ children }) => {
   const addToCampaignCollection = async (displayName, user) => {
     await setDoc(doc(db, 'campaigns', displayName.toLowerCase()), {
         about: null,
+        avatar: user.photoURL ? user.photoURL : avatar,
         bannerImage: null,
         created: new Date(),
         currentGoal: null,
@@ -50,7 +51,7 @@ export const UserAuthProvider = ({ children }) => {
         name: null,
         posts: [],
         summary: null,
-        supporters: [],
+        supporters: {},
         uid: user.uid
     });
   }

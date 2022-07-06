@@ -69,8 +69,8 @@ const DashboardView = () => {
         setIsLoading(false);
     }
 
-    const updateDisplayName = (e) => {
-        setDisplayName(e.target.value);
+    const updateDisplayName = (newName) => {
+        setDisplayName(newName);
     }
 
     const updateCollection = async (collection, identifier, newData) => {
@@ -134,7 +134,9 @@ const DashboardView = () => {
                 <DisplayNameForm 
                     displayName={displayName}
                     updateDisplayName={updateDisplayName} 
-                    updateCollection={updateCollection} 
+                    updateCollection={updateCollection}
+                    getUserCampaign={getUserCampaign}
+                    setIsLoading={setIsLoading}
                 />
             </DashboardContainer>
         );

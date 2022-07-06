@@ -12,6 +12,7 @@ const Card = styled.li`
 
     > a {
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
         text-decoration: none;
         color: var(--font-color);
