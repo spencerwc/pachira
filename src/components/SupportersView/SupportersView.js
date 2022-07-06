@@ -10,6 +10,7 @@ import Error from "../Error/Error";
 const SupportersContainer = styled.section`
     max-width: 800px;
     margin: 0.5rem auto;
+    margin-top: var(--top-margin);
     margin-bottom: var(--bottom-margin);
     padding: 1rem;
 
@@ -22,11 +23,12 @@ const Supporters = styled.ul`
     list-style: none;
     margin: 0;
     padding: 1rem;
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-color);
     border-radius: 0.7rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04), 0 3px 10px rgba(0, 0, 0, 0.04);
 `;
 
 const Heading = styled.h1`

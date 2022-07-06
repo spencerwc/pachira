@@ -6,9 +6,10 @@ const TopSupport = styled.section`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-color);
     border-radius: 1rem;
     padding: 1rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04), 0 3px 10px rgba(0, 0, 0, 0.04);
 `;
 
 const Supporters = styled.ul`

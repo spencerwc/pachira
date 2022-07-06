@@ -25,7 +25,7 @@ const CampaignInput = styled.input`
     border-radius: 0.5rem;
     padding: 0.5rem;
     margin: 0.5rem 0 1rem 0;
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-color);
     width: calc(100% - 1.2rem);
     font-size: 0.9rem;
 
@@ -43,7 +43,7 @@ const CampaignTextarea = styled.textarea`
     resize: none;
     margin: 0.5rem 0 1rem 0;
     min-height: 100px;
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-color);
     border-radius: 0.5rem;
     padding: 0.5rem;
     font-size: 0.9rem;

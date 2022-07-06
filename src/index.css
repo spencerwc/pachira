@@ -12,10 +12,10 @@ h2 {
 }
 
 :root {
-    --primary-color: #6fbf6b;
-    --primary-hover: #63aa60;
-    --secondary-color: #a148a6;
-    --secondary-hover: #904094;
+    --primary-color: #fff;
+    --primary-hover: #fff;
+    --secondary-color: #618bff;
+    --secondary-hover: #4b78f5;
 
     --border-color: rgba(0, 0, 0, 0.12);
     --border-hover: rgba(0, 0, 0, 0.24);

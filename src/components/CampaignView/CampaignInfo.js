@@ -15,15 +15,18 @@ const Avatar = styled.img`
     width: 100px;
     height: 100px;
     border-radius: 100%;
-    margin: -3rem 1rem 0 0;
+    margin: -3rem 0 0 0;
     background-color: #fff;
     border: 4px solid #fff;
+
+    @media (min-width: 376px) {
+        margin: -3rem 1rem 0 0;
+    }
 
     @media (min-width: 768px) {
         width: 120px;
         height: 120px;
-        margin-left: 0.5rem;
-        margin-top: -4rem;
+        margin: -4rem 1rem 0 0.5rem;
     }
 `;
 

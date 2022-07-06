@@ -2,13 +2,9 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 const Card = styled.li`
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-color);
     border-radius: 1.1rem;
 
-    :hover {
-        border-color: var(--border-hover);
-    }
-    
     > a {
         color: var(--font-color);
         text-decoration: none;
@@ -43,7 +39,7 @@ const CardDetails = styled.div`
 
 const ViewPage = styled.div`
     border: none;
-    border-radius: 0.7rem;
+    border-radius: 2rem;
     padding: 0.5rem 1rem;
     color: #fff;
     background-color: var(--secondary-color);

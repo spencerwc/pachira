@@ -3,7 +3,8 @@ import styled from "styled-components";
 const About = styled.section`
     padding: 1rem;
     border-radius: 1rem;
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04), 0 3px 10px rgba(0, 0, 0, 0.04);
 
     > p {
         margin: 0 auto;

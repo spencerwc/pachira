@@ -26,6 +26,10 @@ const Container = styled.ul`
     list-style: none;
     margin: 0;
     padding: 0;
+
+    > li {
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04), 0 3px 10px rgba(0, 0, 0, 0.04);
+    }
 `;
 
 const Heading = styled.h1`
@@ -38,7 +42,7 @@ const SearchForm = styled.form`
 `;
 
 const Search = styled.input`
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-color);
     border-radius: 2rem;
     outline: none;
     padding: 0.5rem;
