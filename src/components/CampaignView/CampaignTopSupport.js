@@ -19,7 +19,7 @@ const Supporters = styled.ul`
 `;
 
 const Supporter = styled.li`
-    border-bottom: 2px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
     padding: 0.5rem 0;
     
     :first-of-type {

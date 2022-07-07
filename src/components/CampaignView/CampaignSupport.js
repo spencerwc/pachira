@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
-import { MdErrorOutline, MdClose } from 'react-icons/md';
+import { MdErrorOutline } from 'react-icons/md';
+import { BiDollar } from 'react-icons/bi';
 import styled from "styled-components";
 import { UserAuthContext } from "../../context/UserAuthContext";
 
@@ -23,6 +24,7 @@ const DonateAmount = styled.input`
     border-radius: 0.5rem;
     padding: 0.5rem;
     border: 1px solid var(--border-color);
+    text-indent: 0.7rem;
 
     :focus {
         outline: none;
@@ -117,7 +119,7 @@ const CampaignSupport = ({ handleDonation }) => {
                     uid: currentUser.uid,
                     date: new Date(),
                     donationAmount: Number(donateAmount),
-                    donationMessage: donateMessage.length > 1 ? donateMessage : 'No message included.'
+                    donationMessage: donateMessage
                 }
                 handleDonation(newDonation);
             }
@@ -132,17 +134,18 @@ const CampaignSupport = ({ handleDonation }) => {
         <Donate onSubmit={handleSubmit}>
             <h2 style={{margin: 0, marginBottom: '0.5rem', fontSize: '1rem'}}>Make a Donation</h2>
             {error && <ErrorMessage><MdErrorOutline />{error}</ErrorMessage>}
+            <BiDollar style={{fontSize: '1.1rem', margin: '1rem 0 -1.81rem 0.3rem', zIndex: 2}}/>
             <DonateAmount 
                 type="number" 
                 min={1}
                 max={10000}
-                placeholder={'$5'} 
+                placeholder={'5'} 
                 value={donateAmount} 
                 onChange={handleAmountChange}
                 required
             />
             <DonateMessage 
-                placeholder="Your message" 
+                placeholder="Your message (optional)" 
                 value={donateMessage}
                 onChange={handleMessageChange}
                 minLength={1}

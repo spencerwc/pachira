@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { BiDollar } from 'react-icons/bi';
 import styled from "styled-components";
 
 const GoalForm = styled.form`
@@ -180,7 +181,9 @@ const DashboardGoal = ({currentGoal, handleUpdate}) => {
                     onChange={(e) => setNewTarget(e.target.value)}
                     min={0}
                     required
+                    style={{textIndent: '0.7rem'}}
                 />
+                <BiDollar style={{fontSize: '1.1rem', margin: '-2.8rem 0 1.5rem 0.3rem', zIndex: 2}}/>
                 <div>
                     <UpdateButton onClick={handleSubmit}>
                         Update Goal
