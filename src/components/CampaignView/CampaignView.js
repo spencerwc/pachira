@@ -278,7 +278,7 @@ const CampaignView = () => {
                         </SectionColumn>
 
                         <SectionColumn>
-                            {campaign.currentGoal && 
+                            {campaign.currentGoal.name && 
                                 <div>
                                     <SectionName>Current Goal</SectionName>
                                     <CampaignGoal goal={campaign.currentGoal} setDonationIsActive={setDonationIsActive} />

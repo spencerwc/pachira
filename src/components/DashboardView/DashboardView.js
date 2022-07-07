@@ -9,7 +9,7 @@ import DashboardProfile from "./DashboardProfile";
 import DashboardCampaign from "./DashboardCampaign";
 import Loader from "../Loader/Loader";
 
-const DashboardContainer = styled.div`
+const DashboardContainer = styled.main`
     max-width: 1000px;
     margin: 0 auto;
     margin-top: var(--top-margin);

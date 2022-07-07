@@ -3,6 +3,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import styled from "styled-components";
 import { UserAuthContext } from "../../context/UserAuthContext";
 import CampaignDetails from "./CampaignDetails";
+import DashboardGoal from "./DashboardGoal";
 
 const Campaign= styled.section`
     border: 1px solid var(--border-color);
@@ -23,6 +24,7 @@ const CampaignBanner = styled.div`
     background-color: rgba(0, 0, 0, 0.05);
     background-image: url(${props => props.image});
     background-size: cover;
+    background-position: center;
     @media (min-width: 768px) {
         height: 200px;
     }
@@ -91,6 +93,10 @@ const DashboardCampaign = ({campaign, updateCollection, setIsLoading}) => {
                 name={campaign.name}
                 summary={campaign.summary}
                 about={campaign.about}
+                handleUpdate={handleUpdate}
+            />
+            <DashboardGoal 
+                currentGoal={campaign.currentGoal}
                 handleUpdate={handleUpdate}
             />
         </Campaign>

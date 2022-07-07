@@ -3,13 +3,11 @@ import { MdInfo } from 'react-icons/md';
 import ReactTooltip from "react-tooltip";
 import styled from "styled-components";
 
-const Details = styled.div`
-`;
-
 const CampaignForm = styled.form`
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
+    margin-top: 1.5rem;
 
     > label {
         display: flex;
@@ -104,12 +102,12 @@ const CampaignDetails = ({name, summary, about, handleUpdate}) => {
     }
 
     return (
-        <Details>
+        <section>
             <ReactTooltip />
             <CampaignForm onSubmit={handleSubmit}>
                 <label htmlFor="name">
                     <strong>Campaign Name</strong> 
-                    <MdInfo data-tip="Setting a name will make your campaign visible." />
+                    {!name && <MdInfo data-tip="Setting a name will make your campaign visible." />}
                     <ReactTooltip />
                 </label>
                 <CampaignInput 
@@ -121,8 +119,9 @@ const CampaignDetails = ({name, summary, about, handleUpdate}) => {
                     minLength={MIN_NAME_LENGTH}
                     maxLength={MAX_NAME_LENGTH}
                     required 
+                    disabled={name && name.length > 0}
                 />              
-                <CharLimit>{newName.length} / 20</CharLimit>
+                {!name &&<CharLimit>{newName.length} / {MAX_NAME_LENGTH}</CharLimit>}
 
                 
                 <label htmlFor="summary">
@@ -136,7 +135,7 @@ const CampaignDetails = ({name, summary, about, handleUpdate}) => {
                     onChange={(e) => setNewSummary(e.target.value)}
                     maxLength={MAX_SUMMARY_LENGTH}
                 />
-                <CharLimit>{newSummary.length} / 100</CharLimit>
+                <CharLimit>{newSummary.length} / {MAX_SUMMARY_LENGTH}</CharLimit>
                 
                 <label htmlFor="about">
                     <strong>About Campaign</strong>
@@ -151,7 +150,7 @@ const CampaignDetails = ({name, summary, about, handleUpdate}) => {
                     Update Campaign
                 </UpdateButton>
             </CampaignForm>
-        </Details>
+        </section>
     );
 }
 

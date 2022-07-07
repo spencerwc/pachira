@@ -44,7 +44,12 @@ export const UserAuthProvider = ({ children }) => {
         avatar: user.photoURL ? user.photoURL : avatar,
         bannerImage: null,
         created: new Date(),
-        currentGoal: null,
+        currentGoal: {
+          name: '',
+          currentFunding: 0,
+          description: '',
+          targetFunding: 0
+        },
         donations: [],
         id: displayName.toLowerCase(),
         followers: [],

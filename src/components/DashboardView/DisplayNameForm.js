@@ -113,7 +113,12 @@ const DisplayNameForm = ({ displayName, updateDisplayName, updateCollection, get
             avatar: currentUser.avatar,
             bannerImage: null,
             created: new Date(),
-            currentGoal: null,
+            currentGoal: {
+                name: '',
+                currentFunding: 0,
+                description: '',
+                targetFunding: 0
+            },
             donations: [],
             followers: [],
             id: displayName.toLowerCase(),
