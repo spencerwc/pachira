@@ -162,7 +162,7 @@ const DashboardGoal = ({currentGoal, handleUpdate}) => {
                 </label>
                 <GoalTextarea 
                     id="goal-description" 
-                    placeholder="Describe your goal" 
+                    placeholder="Describe your goal (required)" 
                     value={newDescription} 
                     onChange={(e) => setNewDescription(e.target.value)}
                     maxLength={MAX_DESCRIPTION_LENGTH}
@@ -176,10 +176,10 @@ const DashboardGoal = ({currentGoal, handleUpdate}) => {
                 <GoalInput 
                     id="target"
                     type="number" 
-                    placeholder="Target funding amount" 
+                    placeholder={1} 
                     value={newTarget}
                     onChange={(e) => setNewTarget(e.target.value)}
-                    min={0}
+                    min={1}
                     required
                     style={{textIndent: '0.7rem'}}
                 />

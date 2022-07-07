@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { MdHome, MdSearch, MdSettings, MdLogin } from 'react-icons/md';
 import styled from "styled-components";
@@ -123,7 +123,48 @@ const NavUser = styled.li`
     }
 `;
 
+const UserMenu = styled.ul`
+    display: ${props => props.visible === true ? 'block' : 'none'};
+    background-color: #fff;
+    padding: 0.5rem 0;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04), 0 3px 10px rgba(0, 0, 0, 0.04);
+    list-style: none;
+    position: absolute;
+    bottom: 5rem;
+    right: 1rem;
+    
+    @media (min-width: 768px) {
+        right: 1rem;
+        top: 5rem;
+        bottom: auto;
+    }
+    
+    > li {
+        padding: 0.5rem 1.5rem;
+        cursor: pointer;
+        :hover {
+            color: var(--secondary-hover);
+        }
+        :nth-of-type(2) {
+            border-top: 1px solid var(--border-color);
+        }
+        > a {
+            text-decoration: none;
+            color: var(--font-color);
+            :visited {
+                color: var(--font-color);
+            }
+            :hover {
+                color: var(--secondary-hover);
+            }
+        }
+    }
+`;
+
 const Navbar = () => {
+    const [showMenu, setShowMenu] = useState(false);
     const { currentUser, logOut } = useContext(UserAuthContext);
     const navigate = useNavigate();
 
@@ -153,13 +194,16 @@ const Navbar = () => {
                     <RegisterLink><NavLink to="register">Sign up</NavLink></RegisterLink>
                 }
                 { currentUser && 
-                    <NavUser>
+                    <NavUser onClick={() => setShowMenu(!showMenu)}>
                         <img
                             src={currentUser.avatar} 
                             referrerPolicy="no-referrer" 
                             alt=""
-                            onClick={handleLogOut}
                         /> 
+                        <UserMenu visible={showMenu}>
+                            {currentUser.isActive && <li><Link to={`../${currentUser.displayName}`}>Your Campaign</Link></li>}
+                            <li onClick={handleLogOut}>Log Out</li>
+                        </UserMenu>
                     </NavUser>
                 }
             </NavLinks>

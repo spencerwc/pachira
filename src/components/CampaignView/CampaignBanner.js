@@ -32,6 +32,7 @@ const Details = styled.div`
     
     @media (min-width: 768px) {
         border-radius: 1rem;
+        width: fit-content;
         max-width: 40%;
         margin-left: 1rem;
     }

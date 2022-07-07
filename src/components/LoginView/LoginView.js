@@ -139,6 +139,17 @@ const LoginView = () => {
         }
     }
 
+    const signInDemo = async () => {
+        try {
+            await logIn('demo@email.com', 'demo1234');
+            navigate('../dashboard');
+        }
+        catch (error) {
+            setError(error.message);
+            setIsLoading(false);
+        }
+    }
+
     const signInGoogleUser = async () => {
         try {
             await googleSignIn();
@@ -189,6 +200,7 @@ const LoginView = () => {
                 </LoginForm>
                 <OAuthLogin>
                     <p>Or log in with</p>
+                    <OAuthLoginButton onClick={signInDemo} style={{marginBottom: '1rem'}}>🤖 Demo</OAuthLoginButton>
                     <OAuthLoginButton onClick={signInGoogleUser}><FcGoogle/> Google</OAuthLoginButton>                
                 </OAuthLogin>
                 <SignUp><Link to="../register">New to Pachira?  Sign up.</Link></SignUp>
