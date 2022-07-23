@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import TypeAnimation from 'react-type-animation';
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import blob from './images/blob.svg';
 import growth from './images/growth.png';
 
@@ -59,18 +59,9 @@ const Heading = styled.div`
 `;
 
 const GetStarted = styled.button`
-    border: none;
-    border-radius: 2rem;
-    margin-top: 1rem;
-    padding: 1rem 2rem;
-    color: #fff;
-    background-color: var(--secondary-color);
-    font-weight: bold;
-    min-height: 40px;
-    cursor: pointer;
-    :hover {
-        background-color: var(--secondary-hover);
-    }
+    width: fit-content;
+    margin: 1rem auto;
+    padding: 0 1rem;
 `;
 
 const ImageContainer = styled.div`
@@ -113,7 +104,7 @@ const Hero = () => {
                     </Heading>
                     <MobileHide>
                         <p>{summary}</p>
-                        <GetStarted onClick={() => navigate('../register')}>Get Started</GetStarted>
+                        <GetStarted className="secondary" onClick={() => navigate('../register')}>Get Started</GetStarted>
                     </MobileHide>
                 </div>
                 <ImageContainer image={blob}>
@@ -121,7 +112,7 @@ const Hero = () => {
                 </ImageContainer>
                 <DesktopHide>
                     <p style={{margin: '0.5rem'}}>{summary}</p>
-                    <GetStarted onClick={() => navigate('../register')}>Get Started</GetStarted>
+                    <GetStarted className="secondary" onClick={() => navigate('../register')}>Get Started</GetStarted>
                 </DesktopHide>
             </Sections>
         </HeroSection>

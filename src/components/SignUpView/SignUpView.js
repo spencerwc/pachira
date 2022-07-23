@@ -2,116 +2,10 @@ import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { MdErrorOutline } from 'react-icons/md';
 import { FcGoogle } from 'react-icons/fc';
-import styled from "styled-components";
 import logo from '../../images/logo.png';
 import { UserAuthContext } from "../../context/UserAuthContext";
 import Loader from "../Loader/Loader";
-
-const SignUpContainer = styled.section`
-    margin: 1rem auto;
-    margin-bottom: var(--bottom-margin);
-    padding: 1rem;
-    text-align: center;
-    max-width: 400px;
-`;
-
-const Logo = styled.img`
-    max-width: 100px;
-`;
-
-const SignUpForm = styled.form`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    > input {
-        margin: 0.5rem 0;
-        border-radius: 0.5rem;
-        padding: 0.5rem;
-        border: 1px solid var(--border-color);
-        :focus {
-            outline: none;
-            border-color: var(--border-hover);
-        }
-    }
-`;
-
-const SignUpHeading = styled.h1`
-    margin: 2rem auto;
-`;
-
-const SignUpButton = styled.button`
-    margin-top: 0.5rem;
-    border: none;
-    border-radius: 2rem;
-    padding: 0.5rem;
-    background-color: var(--secondary-color);
-    color: #fff;
-    font-weight: bold;
-    letter-spacing: 0.05rem;
-    cursor: pointer;
-    min-height: 45px;
-    :hover {
-        background-color: var(--secondary-hover);
-    }
-`;
-
-const OAuthSignUp = styled.section`
-    display: flex;
-    flex-direction: column;
-
-    > p {
-        margin: 1.5rem 0;
-    }
-`;
-
-const OAuthSignUpButton = styled.button`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid var(--border-color);
-    border-radius: 2rem;
-    padding: 0.5rem;
-    background-color: transparent;
-    font-weight: bold;
-    min-height: 45px;
-    cursor: pointer;
-    color: var(--font-color);
-    :hover {
-        border-color: var(--border-hover);
-    }
-    > svg {
-        font-size: 1.1rem;
-        margin-right: 0.3rem;
-    }
-`;
-
-const ErrorMessage = styled.p`
-    color: red;
-    margin: 0;
-    animation: fadeIn 1s;
-    > svg {
-        margin-right: 0.3rem;
-    }
-    @keyframes fadeIn {
-        0% { opacity: 0; }
-        100% { opacity: 1; }
-    }
-`;
-
-const Login = styled.p`
-    margin-top: 2rem;
-    > a {
-        color: var(--font-color);
-        text-decoration: none;
-        :visited {
-            color: var(--font-color);
-        }
-        :hover {
-            color: var(--secondary-hover);
-        }
-    }
-`;
+import StyledForm from "../../styles/StyledForm";
 
 const SignUpView = () => {
     const [displayName, setDisplayName] = useState("");
@@ -157,10 +51,10 @@ const SignUpView = () => {
 
     if (!isLoading) {
         return (
-            <SignUpContainer>
-                <Logo src={logo} alt="pachira" />
-                <SignUpForm onSubmit={handleSubmit}>
-                    <SignUpHeading>Sign up. It's free!</SignUpHeading>
+            <StyledForm>
+                <img src={logo} alt="pachira" />
+                <form onSubmit={handleSubmit}>
+                    <h1>Sign up. It's free!</h1>
                     <input 
                         type="text" 
                         placeholder="Display Name"
@@ -193,16 +87,18 @@ const SignUpView = () => {
                         }}
                         required
                     />
-                    {error && <ErrorMessage><MdErrorOutline />{error}</ErrorMessage>}
+                    {error && <p><MdErrorOutline />{error}</p>}
                     <p style={{fontSize: '0.8rem'}}>Pachira is a demo application and is only intended to showcase example features. This is not an actual service.</p>
-                    <SignUpButton type="submit">Create Account</SignUpButton>
-                </SignUpForm>
-                <OAuthSignUp>
+                    <button className="secondary" type="submit">Create Account</button>
+                </form>
+                <div>
                     <p>Or sign up with</p>
-                    <OAuthSignUpButton onClick={signInGoogleUser}><FcGoogle/> Google</OAuthSignUpButton>                
-                </OAuthSignUp>
-                <Login><Link to="../login">Already have an account?  Log in.</Link></Login>
-            </SignUpContainer>
+                    <button className="outline" onClick={signInGoogleUser}><FcGoogle/> Google</button>                
+                </div>
+                <p>
+                    <Link to="../login">Already have an account?  Log in.</Link>
+                </p>
+            </StyledForm>
         );
     }
     else {

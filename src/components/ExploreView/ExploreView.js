@@ -27,7 +27,7 @@ const Container = styled.ul`
     margin: 0;
     padding: 0;
 
-    > li {
+    li {
         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04), 0 3px 10px rgba(0, 0, 0, 0.04);
     }
 `;
@@ -63,26 +63,8 @@ const Search = styled.input`
 `;
 
 const SearchButton = styled.button`
-    border: none;
-    border-radius: 2rem;
-    padding: 0 1rem;
-    margin-top: 1rem;
-    color: #fff;
-    background-color: var(--secondary-color);
-    font-weight: bold;
-    min-height: 40px;
-    cursor: pointer;
-    :hover {
-        background-color: var(--secondary-hover);
-    }
-
-    @media (min-width: 361px) {
-        margin-top: 0;
-    }
-
-    @media (min-width: 768px) {
-        margin-left: -6rem;
-    }
+    display: inline-block;
+    width: fit-content;
 `;
 
 const ExploreView = () => {
@@ -131,7 +113,7 @@ const ExploreView = () => {
                 <Heading>Explore</Heading>
                 <SearchForm onSubmit={handleSearch}>
                     <Search type="text" placeholder="Search for a campaign..." value={searchTerm} onChange={handleChange}></Search>
-                    <SearchButton type="submit">Search</SearchButton>
+                    <SearchButton className="secondary" type="submit">Search</SearchButton>
                 </SearchForm>
                 <Container>
                     {campaignsList.length > 0 ? campaignsList.map(campaign => 

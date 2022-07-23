@@ -4,7 +4,6 @@ import App from './components/App/App';
 import reportWebVitals from './utils/reportWebVitals';
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import './index.css';
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,

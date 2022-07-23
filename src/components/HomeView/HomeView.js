@@ -9,7 +9,6 @@ import Loader from "../Loader/Loader";
 const HomeContainer = styled.main`
     margin-top: calc(var(--top-margin) - 1rem);
     padding-bottom: var(--bottom-margin);
-    background-color: #f3efe9;
 
     @media (min-width: 768px) {
         margin-top: 0;

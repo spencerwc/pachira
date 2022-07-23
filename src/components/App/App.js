@@ -4,6 +4,7 @@ import {
   Route
 } from "react-router-dom";
 import { UserAuthProvider } from '../../context/UserAuthContext';
+import GlobalStyle from "../../styles/GlobalStyle";
 import WithHeader from '../Layouts/WithHeader';
 import Navbar from "../Navbar/Navbar";
 import HomeView from "../HomeView/HomeView";
@@ -19,6 +20,7 @@ const App = () => {
   return (
     <UserAuthProvider>
       <BrowserRouter>
+        <GlobalStyle /> 
         <Navbar />
         <Routes>
           <Route element={<WithHeader />}>
