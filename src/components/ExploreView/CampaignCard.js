@@ -1,11 +1,11 @@
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import { Link } from "react-router-dom";
 
-const Card = styled.li`
+const StyledCard = styled.li`
     border: 1px solid var(--border-color);
     border-radius: 1.1rem;
 
-    > a {
+    a {
         color: var(--font-color);
         text-decoration: none;
 
@@ -13,9 +13,37 @@ const Card = styled.li`
             color: var(--font-color);
         }
     }
+
+    p {
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+        flex-grow: 1;
+    }
+
+    .details {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        min-height: 130px;
+    }
+
+    .view-page {
+        border: none;
+        border-radius: 2rem;
+        padding: 0.5rem 1rem;
+        color: #fff;
+        background-color: var(--secondary-color);
+        font-weight: 500;
+        width: fit-content;
+        
+        &:hover {
+            background-color: var(--secondary-hover);
+        }
+    }
 `;
 
-const CardBanner = styled.div`
+const StyledBanner = styled.div`
     height: 150px;
     border-radius: 1rem 1rem 0 0;
     background-color: rgba(0, 0, 0, 0.05);
@@ -23,41 +51,14 @@ const CardBanner = styled.div`
     background-size: cover;
 `;
 
-const CardDetails = styled.div`
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    min-height: 130px;
-
-    > p {
-        font-size: 0.9rem;
-        margin-top: 0.5rem;
-        margin-bottom: 1rem;
-        flex-grow: 1;
-    }
-`;
-
-const ViewPage = styled.div`
-    border: none;
-    border-radius: 2rem;
-    padding: 0.5rem 1rem;
-    color: #fff;
-    background-color: var(--secondary-color);
-    font-weight: 500;
-    width: fit-content;
-    :hover {
-        background-color: var(--secondary-hover);
-    }
-`;
-
 const CampaignCard = ({id, image, name, summary}) => {
     const MAX_SUMMARY_LENGTH = 100;
 
     return (
-        <Card>
+        <StyledCard>
             <Link to={`../${id}`}>
-                <CardBanner image={image}/>
-                <CardDetails>
+                <StyledBanner image={image}/>
+                <div className="details">
                     <strong style={{fontSize: '1.05rem'}}>{name}</strong>
                     {/* TODO: Revisit this */}
 
@@ -65,10 +66,10 @@ const CampaignCard = ({id, image, name, summary}) => {
                         <p>{summary.slice(0, MAX_SUMMARY_LENGTH)}...</p> :
                         <p>{summary}</p> 
                     }
-                    <ViewPage>View Page</ViewPage>
-                </CardDetails>
+                    <div className="view-page">View Page</div>
+                </div>
             </Link>
-        </Card>
+        </StyledCard>
     );
 }
 

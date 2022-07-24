@@ -29,8 +29,8 @@ const StyledNav = styled.nav`
         align-items: center;
         justify-content: center;
         
-        &:hover, &:focus {
-            color: var(--secondary-hover);
+        &:hover {
+            color: var(--secondary-color);
         }
     }
 
@@ -96,6 +96,10 @@ const StyledNav = styled.nav`
 
             &:hover {
                 background-color: var(--secondary-hover);
+
+                a {
+                    color: #fff;
+                }
             }
         }
     }

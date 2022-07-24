@@ -1,18 +1,14 @@
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from '../../index';
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import Hero from "./Hero";
 import Trending from './Trending';
 import Loader from "../Loader/Loader";
 
 const HomeContainer = styled.main`
-    margin-top: calc(var(--top-margin) - 1rem);
+    padding-top: var(--top-margin);
     padding-bottom: var(--bottom-margin);
-
-    @media (min-width: 768px) {
-        margin-top: 0;
-    }
 `;
 
 const HomeView = () => {

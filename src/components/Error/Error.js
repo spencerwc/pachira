@@ -1,16 +1,17 @@
 import styled from 'styled-components';
 import error from './error.png';
 
-const ErrorContainer = styled.section`
+const StyledError = styled.main`
     display: flex;
     flex-direction: column;
     text-align: center;
     justify-content: center;
-    padding: 1rem;
+    padding-top: 150px;
+    padding-bottom: 50px;
 `;
 
 const ErrorMessage = styled.div`
-    > img {
+    img {
         width: 100%;
 
         @media (min-width: 768px) {
@@ -21,13 +22,13 @@ const ErrorMessage = styled.div`
 
 const Error = () => {
     return (
-        <ErrorContainer>
+        <StyledError>
             <ErrorMessage>
                 <h1>Oops! Something went wrong.</h1>
                 <img src={error} alt="" />
                 <h2>Try again.</h2>
             </ErrorMessage>
-        </ErrorContainer>
+        </StyledError>
     );
 }
 

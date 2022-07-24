@@ -16,6 +16,11 @@ const Header = styled.header`
     z-index: 10;
     box-shadow: 0 3px 10px rgba(0,0,0,0.05), 0 3px 10px rgba(0,0,0,0.05);
 
+    img {
+        width: 50px;
+        height: 50px;
+    }
+
     .link-container {
         display: flex;
         align-items: center;
@@ -47,7 +52,7 @@ const MobileHeader = () => {
     return (
         <Header>
             <Link to="/">
-                <img src={logo} alt="Pachira" style={{maxWidth: '45px', marginLeft: '0.5rem'}}/>
+                <img src={logo} alt="Pachira" />
             </Link>
 
             {!currentUser && 

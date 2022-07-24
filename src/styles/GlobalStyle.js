@@ -1,4 +1,6 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from "styled-components/macro";
+import "@fontsource/noto-sans/400.css";
+import "@fontsource/noto-sans/600.css";
 
 const GlobalStyle = createGlobalStyle`
     :root {
@@ -116,6 +118,7 @@ const GlobalStyle = createGlobalStyle`
         position: relative;
         margin: 0 auto;
         padding: 1rem;
+        min-height: 100vh;
     }
 
     input {

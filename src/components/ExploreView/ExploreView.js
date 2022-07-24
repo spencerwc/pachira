@@ -1,70 +1,71 @@
 import { useEffect, useState} from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from '../../index';
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import CampaignCard from "./CampaignCard";
 import Error from "../Error/Error";
 import Loader from "../Loader/Loader";
 
-const ExploreContainer = styled.section`
-    max-width: 1000px;
+const StyledExplore = styled.main`
     margin: 0 auto;
-    margin-top: var(--top-margin);
-    margin-bottom: var(--bottom-margin);
-    padding: 1rem;
-    padding-bottom: 0;
+    max-width: 1000px;
+    padding-top: 75px;
+    padding-bottom: 100px;
 
-    @media (min-width: 768px) {
-        margin-top: 1rem;
+    ul {
+        display: grid;
+        grid-template-columns: repeat( auto-fill, minmax(251px, 1fr));
+        grid-gap: 1rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
     }
-`;
-
-const Container = styled.ul`
-    display: grid;
-    grid-template-columns: repeat( auto-fill, minmax(251px, 1fr));
-    grid-gap: 1rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
 
     li {
         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04), 0 3px 10px rgba(0, 0, 0, 0.04);
     }
-`;
 
-const Heading = styled.h1`
-    margin-top: 0;
-    margin-bottom: 1rem;
-`;
+    h1 {
+        margin: 1rem 0;
+    }
 
-const SearchForm = styled.form`
-    margin-bottom: 1rem;
-`;
+    form {
+        margin-bottom: 1rem;
+    }
 
-const Search = styled.input`
-    border: 1px solid var(--border-color);
-    border-radius: 2rem;
-    outline: none;
-    padding: 0.5rem;
-    font-size: 1rem;
-    margin-right: 0.5rem;
-    text-indent: 0.5rem;
-    :focus {
-        border-color: var(--border-hover);
+    input {
+        border: 1px solid var(--border-color);
+        border-radius: 2rem;
+        outline: none;
+        font-size: 1rem;
+        text-indent: 0.5rem;
+        padding: 0.75rem;
+        margin-right: 0.5rem;
+        width: 100%;
+        max-width: 250px;
+        
+        &:focus {
+            border-color: var(--border-hover);
+        }
+    }
+
+    button {
+        width: fit-content;
+        display: inline-block;
+        padding: 0 1.5rem;
+        margin-top: 1rem;
     }
 
     @media (min-width: 768px) {
-        padding: 1rem;
-        width: 100%;
-        max-width: 282px;
-        text-indent: 0;
-        margin-right: 0;
-    }
-`;
+        input {
+            max-width: 300px;
+            text-indent: 0.5rem;
+        }
 
-const SearchButton = styled.button`
-    display: inline-block;
-    width: fit-content;
+        button {
+            margin-top: 0;
+        }
+    }
 `;
 
 const ExploreView = () => {
@@ -109,25 +110,28 @@ const ExploreView = () => {
 
     if (!isLoading && campaignsList) {
         return (
-            <ExploreContainer>
-                <Heading>Explore</Heading>
-                <SearchForm onSubmit={handleSearch}>
-                    <Search type="text" placeholder="Search for a campaign..." value={searchTerm} onChange={handleChange}></Search>
-                    <SearchButton className="secondary" type="submit">Search</SearchButton>
-                </SearchForm>
-                <Container>
-                    {campaignsList.length > 0 ? campaignsList.map(campaign => 
-                        <CampaignCard 
-                            key={campaign.id} 
-                            id={campaign.id} 
-                            image={campaign.bannerImage} 
-                            name={campaign.name} 
-                            summary={campaign.summary} 
-                        />
-                    ) : 
-                    <div>No campaigns found. Try again.</div>}
-                </Container>
-            </ExploreContainer>
+            <StyledExplore>
+                <h1>Explore</h1>
+                <form onSubmit={handleSearch}>
+                    <input type="text" placeholder="Search for a campaign..." value={searchTerm} onChange={handleChange}></input>
+                    <button className="secondary" type="submit">Search</button>
+                </form>
+                {campaignsList.length > 0 ? (
+                    <ul>
+                        {campaignsList.map(campaign => 
+                            <CampaignCard 
+                                key={campaign.id} 
+                                id={campaign.id} 
+                                image={campaign.bannerImage} 
+                                name={campaign.name} 
+                                summary={campaign.summary} 
+                            />
+                        )}
+                    </ul>
+                ) : (
+                    <p>No campaigns found. Try again.</p>
+                )}
+            </StyledExplore>
         );
     }
     else if (!isLoading && error) {

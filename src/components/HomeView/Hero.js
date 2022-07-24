@@ -4,64 +4,66 @@ import styled from "styled-components/macro";
 import blob from './images/blob.svg';
 import growth from './images/growth.png';
 
-const HeroSection = styled.section`
+const StyledHero = styled.section`
     text-align: center;
     padding-top: 2rem;
 
+    button {
+        width: fit-content;
+        margin: 1rem auto;
+        padding: 0 1rem;
+    }
+
+    .sections {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .desktop-hidden {
+        padding: 0 1rem;
+    }
+
+    .header {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        
+        h1 {
+            margin: 0;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+
+            &:nth-of-type(2) {
+                color: var(--secondary-color);
+            }
+        }
+    }
+
+    @media (max-width: 768px) {
+        .mobile-hidden {
+            display: none;
+        }
+    }
+
     @media (min-width: 768px) {
         padding-top: 4rem;
-    }
-`;
 
-const Sections = styled.div`
-    max-width: 1400px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+        .sections {
+            flex-direction: row;
+        }
 
-    @media (min-width: 768px) {
-        flex-direction: row;
-    }
-`;
+        .desktop-hidden {
+            display: none;
+        }
 
-const MobileHide = styled.div`
-    @media (max-width: 768px) {
-        display: none;
-    }
-`;
-
-const DesktopHide = styled.div`
-    padding: 0 1rem;
-    @media (min-width: 768px) {
-        display: none;
-    }
-`;
-
-const Heading = styled.div`
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    > h1 {
-        margin: 0;
-        margin-bottom: 1rem;
-        font-size: 1.8rem;
-
-        @media (min-width: 768px) {
+        .header {
             font-size: 2.6rem;
         }
-
-        :nth-of-type(2) {
-            color: var(--secondary-color);
-        }
     }
-`;
-
-const GetStarted = styled.button`
-    width: fit-content;
-    margin: 1rem auto;
-    padding: 0 1rem;
 `;
 
 const ImageContainer = styled.div`
@@ -71,20 +73,16 @@ const ImageContainer = styled.div`
     background-position: center;
 `;
 
-const HeroImage = styled.img`
-    width: 100%;
-`;
-
 const Hero = () => {
     const navigate = useNavigate();
     const ANIMATION_DELAY = 2000;
     const summary = 'The free and easy way to accept funding, engage supporters, and expand your following.';
 
     return (
-        <HeroSection >
-            <Sections>
+        <StyledHero>
+            <div className="sections">
                 <div style={{padding: '1rem'}}>
-                    <Heading>
+                    <div className="header">
                         <h1>Grow Your&nbsp;</h1>
                             <TypeAnimation
                                 cursor={false}
@@ -101,21 +99,21 @@ const Hero = () => {
                                 }
                                 wrapper="h1"
                             />
-                    </Heading>
-                    <MobileHide>
+                    </div>
+                    <div className="mobile-hidden">
                         <p>{summary}</p>
-                        <GetStarted className="secondary" onClick={() => navigate('../register')}>Get Started</GetStarted>
-                    </MobileHide>
+                        <button className="secondary" onClick={() => navigate('../register')}>Get Started</button>
+                    </div>
                 </div>
                 <ImageContainer image={blob}>
-                    <HeroImage src={growth} alt="" />
+                    <img src={growth} alt="Pachira " />
                 </ImageContainer>
-                <DesktopHide>
+                <div className="desktop-hidden">
                     <p style={{margin: '0.5rem'}}>{summary}</p>
-                    <GetStarted className="secondary" onClick={() => navigate('../register')}>Get Started</GetStarted>
-                </DesktopHide>
-            </Sections>
-        </HeroSection>
+                    <button className="secondary" onClick={() => navigate('../register')}>Get Started</button>
+                </div>
+            </div>
+        </StyledHero>
     );
 }
 

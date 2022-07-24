@@ -1,6 +1,7 @@
 {
   "short_name": "Pachira",
-  "name": "",
+  "name": "Pachira",
+  "description": "A prototype crowdfunding and engagement application built around campaigns.",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +21,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#3064F3",
   "background_color": "#ffffff"
 }
