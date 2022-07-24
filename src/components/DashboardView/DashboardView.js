@@ -1,42 +1,41 @@
 import { useState, useEffect, useContext } from "react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { db } from '../../index';
 import { UserAuthContext } from "../../context/UserAuthContext";
+import { db } from '../../index';
+import styled from "styled-components/macro";
 import DisplayNameForm from "./DisplayNameForm";
 import DashboardProfile from "./DashboardProfile";
 import DashboardCampaign from "./DashboardCampaign";
 import Loader from "../Loader/Loader";
 
-const DashboardContainer = styled.main`
+const StyledDashboard = styled.main`
     max-width: 1000px;
     margin: 0 auto;
-    margin-top: var(--top-margin);
-    margin-bottom: var(--bottom-margin);
-    padding: 1rem;
-    padding-bottom: 0;
+    padding: 75px 1rem 100px 1rem;
 
-    @media (min-width: 768px) {
+    h1 {
+        margin: 1rem 0;
+    }
+
+    .dashboard-sections {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-gap: 1rem;
         margin-top: 1rem;
     }
-`;
 
-const DashboardSections = styled.section`
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 1rem;
-    margin-top: 1rem;
-        
-    @media(min-width: 768px) {
-        grid-template-columns: 1fr 2fr;
+    .section-column {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
     }
-`;
 
-const SectionColumn = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    @media (min-width: 768px) {
+        .dashboard-sections {
+            grid-template-columns: 1fr 2fr;
+        }
+    }
 `;
 
 const DashboardView = () => {
@@ -105,10 +104,10 @@ const DashboardView = () => {
         const campaignName = campaign.id[0].toUpperCase() + campaign.id.slice(1, campaign.id.length);
         
         return (
-            <DashboardContainer>
-                <h1 style={{margin: 0}}>Hi {campaignName}!</h1>
-                <DashboardSections>
-                    <SectionColumn>
+            <StyledDashboard>
+                <h1>Hi {campaignName}!</h1>
+                <div className="dashboard-sections">
+                    <div className="section-column">
                         <DashboardProfile 
                             avatar={currentUser.avatar} 
                             displayName={currentUser.displayName} 
@@ -116,21 +115,21 @@ const DashboardView = () => {
                             updateCollection={updateCollection}
                             setIsLoading={setIsLoading}
                         />
-                    </SectionColumn>
-                    <SectionColumn>
+                    </div>
+                    <div className="section-column">
                         <DashboardCampaign 
                             campaign={campaign} 
                             updateCollection={updateCollection} 
                             setIsLoading={setIsLoading}
                         />
-                    </SectionColumn>
-                </DashboardSections>
-            </DashboardContainer>
+                    </div>
+                </div>
+            </StyledDashboard>
         )
     }
     else if (!isLoading && !campaign) {
         return (
-            <DashboardContainer>
+            <StyledDashboard>
                 <DisplayNameForm 
                     displayName={displayName}
                     updateDisplayName={updateDisplayName} 
@@ -138,7 +137,7 @@ const DashboardView = () => {
                     getUserCampaign={getUserCampaign}
                     setIsLoading={setIsLoading}
                 />
-            </DashboardContainer>
+            </StyledDashboard>
         );
     }
     else {

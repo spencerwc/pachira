@@ -3,90 +3,78 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { MdErrorOutline } from 'react-icons/md';
 import { UserAuthContext } from "../../context/UserAuthContext";
 import { db } from '../../index';
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import blob from './images/blob.svg';
 import celebrate from './images/celebrate.png';
 
-const Container = styled.section`
+const StyledNameForm = styled.section`
     display: flex;
     flex-direction: column;
     text-align: center;
-`;
 
-const ImageContainer = styled.div`
-    background-image: url(${props => props.image});
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
-    
-    > img {
-        width: 100%;
-        max-width: 500px;
-        margin: 1.5rem auto;
-    }
-`;
-
-const DisplayName = styled.input`
-    border: 2px solid var(--border-color);
-    border-radius: 2rem;
-    outline: none;
-    padding: 0.5rem;
-    font-size: 1rem;
-    margin-right: 0.5rem;
-    text-indent: 0.5rem;
-    :focus {
-        border-color: var(--border-hover);
+    h1 {
+       color: var(--secondary-color);
     }
 
-    @media (min-width: 768px) {
-        padding: 1rem;
-        width: 100%;
-        max-width: 282px;
-        text-indent: 0;
-        margin-right: 0;
-        margin-left: -2rem;
-    }
-`;
-
-const SetButton = styled.button`
-    border: none;
-    border-radius: 2rem;
-    padding: 0 1rem;
-    margin-top: 1rem;
-    color: #fff;
-    background-color: var(--secondary-color);
-    font-weight: bold;
-    min-height: 40px;
-    cursor: pointer;
-    :hover {
-        background-color: var(--secondary-hover);
+    .image-container {
+        background-image: url(${props => props.image});
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        
+        img {
+            width: 100%;
+            max-width: 500px;
+            margin: 1.5rem auto;
+        }
     }
 
-    @media (min-width: 361px) {
-        margin-top: 0;
+    form {
+        margin-top: 1rem;
+    }
+
+    input {
+        border: 2px solid var(--border-color);
+        border-radius: 2rem;
+        outline: none;
+        padding: 0.5rem;
+        font-size: 1rem;
+        margin-right: 0.5rem;
+        text-indent: 0.5rem;
+        
+        &:focus {
+            border-color: var(--border-hover);
+        }
     }
 
     @media (min-width: 768px) {
-        margin-left: -6.1rem;
-    }
-`;
-
-const ErrorMessage = styled.p`
-    color: red;
-    margin: 0;
-    margin-top: 0.5rem;
-    animation: fadeIn 1s;
-    > svg {
-        margin-right: 0.3rem;
+        input {
+            padding: 1rem;
+            width: 100%;
+            max-width: 282px;
+            text-indent: 0;
+            margin-right: 0;
+            margin-left: -2rem;
+        }
     }
 
-    @media (min-width: 768px) {
-        margin-left:  -2rem;
-    }
+    .error-message {
+        color: red;
+        margin: 0;
+        margin-top: 0.5rem;
+        animation: fadeIn 1s;
+        > svg {
+            margin-right: 0.3rem;
+        }
 
-    @keyframes fadeIn {
-        0% { opacity: 0; }
-        100% { opacity: 1; }
+        @media (min-width: 768px) {
+            margin-left:  -2rem;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
     }
 `;
 
@@ -157,16 +145,16 @@ const DisplayNameForm = ({ displayName, updateDisplayName, updateCollection, get
     }
 
     return (
-        <Container>
+        <StyledNameForm>
             <div>
-                <h1 style={{margin: 0, color: 'var(--secondary-color)'}}>Welcome!</h1>
-                <p style={{marginBottom: 0}}>We're glad you're here!</p>
-                <ImageContainer image={blob}>
-                    <img src={celebrate} alt="" />
-                </ImageContainer>
-                <p style={{marginTop: 0}}>Set a display name for your account to get started.</p>
-                <form onSubmit={handleSubmit} style={{marginTop: '1rem'}}>
-                    <DisplayName 
+                <h1>Welcome!</h1>
+                <p>We're glad you're here!</p>
+                <div className="image-container" image={blob}>
+                    <img src={celebrate} alt="Welcome!" />
+                </div>
+                <p>Set a display name for your account to get started.</p>
+                <form onSubmit={handleSubmit}>
+                    <input
                         type="text" 
                         placeholder="Display name" 
                         minLength={3}
@@ -174,11 +162,11 @@ const DisplayNameForm = ({ displayName, updateDisplayName, updateCollection, get
                         value={displayName} 
                         onChange={handleChange}
                     />
-                    <SetButton type="submit">Submit</SetButton>
-                    {error && <ErrorMessage><MdErrorOutline />{error}</ErrorMessage>}
+                    <button className="secondary" type="submit">Submit</button>
+                    {error && <p className="error-message"><MdErrorOutline />{error}</p>}
                 </form>
             </div>
-        </Container>
+        </StyledNameForm>
     );
 }
 

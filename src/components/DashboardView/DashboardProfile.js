@@ -1,62 +1,59 @@
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useContext } from "react";
 import { UserAuthContext } from "../../context/UserAuthContext";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
-const Profile = styled.div`
+const StyledProfile = styled.section`
     border: 1px solid var(--border-color);
     border-radius: 1rem;
     padding: 1rem;
     overflow-wrap: anywhere;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04), 0 3px 10px rgba(0, 0, 0, 0.04);
-`;
 
-const AvatarContainer = styled.div`
-    margin: 0 auto;
-    margin-bottom: 1rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    
-    :hover {
-        > button {
-            display: block;
+    img {
+        border-radius: 100%;
+        background-color: var(--border-color);
+        border: 4px solid #fff;
+        width: 100px;
+        height: 100px;
+    }
+
+    input {
+        display: none;
+    }
+
+    .avatar-container {
+        margin: 0 auto;
+        margin-bottom: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .change-avatar {
+        border: none;
+        border-radius: 2rem;
+        padding: 0.5rem 1rem;
+        margin: 0;
+        margin-top: 1rem;
+        background-color: var(--secondary-color);
+        font-weight: bold;
+        cursor: pointer;
+        color: #fff;
+        width: fit-content;
+        
+        &:hover {
+            background-color: var(--secondary-hover);
         }
     }
-`;
-
-const Avatar = styled.img`
-    border-radius: 100%;
-    background-color: var(--border-color);
-    border: 4px solid #fff;
-    width: 100px;
-    height: 100px;
 
     @media (min-width: 768px) {
-        width: 120px;
-        height: 120px;
+        img {
+            width: 120px;
+            height: 120px;
+        }
     }
-`;
-
-const ChangeAvatarLabel = styled.label`
-    border: none;
-    border-radius: 2rem;
-    padding: 0.5rem 1rem;
-    margin: 0;
-    margin-top: 1rem;
-    background-color: var(--secondary-color);
-    font-weight: bold;
-    cursor: pointer;
-    color: #fff;
-    width: fit-content;
-    :hover {
-        background-color: var(--secondary-hover);
-    }
-`;
-
-const ChangeAvatar = styled.input`
-    display: none;
 `;
 
 const DashboardProfile = ({avatar, displayName, email, updateCollection, setIsLoading}) => {
@@ -91,18 +88,18 @@ const DashboardProfile = ({avatar, displayName, email, updateCollection, setIsLo
     }
 
     return (
-        <Profile>
+        <StyledProfile>
             <h2 style={{margin: '0 0 1rem 0'}}>User Settings</h2>
-            <AvatarContainer>
-                <Avatar src={avatar} alt="" referrerPolicy="no-referrer"/>
-                <ChangeAvatarLabel htmlFor="avatar">Change Avatar</ChangeAvatarLabel>
-                <ChangeAvatar id="avatar" type="file" accept="image/png" onChange={handleChange} />
-            </AvatarContainer>
+            <div className="avatar-container">
+                <img src={avatar} alt="" referrerPolicy="no-referrer"/>
+                <label className="change-avatar" htmlFor="avatar">Change Avatar</label>
+                <input id="avatar" type="file" accept="image/png" onChange={handleChange} />
+            </div>
             <strong>Username</strong>
             <p style={{margin: 0, marginBottom: '1rem'}}>{displayName}</p>
             <strong>Email Address</strong>
             <p style={{margin: 0}}>{email}</p>
-        </Profile>
+        </StyledProfile>
     );
 }
 

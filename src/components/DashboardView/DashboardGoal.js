@@ -1,103 +1,83 @@
 import { useState } from 'react';
 import { BiDollar } from 'react-icons/bi';
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
-const GoalForm = styled.form`
+const StyledGoalForm = styled.form`
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     margin-top: 1.5rem;
 
-    > label {
+    label {
         display: flex;
         align-items: center;
-        > svg {
+        
+        svg {
             margin-left: 0.25rem;
             cursor: pointer;
         }
     }
-`;
 
-const GoalInput = styled.input`
-    border-radius: 0.5rem;
-    padding: 0.5rem;
-    margin: 0.5rem 0 1rem 0;
-    border: 1px solid var(--border-color);
-    width: calc(100% - 1.2rem);
-    font-size: 0.9rem;
+    input {
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+        margin: 0.5rem 0 1rem 0;
+        border: 1px solid var(--border-color);
+        font-size: 0.9rem;
 
-    :focus {
-        outline: none;
-        border-color: var(--border-hover);
+        &:focus {
+            outline: none;
+            border-color: var(--border-hover);
+        }
+    }
+
+    textarea {
+        resize: none;
+        margin: 0.5rem 0 1rem 0;
+        min-height: 100px;
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+        font-size: 0.9rem;
+
+        &:last-of-type {
+            margin-bottom: 0;
+        }
+
+        &:focus {
+            outline: none;
+            border-color: var(--border-hover);
+        }
+    }
+
+    button {
+        width: fit-content;
+        padding: 0 1rem;
+    }
+
+    .char-limit {
+        width: fit-content;
+        margin: -2.5rem 0.5rem 1.5rem auto;
+        font-size: 0.9rem;
+        text-align: right;
+    }
+
+    .currency-icon {
+        font-size: 1.1rem;
+        margin: -2.8rem 0 1.5rem 0.3rem;
+        z-index: 2;
+    }
+
+    .goal-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
     }
 
     @media (min-width: 290px) {
-        font-size: 1rem;
-    }
-`;
-
-const GoalTextarea = styled.textarea`
-    resize: none;
-    margin: 0.5rem 0 1rem 0;
-    min-height: 100px;
-    border: 1px solid var(--border-color);
-    border-radius: 0.5rem;
-    padding: 0.5rem;
-    font-size: 0.9rem;
-
-    :last-of-type {
-        margin-bottom: 0;
-    }
-
-    :focus {
-        outline: none;
-        border-color: var(--border-hover);
-    }
-
-    @media (min-width: 290px) {
-        font-size: 1rem;
-    }
-`;
-
-const CharLimit = styled.p`
-    width: fit-content;
-    margin: -2.5rem 0.5rem 1.5rem auto;
-    font-size: 0.9rem;
-    text-align: right;
-`;
-
-const UpdateButton = styled.button`
-    border: none;
-    border-radius: 2rem;
-    padding: 0.5rem 1rem;
-    margin: 0;
-    margin-right: 0.5rem;
-    background-color: var(--secondary-color);
-    font-weight: bold;
-    cursor: pointer;
-    color: #fff;
-    width: fit-content;
-    :hover {
-        background-color: var(--secondary-hover);
-    }
-`;
-
-const ResetButton = styled.button`
-    border: 2px solid var(--border-color);
-    border-radius: 2rem;
-    padding: 0.5rem 1rem;
-    margin: 0;
-    background-color: transparent;
-    color: var(--font-color);
-    font-weight: bold;
-    cursor: pointer;
-    width: fit-content;
-    :hover {
-        border-color: var(--border-hover);
-    }
-
-    @media (max-width: 320px) {
-        margin-top: 0.5rem;
+        input, textarea {
+            font-size: 1rem;
+        }
     }
 `;
 
@@ -141,11 +121,11 @@ const DashboardGoal = ({currentGoal, handleUpdate}) => {
 
     return (
         <section>
-            <GoalForm onSubmit={handleSubmit}>
+            <StyledGoalForm onSubmit={handleSubmit}>
                 <label htmlFor="goal-name">
                     <strong>Goal Name</strong> 
                 </label>
-                <GoalInput 
+                <input 
                     id="goal-name" 
                     type="text" 
                     placeholder="Name your goal" 
@@ -155,12 +135,11 @@ const DashboardGoal = ({currentGoal, handleUpdate}) => {
                     maxLength={MAX_NAME_LENGTH}
                     required 
                 />              
-                <CharLimit>{newName.length} / {MAX_NAME_LENGTH}</CharLimit>
-
+                <p className="char-limit">{newName.length} / {MAX_NAME_LENGTH}</p>
                 <label htmlFor="goal-description">
                     <strong>Goal Description</strong>
                 </label>
-                <GoalTextarea 
+                <textarea 
                     id="goal-description" 
                     placeholder="Describe your goal (required)" 
                     value={newDescription} 
@@ -168,12 +147,11 @@ const DashboardGoal = ({currentGoal, handleUpdate}) => {
                     maxLength={MAX_DESCRIPTION_LENGTH}
                     required
                 />
-                <CharLimit style={{marginTop: '-1.5rem'}}>{newDescription.length} / {MAX_DESCRIPTION_LENGTH}</CharLimit>
-                
+                <p className="char-limit" style={{marginTop: '-1.5rem'}}>{newDescription.length} / {MAX_DESCRIPTION_LENGTH}</p>
                 <label htmlFor="target">
                     <strong>Target Funding</strong>
                 </label>
-                <GoalInput 
+                <input 
                     id="target"
                     type="number" 
                     placeholder={1} 
@@ -183,17 +161,16 @@ const DashboardGoal = ({currentGoal, handleUpdate}) => {
                     required
                     style={{textIndent: '0.7rem'}}
                 />
-                <BiDollar style={{fontSize: '1.1rem', margin: '-2.8rem 0 1.5rem 0.3rem', zIndex: 2}}/>
-                <div>
-                    <UpdateButton onClick={handleSubmit}>
+                <BiDollar className="currency-icon" />
+                <div className="goal-buttons">
+                    <button className="secondary" onClick={handleSubmit}>
                         Update Goal
-                    </UpdateButton>
-                    <ResetButton onClick={handleReset}>
+                    </button>
+                    <button className="outline" onClick={handleReset}>
                         Reset Goal
-                    </ResetButton>
+                    </button>
                 </div>
-
-            </GoalForm>
+            </StyledGoalForm>
         </section>
     );
 }

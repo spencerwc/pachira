@@ -72,7 +72,6 @@ const StyledSupportOverlay = styled.div`
         color: #fff;
         display: flex;
    
-
         svg {
             font-size: 1.5rem;
         }
