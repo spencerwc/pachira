@@ -1,10 +1,24 @@
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, collection, getDocs, updateDoc } from "firebase/firestore";
 import { db } from '../index';
 
 export const getCampaignData = async (campaignName) => {
     const docRef = doc(db, "campaigns", campaignName);
     const docSnap = await getDoc(docRef);
     return docSnap.data();
+}
+
+export const getCampaigns = async (criteria) => {
+    const activeCampaignsList = [];
+    const querySnapshot = await getDocs(collection(db, "campaigns"));
+    
+    querySnapshot.forEach((doc) => {
+        const campaignData = doc.data();
+        
+        if (campaignData.name && campaignData.name.toLowerCase().includes(criteria.toLowerCase())) {
+            activeCampaignsList.push(campaignData);
+        }
+    });
+    return activeCampaignsList;
 }
 
 export const getUserData = async (userId) => {

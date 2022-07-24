@@ -1,6 +1,5 @@
 import { useEffect, useState} from "react";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from '../../index';
+import { getCampaigns } from "../../utils/campaigns";
 import styled from "styled-components/macro";
 import CampaignCard from "./CampaignCard";
 import Error from "../Error/Error";
@@ -74,18 +73,9 @@ const ExploreView = () => {
     const [error, setError] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
 
-    const getCampaigns = async (searchTerm) => {
+    const getCampaignsList = async (searchTerm) => {
         setIsLoading(true);
-        const activeCampaignsList = [];
-        const querySnapshot = await getDocs(collection(db, "campaigns"));
-        
-        querySnapshot.forEach((doc) => {
-            const campaignData = doc.data();
-            if (campaignData.name && campaignData.name.toLowerCase().includes(searchTerm.toLowerCase())) {
-                activeCampaignsList.push(campaignData);
-            }
-        });
-
+        const activeCampaignsList = await getCampaigns(searchTerm);
         setCampaignsList(activeCampaignsList);
         setIsLoading(false);
     }
@@ -96,12 +86,12 @@ const ExploreView = () => {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        getCampaigns(searchTerm);
+        getCampaignsList(searchTerm);
     }
 
     useEffect(() => {
         try {
-            getCampaigns(searchTerm);
+            getCampaignsList(searchTerm);
         }
         catch (error) {
             setError(error.message);

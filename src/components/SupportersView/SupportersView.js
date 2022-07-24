@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { doc, getDoc } from "firebase/firestore"; 
-import { db } from "../../index";
+import { 
+    getCampaignData, 
+    getSupporterData } from "../../utils/campaigns";
 import styled from "styled-components/macro";
 import StyledCard from "../../styles/StyledCard";
 import SupporterCard from "./SupporterCard";
@@ -28,30 +29,9 @@ const SupportersView = () => {
     const [error, setError] = useState(null);
     let { campaignName } = useParams();
 
-    const getCampaignData = async () => {
-        const docRef = doc(db, "campaigns", campaignName);
-        const docSnap = await getDoc(docRef);
-        return docSnap.data();
-    }
-
-    const getUserData = async (userId) => {
-        const docRef = doc(db, "users", userId);
-        const docSnap = await getDoc(docRef);
-        return docSnap.data();
-    }
-
-    const getSupporterData = async (supporters) => {
-        const supportersArr = Object.values(supporters);
-        const supporterData = await Promise.all(supportersArr.map(async supporter => {
-            const userData = await getUserData(supporter.uid);
-            return {...userData, ...supporter};
-        }));
-        return supporterData;
-    }
-
     const getData = async () => {
         setIsLoading(true);
-        const campaignData = await getCampaignData();
+        const campaignData = await getCampaignData(campaignName);
         
         if (campaignData) {
             const supporterData = await getSupporterData(campaignData.supporters);

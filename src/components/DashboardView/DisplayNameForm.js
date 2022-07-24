@@ -61,7 +61,7 @@ const StyledNameForm = styled.section`
         margin: 0;
         margin-top: 0.5rem;
         animation: fadeIn 1s;
-        > svg {
+        svg {
             margin-right: 0.3rem;
         }
 
