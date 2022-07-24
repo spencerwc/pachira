@@ -51,54 +51,56 @@ const SignUpView = () => {
 
     if (!isLoading) {
         return (
-            <StyledForm>
-                <img src={logo} alt="pachira" />
-                <form onSubmit={handleSubmit}>
-                    <h1>Sign up. It's free!</h1>
-                    <input 
-                        type="text" 
-                        placeholder="Display Name"
-                        minLength={3}
-                        maxLength={15}
-                        value={displayName} 
-                        onChange={(e) => {
-                            setDisplayName(e.target.value);
-                            setError(null);
-                        }}
-                        required
-                    />
-                    <input 
-                        type="email" 
-                        placeholder="Email Address" 
-                        value={email} 
-                        onChange={(e) => {
-                            setEmail(e.target.value);
-                            setError(null);
-                        }}
-                        required
-                    />
-                    <input 
-                        type="password" 
-                        placeholder="Choose a Password" 
-                        value={password} 
-                        onChange={(e) => {
-                            setPassword(e.target.value);
-                            setError(null);
-                        }}
-                        required
-                    />
-                    {error && <p><MdErrorOutline />{error}</p>}
-                    <p style={{fontSize: '0.8rem'}}>Pachira is a demo application and is only intended to showcase example features. This is not an actual service.</p>
-                    <button className="secondary" type="submit">Create Account</button>
-                </form>
-                <div>
-                    <p>Or sign up with</p>
-                    <button className="outline" onClick={signInGoogleUser}><FcGoogle/> Google</button>                
-                </div>
-                <p>
-                    <Link to="../login">Already have an account?  Log in.</Link>
-                </p>
-            </StyledForm>
+            <main>
+                <StyledForm>
+                    <img src={logo} alt="pachira" />
+                    <form onSubmit={handleSubmit}>
+                        <h1>Sign up. It's free!</h1>
+                        <input 
+                            type="text" 
+                            placeholder="Display Name"
+                            minLength={3}
+                            maxLength={15}
+                            value={displayName} 
+                            onChange={(e) => {
+                                setDisplayName(e.target.value);
+                                setError(null);
+                            }}
+                            required
+                        />
+                        <input 
+                            type="email" 
+                            placeholder="Email Address" 
+                            value={email} 
+                            onChange={(e) => {
+                                setEmail(e.target.value);
+                                setError(null);
+                            }}
+                            required
+                        />
+                        <input 
+                            type="password" 
+                            placeholder="Choose a Password" 
+                            value={password} 
+                            onChange={(e) => {
+                                setPassword(e.target.value);
+                                setError(null);
+                            }}
+                            required
+                        />
+                        {error && <p><MdErrorOutline />{error}</p>}
+                        <p style={{fontSize: '0.8rem'}}>Pachira is a demo application and is only intended to showcase example features. This is not an actual service.</p>
+                        <button className="secondary" type="submit">Create Account</button>
+                    </form>
+                    <div>
+                        <p>Or sign up with</p>
+                        <button className="outline" onClick={signInGoogleUser}><FcGoogle/> Google</button>                
+                    </div>
+                    <p>
+                        <Link to="../login">Already have an account?  Log in.</Link>
+                    </p>
+                </StyledForm>
+            </main>
         );
     }
     else {

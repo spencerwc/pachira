@@ -1,11 +1,14 @@
 import styled from 'styled-components/macro';
 
 const StyledForm = styled.section`
-    margin: 1rem auto;
-    padding: 1rem;
+    margin: 0 auto;
+    padding: 2rem 0;
     text-align: center;
     max-width: 400px;
-    margin-bottom: var(--bottom-margin);
+
+    @media (min-width: 768px) {
+        padding: 150px 0;
+    }
 
     img {
         max-width: 100px;

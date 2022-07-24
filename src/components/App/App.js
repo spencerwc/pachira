@@ -22,18 +22,18 @@ const App = () => {
       <BrowserRouter>
         <GlobalStyle /> 
         <Navbar />
-        <Routes>
-          <Route element={<WithHeader />}>
-            <Route path="/" element={<HomeView />} />
-            <Route path="explore" element={<ExploreView />} />
-            <Route path="dashboard" element={<DashboardView />} />
-            <Route path=":campaignName" element={<CampaignView />} />
-            <Route path=":campaignName/supporters" element={<SupportersView />} />
-            <Route path="*" element={<Error />} />
-          </Route>
-          <Route path="login" element={<LoginView />} />
-          <Route path="register" element={<SignUpView />} />
-        </Routes>
+          <Routes>
+            <Route element={<WithHeader />}>
+              <Route path="/" element={<HomeView />} />
+              <Route path="explore" element={<ExploreView />} />
+              <Route path="dashboard" element={<DashboardView />} />
+              <Route path=":campaignName" element={<CampaignView />} />
+              <Route path=":campaignName/supporters" element={<SupportersView />} />
+              <Route path="*" element={<Error />} />
+            </Route>
+            <Route path="login" element={<LoginView />} />
+            <Route path="register" element={<SignUpView />} />
+          </Routes>
       </BrowserRouter>
     </UserAuthProvider>
   );

@@ -2,37 +2,23 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore"; 
 import { db } from "../../index";
-import styled from "styled-components";
+import styled from "styled-components/macro";
+import StyledCard from "../../styles/StyledCard";
 import SupporterCard from "./SupporterCard";
 import Loader from "../Loader/Loader";
 import Error from "../Error/Error";
 
-const SupportersContainer = styled.section`
-    max-width: 800px;
-    margin: 0.5rem auto;
-    margin-top: var(--top-margin);
-    margin-bottom: var(--bottom-margin);
-    padding: 1rem;
+const StyledSupporters = styled.main`
+    padding: 100px 1rem;
+    max-width: 900px;
 
     @media (min-width: 768px) {
-        margin-top: 1rem;
+        padding: 110px 1rem;
     }
-`;
 
-const Supporters = styled.ul`
-    list-style: none;
-    margin: 0;
-    padding: 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 0.7rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04), 0 3px 10px rgba(0, 0, 0, 0.04);
-`;
-
-const Heading = styled.h1`
-    margin-top: 0;
+    h1 {
+        margin-bottom: 1.5rem;
+    }
 `;
 
 const SupportersView = () => {
@@ -87,21 +73,25 @@ const SupportersView = () => {
         const supportersData = Object.values(supporters).sort((a, b) => b.donationTotal - a.donationTotal);
 
         return (
-            <SupportersContainer>
-                <Heading>
-                    {campaign.name ? campaign.name : campaign.id}'s Supporters
-                </Heading>
-                <Supporters>
-                    {supportersData.map(supporter => 
-                        <SupporterCard 
-                            key={supporter.uid}
-                            avatar={supporter.avatar}
-                            id={supporter.displayName} 
-                            donationTotal={supporter.donationTotal} 
-                        />
-                    )}
-                </Supporters>
-            </SupportersContainer>
+            <StyledSupporters>
+                <section>
+                    <h1>
+                        {campaign.name ? campaign.name : campaign.id}'s Supporters
+                    </h1>
+                    <StyledCard>
+                        <ul>
+                            {supportersData.map(supporter => 
+                                <SupporterCard 
+                                    key={supporter.uid}
+                                    avatar={supporter.avatar}
+                                    id={supporter.displayName} 
+                                    donationTotal={supporter.donationTotal} 
+                                />
+                            )}
+                        </ul>
+                    </StyledCard>
+                </section>
+            </StyledSupporters>
         );
     }
     else if (!isLoading && error) {

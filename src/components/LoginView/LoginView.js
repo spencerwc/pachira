@@ -61,45 +61,47 @@ const LoginView = () => {
 
     if (!isLoading) {
         return (
-            <StyledForm>
-                <img src={logo} alt="pachira" />
-                <form onSubmit={handleSubmit}>
-                    <h1>Log In</h1>
-                    <input 
-                        type="email" 
-                        placeholder="Email Address" 
-                        value={email} 
-                        onChange={(e) => {
-                            setEmail(e.target.value);
-                            setError(null);
-                        }}
-                        required
-                    />
-                    <input 
-                        type="password" 
-                        placeholder="Password" 
-                        value={password} 
-                        onChange={(e) =>{
-                            setPassword(e.target.value);
-                            setError(null);
-                        }}
-                        required
-                    />
-                    {error && <p className="error-message"><MdErrorOutline />{error}</p>}
-                    <p style={{fontSize: '0.8rem'}}>
-                        Pachira is a demo application and is only intended to showcase example features. This is not an actual service.
+            <main>
+                <StyledForm>
+                    <img src={logo} alt="pachira" />
+                    <form onSubmit={handleSubmit}>
+                        <h1>Log In</h1>
+                        <input 
+                            type="email" 
+                            placeholder="Email Address" 
+                            value={email} 
+                            onChange={(e) => {
+                                setEmail(e.target.value);
+                                setError(null);
+                            }}
+                            required
+                        />
+                        <input 
+                            type="password" 
+                            placeholder="Password" 
+                            value={password} 
+                            onChange={(e) =>{
+                                setPassword(e.target.value);
+                                setError(null);
+                            }}
+                            required
+                        />
+                        {error && <p className="error-message"><MdErrorOutline />{error}</p>}
+                        <p style={{fontSize: '0.8rem'}}>
+                            Pachira is a demo application and is only intended to showcase example features. This is not an actual service.
+                        </p>
+                        <button className="secondary" type="submit">Log In</button>
+                    </form>
+                    <div>
+                        <p>Or log in with</p>
+                        <button className="outline" onClick={signInDemo} style={{marginBottom: '1rem'}}>🤖 Demo</button>
+                        <button className="outline" onClick={signInGoogleUser}><FcGoogle/> Google</button>                
+                    </div>
+                    <p>
+                        <Link to="../register">New to Pachira?  Sign up.</Link>
                     </p>
-                    <button className="secondary" type="submit">Log In</button>
-                </form>
-                <div>
-                    <p>Or log in with</p>
-                    <button className="outline" onClick={signInDemo} style={{marginBottom: '1rem'}}>🤖 Demo</button>
-                    <button className="outline" onClick={signInGoogleUser}><FcGoogle/> Google</button>                
-                </div>
-                <p>
-                    <Link to="../register">New to Pachira?  Sign up.</Link>
-                </p>
-            </StyledForm>
+                </StyledForm>
+            </main>
         );
     }
     else {

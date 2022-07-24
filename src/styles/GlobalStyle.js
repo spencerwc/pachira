@@ -114,7 +114,8 @@ const GlobalStyle = createGlobalStyle`
 
     main {
         position: relative;
-        padding: 0;
+        margin: 0 auto;
+        padding: 1rem;
     }
 
     input {

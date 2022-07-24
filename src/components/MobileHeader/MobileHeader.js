@@ -1,49 +1,43 @@
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import logo from '../../images/logo.png';
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 import { UserAuthContext } from "../../context/UserAuthContext";
+import styled from "styled-components/macro";
+import logo from '../../images/logo.png';
 
-const Header = styled.div`
+const Header = styled.header`
     background-color: #fff;
     position: fixed;
     top: 0;
-    padding: 0.5rem 0;
+    padding: 0.5rem;
+    min-height: 60px;
     width: 100%;
     display: flex;
     justify-content: center;
+    z-index: 10;
     box-shadow: 0 3px 10px rgba(0,0,0,0.05), 0 3px 10px rgba(0,0,0,0.05);
 
-    @media(min-width: 768px) {
+    .link-container {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+    }
+
+    .register-link {
+        display: flex;
+        align-items: center;
+        background-color: var(--secondary-color);
+        color: #fff;
+        padding: 0.5rem 1rem;
+        border-radius: 2rem;
+        
+        &:hover {
+            background-color: var(--secondary-hover);
+        }
+    }
+
+    @media (min-width: 768px) {
         position: relative;
         display: none;
-    }
-`;
-
-const LinkContainer = styled.div`
-    display: flex;
-    align-items: center;
-    margin-left: auto;
-    margin-right: 0.5rem;
-`;
-
-const RegisterLink = styled.div`
-    display: flex;
-    align-items: center;
-    background-color: var(--secondary-color);
-    padding: 0.5rem 1rem;
-    border-radius: 2rem;
-    :hover {
-        background-color: var(--secondary-hover);
-    }
-
-    > a {
-        color: #fff;
-        text-decoration: none;
-        
-        :visited {
-            color: #fff;
-        }
     }
 `;
 
@@ -56,12 +50,12 @@ const MobileHeader = () => {
                 <img src={logo} alt="Pachira" style={{maxWidth: '45px', marginLeft: '0.5rem'}}/>
             </Link>
 
-            { !currentUser && 
-            <LinkContainer>
-                <RegisterLink>
+            {!currentUser && 
+            <div className="link-container">
+                <div className="register-link">
                     <Link to="../register">Sign up</Link>
-                </RegisterLink>
-            </LinkContainer> }
+                </div>
+            </div>}
         </Header>
     );
 }
