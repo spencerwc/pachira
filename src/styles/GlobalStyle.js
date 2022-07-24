@@ -121,7 +121,7 @@ const GlobalStyle = createGlobalStyle`
         min-height: 100vh;
     }
 
-    input {
+    input, textarea {
         font-size: 1rem;
     }
 

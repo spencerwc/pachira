@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { 
+    getCampaignData, 
+    getSupporterData, 
+    getDonationData,
+    updateCampaignOnDonation,
+    updateFollowers } from '../../utils/campaigns';
 import styled from "styled-components/macro";
 import { MdClose } from 'react-icons/md';
 import CampaignBanner from "./CampaignBanner";
@@ -12,7 +17,6 @@ import CampaignTopSupport from "./CampaignTopSupport";
 import CampaignDonations from './CampaignDonations';
 import Loader from '../Loader/Loader';
 import Error from '../Error/Error';
-import { db } from '../../index';
 
 const StyledCampaign = styled.main`
     max-width: 1000px;
@@ -95,43 +99,14 @@ const CampaignView = () => {
     const [donationIsActive, setDonationIsActive] = useState(false);
     let { campaignName } = useParams();
 
-    const getCampaignData = async () => {
-        const docRef = doc(db, "campaigns", campaignName);
-        const docSnap = await getDoc(docRef);
-        return docSnap.data();
-    }
-
-    const getUserData = async (userId) => {
-        const docRef = doc(db, "users", userId);
-        const docSnap = await getDoc(docRef);
-        return docSnap.data();
-    }
-
-    const getSupporterData = async (supporters) => {
-        const supportersArr = Object.values(supporters);
-        const supporterData = await Promise.all(supportersArr.map(async supporter => {
-            const userData = await getUserData(supporter.uid);
-            return {...userData, ...supporter};
-        }));
-        return supporterData;
-    }
-
-    const getDonationData = async (donations) => {
-        const donationData = await Promise.all(donations.map(async donation => {
-            const userData = await getUserData(donation.uid);
-            return {...userData, ...donation};
-        }));
-        return donationData;
-    }
-
     const getData = async () => {
         setIsLoading(true);
-        const campaignData = await getCampaignData();
+        const campaignData = await getCampaignData(campaignName);
         
         if (campaignData) {
             const supporterData = await getSupporterData(campaignData.supporters);
             const donationData = await getDonationData(campaignData.donations);
-            
+
             setCampaign(campaignData);
             setSupporters(supporterData);
             setDonations(donationData);
@@ -142,85 +117,16 @@ const CampaignView = () => {
         setIsLoading(false);
     }
 
-    const updateDonations = (currentDonations, newDonation) => {
-        const donations = currentDonations;
-        donations.push(newDonation);
-        return donations;
-    }
-
-    const updateSupporters = (currentSupporters, supporterId, donationAmount) => {
-        const supporters = currentSupporters;
-
-        // Check for existing donations
-        if (supporters.hasOwnProperty(supporterId)) {
-            supporters[supporterId].donationTotal += donationAmount; 
-        }
-        else {
-            const newSupporter = {
-                uid: supporterId,
-                donationTotal: donationAmount
-            }
-            supporters[supporterId] = newSupporter;
-        }
-        return supporters;
-    }
-
-    const updateGoal = (currentGoal, donationAmount) => {
-        let newGoal = null;
-
-        if (currentGoal) {
-            newGoal = currentGoal;
-            const newFunding = currentGoal.currentFunding + donationAmount;
-            newGoal.currentFunding = newFunding;
-        }
-        return newGoal;
-    }
-
-    const updateFollowers = async (followerId) => {
-        const docRef = doc(db, 'campaigns', campaignName);
-        const docSnap = await getDoc(docRef);
-        const followers = docSnap.data().followers;
-        const followerIndex = followers.indexOf(followerId);
-
-        // If user doesn't follow, add to followers
-        if (followerIndex === -1) {
-            followers.push(followerId);
-        }
-        else {
-            // If user already follows, unfollow
-            followers.splice(followerIndex, 1);
-        }
-
-        await updateDoc(docRef, {
-            followers: followers
-        });
-    }
-
     const handleFollow = async (followerId) => {
         setIsLoading(true);
-        await updateFollowers(followerId);
-        setDonationIsActive(false);
+        await updateFollowers(followerId, campaignName);
         getData();
     }
 
     const handleDonation = async (newDonation) => {
         setIsLoading(true);
-        
-        const docRef = doc(db, 'campaigns', campaignName);
-        const docSnap = await getDoc(docRef);
-        const campaignData = docSnap.data();
-        const newDonations = updateDonations(campaignData.donations, newDonation);
-        const newSupporters = updateSupporters(campaignData.supporters, newDonation.uid, newDonation.donationAmount);
-        const newGoal = updateGoal(campaignData.currentGoal, newDonation.donationAmount);
-    
-        await updateDoc(docRef, {
-            donations: newDonations,
-            currentGoal: newGoal,
-            supporters: newSupporters,
-        });
-        
-        // Set false to hide modal if opened
         setDonationIsActive(false);
+        await updateCampaignOnDonation(campaignName, newDonation);
         getData();
     }
 

@@ -49,10 +49,8 @@ const StyledNameForm = styled.section`
 
     @media (min-width: 768px) {
         input {
-            padding: 1rem;
             width: 100%;
             max-width: 282px;
-            text-indent: 0;
             margin-right: 0;
             margin-left: -2rem;
         }
@@ -75,6 +73,13 @@ const StyledNameForm = styled.section`
             0% { opacity: 0; }
             100% { opacity: 1; }
         }
+    }
+
+    button {
+        margin: 0 auto;
+        margin-top: 1rem;
+        width: fit-content;
+        padding: 0.5rem 2rem;
     }
 `;
 
