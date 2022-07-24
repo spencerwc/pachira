@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
+import { UserAuthContext } from "../../context/UserAuthContext";
 import { MdErrorOutline } from 'react-icons/md';
 import { BiDollar } from 'react-icons/bi';
-import styled from "styled-components";
-import { UserAuthContext } from "../../context/UserAuthContext";
+import styled from "styled-components/macro";
 
-const Donate = styled.form`
+const StyledDonationForm = styled.form`
     padding: 1rem;
     display: flex;
     flex-direction: column;
@@ -18,74 +18,75 @@ const Donate = styled.form`
         -webkit-appearance: none;
         margin: 0;
     }
-`;
 
-const DonateAmount = styled.input`
-    border-radius: 0.5rem;
-    padding: 0.5rem;
-    border: 1px solid var(--border-color);
-    text-indent: 0.7rem;
+    input {
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+        border: 1px solid var(--border-color);
+        text-indent: 0.7rem;
 
-    :focus {
-        outline: none;
-        border-color: var(--border-hover);
-    }
-`;
-
-const DonateMessage = styled.textarea`
-    resize: none;
-    flex-grow: 1;
-    margin: 0.5rem 0;
-    min-height: 100px;
-    border: 1px solid var(--border-color);
-    border-radius: 0.5rem;
-    padding: 0.5rem;
-
-    :focus {
-        outline: none;
-        border-color: var(--border-hover);
-    }
-`;
-
-const DonateButton = styled.button`
-    border: none;
-    border-radius: 2rem;
-    padding: 0.5rem;
-    color: #fff;
-    background-color: var(--secondary-color);
-    cursor: pointer;
-    font-weight: bold;
-    min-height: 40px;
-    margin-top: 1rem;
-    :hover {
-        background-color: var(--secondary-hover);
-    }
-`;
-
-const CharLimit = styled.p`
-    margin: 0;
-    margin-top: -2rem;
-    margin-right: 0.5rem;
-    font-size: 0.9rem;
-    text-align: right;
-`;
-
-const ErrorMessage = styled.p`
-    color: red;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: fadeIn 1s;
-    margin-bottom: 0.5rem;
-
-    > svg {
-        margin-right: 0.3rem;
+        &:focus {
+            outline: none;
+            border-color: var(--border-hover);
+        }
     }
 
-    @keyframes fadeIn {
-        0% { opacity: 0; }
-        100% { opacity: 1; }
+    textarea {
+        resize: none;
+        flex-grow: 1;
+        margin: 0.5rem 0;
+        min-height: 100px;
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+
+        &:focus {
+            outline: none;
+            border-color: var(--border-hover);
+        }
+    }
+
+    button {
+        margin-top: 1rem;
+    }
+
+    h2 {
+        margin: 0;
+        margin-bottom: 0.5rem; 
+        font-size: 1rem;
+    }
+
+    .currency-icon {
+        font-size: 1.1rem;
+        margin: 1rem 0 -1.81rem 0.3rem;
+        z-index: 2;
+    }
+
+    .char-limit {
+        margin: 0;
+        margin-top: -2rem;
+        margin-right: 0.5rem;
+        font-size: 0.9rem;
+        text-align: right;
+    }
+
+    .error-message {
+        color: red;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: fadeIn 1s;
+        margin-top: 1rem;
+
+        svg {
+            margin-right: 0.3rem;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
     }
 `;
 
@@ -131,11 +132,10 @@ const CampaignSupport = ({ handleDonation }) => {
     }
 
     return (
-        <Donate onSubmit={handleSubmit}>
-            <h2 style={{margin: 0, marginBottom: '0.5rem', fontSize: '1rem'}}>Make a Donation</h2>
-            {error && <ErrorMessage><MdErrorOutline />{error}</ErrorMessage>}
-            <BiDollar style={{fontSize: '1.1rem', margin: '1rem 0 -1.81rem 0.3rem', zIndex: 2}}/>
-            <DonateAmount 
+        <StyledDonationForm onSubmit={handleSubmit}>
+            <h2>Make a Donation</h2>
+            <BiDollar className="currency-icon" />
+            <input 
                 type="number" 
                 min={1}
                 max={10000}
@@ -144,18 +144,19 @@ const CampaignSupport = ({ handleDonation }) => {
                 onChange={handleAmountChange}
                 required
             />
-            <DonateMessage 
+            <textarea 
                 placeholder="Your message (optional)" 
                 value={donateMessage}
                 onChange={handleMessageChange}
                 minLength={1}
                 maxLength={MESSAGE_LIMIT}
             />
-            <CharLimit>
+            <p className="char-limit">
                 {donateMessage.length} / {MESSAGE_LIMIT}
-            </CharLimit>
-            <DonateButton>Support</DonateButton>
-        </Donate>
+            </p>
+            {error && <p className="error-message"><MdErrorOutline />{error}</p>}
+            <button className="secondary">Support</button>
+        </StyledDonationForm>
     );
 }
 

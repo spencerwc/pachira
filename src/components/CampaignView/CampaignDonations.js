@@ -1,57 +1,54 @@
-import styled from "styled-components"; 
+import styled from "styled-components/macro";
+import StyledCard from "../../styles/StyledCard"; 
 
-const RecentDonations = styled.section`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    border: 1px solid var(--border-color);
-    border-radius: 1rem;
-    padding: 1rem 1rem 0.7rem 1rem;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04), 0 3px 10px rgba(0, 0, 0, 0.04);
-`;
-
-const Donations = styled.ol`
+const StyledDonations = styled.ol`
     list-style: none;
     margin: 0;
     padding: 0;
-`;
+    overflow: hidden;
 
-const Donation = styled.li`
-    border-bottom: 1px solid var(--border-color);
-    padding: 0.5rem 0;
-    display: flex;
-    
-    :first-of-type {
-        padding-top: 0;
+    li {
+        border-bottom: 1px solid var(--border-color);
+        padding: 0.5rem 0;
+        display: flex;
+        
+        &:first-of-type {
+            padding-top: 0;
+        }
+
+        &:last-of-type {
+            border-bottom: 0px;
+            padding-bottom: 0;
+        }
     }
 
-    :last-of-type {
-        border-bottom: 0px;
-        padding-bottom: 0;
+    img {
+        background-color: #fff;
+        border-radius: 100%;
+        width: 50px;
+        height: 50px;
+        margin-right: 0.5rem;
     }
-`;
 
-const Avatar = styled.img`
-    background-color: #fff;
-    border-radius: 100%;
-    width: 50px;
-    height: 50px;
-    margin-right: 0.5rem;
-`;
+    .donation-details {
+        width: 100%;
+    }
 
-const DonationDetails = styled.div`
-    width: 100%;
-`;
+    .donation-header {
+        display: flex;
+        flex-direction: column;
+    }
 
-const DonationHeader = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-`;
+    .donation-header-inner {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
 
-const DonationMessage = styled.p`
-    margin: 0;
-    padding-bottom: 0.2rem;
+    .donation-message {
+        margin: 0;
+        padding-bottom: 0.2rem;
+    }
 `;
 
 const CampaignDonations = ({donations}) => {
@@ -62,23 +59,25 @@ const CampaignDonations = ({donations}) => {
     const recentDonations = getRecentDonations(donations);
 
     return (
-        <RecentDonations>
-            <Donations>
+        <StyledCard>
+            <StyledDonations>
                 {recentDonations.map((donation, index) => (
-                    <Donation key={`${donation.id}D${index}`}>
-                        <Avatar src={donation.avatar} alt="" />
-                        <DonationDetails>
-                            <DonationHeader>
-                                <strong>{donation.displayName}</strong>
-                                <strong style={{textAlign: 'right'}}>$ {donation.donationAmount.toLocaleString()}</strong>
-                                <span style={{fontSize: '0.9rem'}}>{new Date(donation.date.seconds * 1000).toLocaleDateString()}</span>
-                            </DonationHeader>
-                        <DonationMessage>{donation.donationMessage}</DonationMessage>
-                        </DonationDetails>
-                    </Donation>
+                    <li key={`${donation.id}D${index}`}>
+                        <img src={donation.avatar} alt="" />
+                        <div className="donation-details">
+                            <div className="donation-header">
+                                <div className="donation-header-inner">
+                                    <strong>{donation.displayName}</strong>
+                                    <strong style={{textAlign: 'right'}}>${donation.donationAmount.toLocaleString()}</strong>
+                                </div>
+                                <div style={{fontSize: '0.9rem'}}>{new Date(donation.date.seconds * 1000).toLocaleDateString()}</div>
+                            </div>
+                        <p className="donation-message">{donation.donationMessage}</p>
+                        </div>
+                    </li>
                 ))}
-            </Donations>
-        </RecentDonations>
+            </StyledDonations>
+        </StyledCard>
     );
 }
 

@@ -1,88 +1,42 @@
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import styled from "styled-components"; 
+import StyledCard from "../../styles/StyledCard";
+import styled from "styled-components/macro"; 
 
-const TopSupport = styled.section`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    border: 1px solid var(--border-color);
-    border-radius: 1rem;
-    padding: 1rem;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04), 0 3px 10px rgba(0, 0, 0, 0.04);
-`;
+const StyledSupporters = styled.ul`
+    overflow: hidden;
 
-const Supporters = styled.ul`
-    list-style: none;
-    margin: 0;
-    padding: 0;
-`;
+    li {
+        border-bottom: 1px solid var(--border-color);
+        padding: 0.5rem 0;
+        
+        :first-of-type {
+            padding-top: 0;
+        }
 
-const Supporter = styled.li`
-    border-bottom: 1px solid var(--border-color);
-    padding: 0.5rem 0;
-    
-    :first-of-type {
-        padding-top: 0;
-    }
-
-    :last-of-type {
-        border-bottom: 0px;
-    }
-
-    > a {
-        display: flex;
-        text-decoration: none;
-        color: var(--font-color);
-
-        :visited {
-            color: var(--font-color);
+        :last-of-type {
+            border-bottom: 0px;
         }
     }
-`;
 
-const Avatar = styled.img`
-    background-color: #fff;
-    border-radius: 100%;
-    width: 50px;
-    height: 50px;
-    margin-right: 0.5rem;
-`;
-
-const SupporterDetails = styled.div`
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-`;
-
-const ViewAllButton = styled.button`
-    border: none;
-    border-radius: 2rem;
-    padding: 0.5rem;
-    color: #fff;
-    background-color: var(--secondary-color);
-    cursor: pointer;
-    font-weight: bold;
-    min-height: 40px;
-    margin-top: 0.5rem;
-    :hover {
-        background-color: var(--secondary-hover);
+    a {
+        display: flex;
     }
-`;
 
-const DonateButton = styled.button`
-    border: none;
-    border-radius: 2rem;
-    padding: 0.5rem;
-    color: #fff;
-    background-color: var(--secondary-color);
-    cursor: pointer;
-    font-weight: bold;
-    min-height: 40px;
-    margin-top: 0.5rem;
-    :hover {
-        background-color: var(--secondary-hover);
+    img {
+        background-color: #fff;
+        border-radius: 100%;
+        width: 50px;
+        height: 50px;
+        margin-right: 0.5rem;
+    }
+
+    .supporter-details {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
     }
 `;
 
@@ -98,33 +52,33 @@ const CampaignTopSupport = ({supporters, setDonationIsActive}) => {
 
     if (topSupporters.length > 0) {
         return (
-            <TopSupport>
-                <Supporters>
+            <StyledCard>
+                <StyledSupporters>
                     {topSupporters.map((supporter, index) => {
                         return (
-                            <Supporter key={`${supporter.displayName}_${index}`}>
+                            <li key={`${supporter.displayName}_${index}`}>
                                 <Link to={`../${supporter.displayName}`}>
-                                    <Avatar src={supporter.avatar} alt="" referrerPolicy="no-referrer"/>
-                                    <SupporterDetails>
+                                    <img src={supporter.avatar} alt="" referrerPolicy="no-referrer"/>
+                                    <div className="supporter-details">
                                         <strong>{supporter.displayName}</strong>
                                         <strong>$ {supporter.donationTotal.toLocaleString()}</strong>
-                                    </SupporterDetails>
+                                    </div>
                                 </Link>
-                            </Supporter>
+                            </li>
                             );
                         }
                     )}
-                </Supporters>
-                <ViewAllButton onClick={() => navigate('./supporters')}>View all supporters</ViewAllButton>
-            </TopSupport>
+                </StyledSupporters>
+                <button className="secondary" onClick={() => navigate('./supporters')}>View all supporters</button>
+            </StyledCard>
         );
     }
     else {
         return (
-            <TopSupport>
+            <StyledCard>
                 <p style={{marginTop: 0, marginBottom: '0.5rem'}}>You could be the first!</p>
-                <DonateButton onClick={() => setDonationIsActive(true)}>Support</DonateButton>
-            </TopSupport>
+                <button className="secondary" onClick={() => setDonationIsActive(true)}>Support</button>
+            </StyledCard>
         );
     }
 }

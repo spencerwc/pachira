@@ -9,6 +9,7 @@ import Loader from "../Loader/Loader";
 const HomeContainer = styled.main`
     padding-top: var(--top-margin);
     padding-bottom: var(--bottom-margin);
+    background-color: #f5f5f5;
 `;
 
 const HomeView = () => {
