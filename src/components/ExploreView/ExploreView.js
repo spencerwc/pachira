@@ -72,38 +72,35 @@ const ExploreView = () => {
     const [campaignsList, setCampaignsList] = useState([]);
     const [error, setError] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
-
-    const getCampaignsList = async (searchTerm) => {
-        setIsLoading(true);
-        const activeCampaignsList = await getCampaigns(searchTerm);
-        setCampaignsList(activeCampaignsList);
-        setIsLoading(false);
-    }
-
-    const handleChange = (e) => {
-        setSearchTerm(e.target.value);
-    }
+    const [searchInput, setSearchInput] = useState('');
 
     const handleSearch = (e) => {
         e.preventDefault();
-        getCampaignsList(searchTerm);
+        setSearchTerm(searchInput);
     }
 
     useEffect(() => {
+        const getCampaignsList = async (searchTerm) => {
+            setIsLoading(true);
+            const activeCampaignsList = await getCampaigns(searchTerm);
+            setCampaignsList(activeCampaignsList);
+            setIsLoading(false);
+        }
         try {
             getCampaignsList(searchTerm);
         }
         catch (error) {
             setError(error.message);
         }
-    }, []);
+
+    }, [searchTerm]);
 
     if (!isLoading && campaignsList) {
         return (
             <StyledExplore>
                 <h1>Explore</h1>
                 <form onSubmit={handleSearch}>
-                    <input type="text" placeholder="Search for a campaign..." value={searchTerm} onChange={handleChange}></input>
+                    <input type="text" placeholder="Search for a campaign..." value={searchInput} onChange={(e) => setSearchInput(e.target.value)}></input>
                     <button className="secondary" type="submit">Search</button>
                 </form>
                 {campaignsList.length > 0 ? (
@@ -124,7 +121,7 @@ const ExploreView = () => {
             </StyledExplore>
         );
     }
-    else if (!isLoading && error) {
+    else if (error) {
         return <Error />;
     }
     else {

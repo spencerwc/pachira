@@ -88,7 +88,7 @@ const SignUpView = () => {
                             }}
                             required
                         />
-                        {error && <p><MdErrorOutline />{error}</p>}
+                        {error && <p style={{color: 'red'}}><MdErrorOutline />{error}</p>}
                         <p style={{fontSize: '0.8rem'}}>Pachira is a demo application and is only intended to showcase example features. This is not an actual service.</p>
                         <button className="secondary" type="submit">Create Account</button>
                     </form>

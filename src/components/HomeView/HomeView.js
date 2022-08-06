@@ -15,37 +15,38 @@ const HomeContainer = styled.main`
 const HomeView = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [trending, setTrending] = useState(null);
-    
-    const getTrending = async () => {
-        setIsLoading(true);
-        const campaigns = [];
-        const querySnapshot = await getDocs(collection(db, 'campaigns'));
-        
-        querySnapshot.forEach(doc => {
-            campaigns.push(doc.data());
-        });
-        
-        const trending = campaigns.sort((a, b) => b.donations.length - a.donations.length).slice(0, 3);
-        setTrending(trending);
-        setIsLoading(false);
-    }
 
     useEffect(() => {
+        const getTrending = async () => {
+            setIsLoading(true);
+            const campaigns = [];
+            const querySnapshot = await getDocs(collection(db, 'campaigns'));
+            
+            querySnapshot.forEach(doc => {
+                campaigns.push(doc.data());
+            });
+
+            const trending = campaigns.sort((a, b) => b.donations.length - a.donations.length).slice(0, 3);
+            
+            setTrending(trending);
+            setIsLoading(false);
+        }
+
         getTrending();
     }, []);
     
-    if (!isLoading && trending) {
-        return (
-            <HomeContainer>
-               <Hero />
-               <Trending trending={trending} />
-            </HomeContainer>
-        );
-    }
-    else {
-        return <Loader />
-    }
-
+    return (
+        <>
+            {!isLoading ? (
+                <HomeContainer>
+                    <Hero />
+                    {trending && <Trending trending={trending} />}
+                </HomeContainer>
+            ) : (
+                <Loader />
+            )}
+        </>
+    );
 }
 
 export default HomeView;

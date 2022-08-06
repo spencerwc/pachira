@@ -5,15 +5,6 @@ const StyledCard = styled.li`
     border: 1px solid var(--border-color);
     border-radius: 1.1rem;
 
-    a {
-        color: var(--font-color);
-        text-decoration: none;
-
-        :visited {
-            color: var(--font-color);
-        }
-    }
-
     p {
         font-size: 0.9rem;
         margin-top: 0.5rem;
@@ -60,9 +51,7 @@ const CampaignCard = ({id, image, name, summary}) => {
                 <StyledBanner image={image}/>
                 <div className="details">
                     <strong style={{fontSize: '1.05rem'}}>{name}</strong>
-                    {/* TODO: Revisit this */}
-
-                    {summary.length > MAX_SUMMARY_LENGTH ? 
+                    {summary && summary.length > MAX_SUMMARY_LENGTH ? 
                         <p>{summary.slice(0, MAX_SUMMARY_LENGTH)}...</p> :
                         <p>{summary}</p> 
                     }
