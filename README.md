@@ -17,7 +17,7 @@
 For a more detailed explanation, see the [Firebase documentation for getting started](https://firebase.google.com/docs/web/setup?authuser=0&hl=en). 
 1. Add a new project from the [Firebase console](https://console.firebase.google.com/).
 2. On the Project Overview page, register a web app and follow the required steps.
-3. Save thee Firebase configuration object for your project.
+3. Save the Firebase configuration object for your project.
 4. Enable Email/Password and Google authentication for the project.
 5. Enable the Firestore database for the project.
 
@@ -28,12 +28,12 @@ For a more detailed explanation, see the [Firebase documentation for getting sta
 npm install
 ```
 
-2. Create a .env file in the root directory
+2. Create a `.env` file in the root directory
 ```bash
 touch .env
 ```
 
-3. Create variables for your Firebase project configuration and save them in the .env file
+3. Create variables for your Firebase project configuration and save them in the `.env` file
 ```
 REACT_APP_FIREBASE_API_KEY=
 REACT_APP_FIREBASE_AUTH_DOMAIN=
