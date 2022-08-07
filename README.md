@@ -52,5 +52,6 @@ npm run start
 ## Made With
 - [Dotenv](https://github.com/motdotla/dotenv#readme)
 - [Firebase & Firestore](https://firebase.google.com/)
+- [Jest](https://jestjs.io/)
 - [React Router](https://reactrouter.com/)
 - [Styled Components](https://styled-components.com/)
