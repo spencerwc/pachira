@@ -4,13 +4,13 @@
   </a>
 </p> 
 <p align="center">
-  A prototype crowdfunding / engagement application built around passion projects and campaigns.
+  A prototype crowdfunding / engagement application built around passion projects. Create, style, and add content to your campaign, browse other campaigns, and follow and support your favorites.
 </p>
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/84942739/178912304-0dace3ec-c080-4509-855a-77d61586e106.png" />
+  <img src="https://user-images.githubusercontent.com/84942739/183565896-861a637f-72ec-4671-b9ec-808177099d0d.png" />
 </p>
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/84942739/183222881-1199b102-075e-495d-92a1-c7fe4f4324e0.png" />
+  <img src="https://user-images.githubusercontent.com/84942739/183565988-e2befb3c-4a7d-4c43-b49b-725c6f754964.png" />
 </p>
 
 ## Set up Firebase
