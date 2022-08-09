@@ -10,7 +10,7 @@
   <img src="https://user-images.githubusercontent.com/84942739/183565896-861a637f-72ec-4671-b9ec-808177099d0d.png" />
 </p>
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/84942739/183565988-e2befb3c-4a7d-4c43-b49b-725c6f754964.png" />
+  <img src="https://user-images.githubusercontent.com/84942739/183590928-09baadf2-8012-4ac8-9bb7-1b5057617f4b.png" />
 </p>
 
 ## Set up Firebase
